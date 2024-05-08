@@ -70,7 +70,7 @@ ref {
 ```
 
 
-## API Documentation
+## API Documentations
 
 ## USER AUTHENTICATION/AUTHORIZATION
 
