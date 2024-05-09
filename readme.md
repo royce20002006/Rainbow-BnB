@@ -1,18 +1,21 @@
 # `Rainbow BnB`
 
 ## Database Schema Design
-![dbDiagram](./Screenshot%202024-05-07%20232357.png)
+![dbDiagram](./Screenshot%202024-05-08%20220217.png)
 
 ```javascript
-Table users{
+
+
+Table users {
   id int [primary key, increment, not null]
   firstName varchar(30) [not null]
   lastName varchar(30) [not null]
   email varchar(30) [not null, unique]
   username varchar(30) [not null, unique]
+  
 }
-```
-```javascript
+
+
 Table spots {
   id integer [primary key, increment, not null]
   ownerId integer [not null]
@@ -25,15 +28,23 @@ Table spots {
   name varchar(50) [not null]
   description varchar(255)
   price integer [not null]
-  }
-```
-```javascript
-Table images {
+
+}
+
+Table spotimages {
   id integer [primary key, increment, not null]
   url varchar(255) [not null]
+  spotId integer [not null]
+   
 }
-```
-```javascript
+
+Table reviewImages {
+  id integer [primary key, increment, not null]
+  url varchar(255) [not null]
+  reviewId integer [not null]
+   
+}
+
 Table reviews {
   id integer [primary key, increment, not null]
   userId integer [not null]
@@ -41,8 +52,7 @@ Table reviews {
   review varchar(255) 
   stars integer [not null]
 }
-```
-```javascript
+
 Table Bookings {
   id integer [primary key, increment, not null]
   spotId integer 
@@ -50,10 +60,11 @@ Table Bookings {
   startDate date [not null]
   endDate date [not null]
 }
-```
-```javascript
-ref {
-  users.id < bookings.userId
+
+
+Ref {
+  users.id < Bookings.userId
+  
 }
 
 ref {
@@ -65,8 +76,18 @@ ref {
 }
 
 ref {
-  spots.id < bookings.spotId
+  spots.id < Bookings.spotId
 }
+
+
+
+
+
+
+
+Ref: "spots"."id" < "spotimages"."spotId"
+
+Ref: "reviews"."id" < "reviewImages"."reviewId"
 ```
 
 
@@ -157,7 +178,7 @@ information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * URL: users/:userId/login
+  * URL: /login
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -223,7 +244,7 @@ user's information.
 * Require Authentication: false
 * Request
   * Method: POST
-  * URL: /users
+  * URL: /sign-up
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -313,7 +334,7 @@ Returns all the spots.
 * Require Authentication: false
 * Request
   * Method: GET
-  * URL: /spots/
+  * URL: /spots
   * Body: none
 
 * Successful Response
@@ -458,7 +479,7 @@ Creates and returns a new spot.
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: /spots/
+  * URL: /spots
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -532,7 +553,7 @@ Create and return a new image for a spot specified by id.
 * Require proper authorization: Spot must belong to the current user
 * Request
   * Method: POST
-  * URL: /images/
+  * URL: /spots/:spotId/images
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -700,7 +721,7 @@ Returns all the reviews written by the current user.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /reviews/
+  * URL: /users/:userId/reviews
   * Body: none
 
 * Successful Response
@@ -811,7 +832,7 @@ Create and return a new review for a spot specified by id.
 * Require Authentication: true
 * Request
   * Method: POST
-  * URL: /spots/:spotId
+  * URL: /spots/:spotId/reviews
   * Headers:
     * Content-Type: application/json
   * Body:
