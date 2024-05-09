@@ -1,17 +1,19 @@
 # `Rainbow BnB`
 
 ## Database Schema Design
-![dbDiagram](./Screenshot%202024-05-08%20220217.png)
+![dbDiagram](./Screenshot%202024-05-08%20235742.png)
 
 ```javascript
-
-
 Table users {
   id int [primary key, increment, not null]
   firstName varchar(30) [not null]
   lastName varchar(30) [not null]
   email varchar(30) [not null, unique]
   username varchar(30) [not null, unique]
+  hashedCredential varchar(30) [not null, unique]
+  hashedPassword varchar(30) [not null]
+  createdAt date [default: 'current_timestamp']
+  updatedAt date [default: 'current_timestamp']
   
 }
 
@@ -28,6 +30,9 @@ Table spots {
   name varchar(50) [not null]
   description varchar(255)
   price integer [not null]
+  createdAt date [default: 'current_timestamp']
+  updatedAt date [default: 'current_timestamp']
+
 
 }
 
@@ -35,13 +40,15 @@ Table spotimages {
   id integer [primary key, increment, not null]
   url varchar(255) [not null]
   spotId integer [not null]
-   
+  preview boolean [default: false]
+  
 }
 
 Table reviewImages {
   id integer [primary key, increment, not null]
   url varchar(255) [not null]
   reviewId integer [not null]
+  
    
 }
 
@@ -51,6 +58,8 @@ Table reviews {
   spotId integer [not null]
   review varchar(255) 
   stars integer [not null]
+  createdAt date [default: 'current_timestamp']
+  updatedAt date [default: 'current_timestamp']
 }
 
 Table Bookings {
@@ -59,6 +68,8 @@ Table Bookings {
   userId integer 
   startDate date [not null]
   endDate date [not null]
+  createdAt date [default: 'current_timestamp']
+  updatedAt date [default: 'current_timestamp']
 }
 
 
@@ -85,9 +96,14 @@ ref {
 
 
 
+
+
+
 Ref: "spots"."id" < "spotimages"."spotId"
 
-Ref: "reviews"."id" < "reviewImages"."reviewId"
+Ref: "spots"."id" < "reviews"."spotId"
+
+Ref: "reviewImages"."reviewId" < "reviews"."id"
 ```
 
 
