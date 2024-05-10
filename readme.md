@@ -1,7 +1,7 @@
 # `Rainbow BnB`
 
 ## Database Schema Design
-![dbDiagram](./Screenshot%202024-05-09%20211452.png)
+![dbDiagram](./Screenshot%202024-05-09%20221522.png)
 
 ```javascript
 Table users {
@@ -30,6 +30,7 @@ Table spots {
   name varchar(50) [not null]
   description varchar(255)
   price integer [not null]
+  previewImages varchar(100)
   createdAt date [default: 'current_timestamp']
   updatedAt date [default: 'current_timestamp']
 
