@@ -1,7 +1,7 @@
 # `Rainbow BnB`
 
 ## Database Schema Design
-![dbDiagram](./Screenshot%202024-05-09%20222213.png)
+![dbDiagram](./Screenshot%202024-05-09%20224445.png)
 
 ```javascript
 Table users {
@@ -10,7 +10,6 @@ Table users {
   lastName varchar(30) [not null]
   email varchar(30) [not null, unique]
   username varchar(30) [not null, unique]
-  credential varchar(30) [not null, unique]
   hashedPassword varchar(30) [not null]
   createdAt date [default: 'current_timestamp']
   updatedAt date [default: 'current_timestamp']
@@ -30,7 +29,6 @@ Table spots {
   name varchar(50) [not null]
   description varchar(255)
   price integer [not null]
-  previewImages varchar(100)
   createdAt date [default: 'current_timestamp']
   updatedAt date [default: 'current_timestamp']
 
@@ -42,6 +40,8 @@ Table spotimages {
   url varchar(255) [not null]
   spotId integer [not null]
   preview boolean [default: false]
+  createdAt date [default: 'current_timestamp']
+  updatedAt date [default: 'current_timestamp']
   
 }
 
@@ -49,6 +49,8 @@ Table reviewImages {
   id integer [primary key, increment, not null]
   url varchar(255) [not null]
   reviewId integer [not null]
+  createdAt date [default: 'current_timestamp']
+  updatedAt date [default: 'current_timestamp']
   
    
 }
@@ -74,37 +76,20 @@ Table Bookings {
 }
 
 
-Ref {
-  users.id < Bookings.userId
-  
-}
-
-ref {
-  users.id < reviews.userId
-}
-
-ref {
-  users.id < spots.ownerId
-}
-
-ref {
-  spots.id < Bookings.spotId
-}
 
 
 
+Ref: "users"."id" < "spots"."id"
 
+Ref: "users"."id" < "Bookings"."userId"
 
+Ref: "spots"."id" < "Bookings"."spotId"
 
+Ref: "reviews"."id" < "reviewImages"."reviewId"
 
-
-
+Ref: "reviews"."userId" < "users"."id"
 
 Ref: "spots"."id" < "spotimages"."spotId"
-
-Ref: "spots"."id" < "reviews"."spotId"
-
-Ref: "reviewImages"."reviewId" < "reviews"."id"
 ```
 
 
