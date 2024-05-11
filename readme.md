@@ -1,7 +1,7 @@
 # `Rainbow BnB`
 
 ## Database Schema Design
-![dbDiagram](./images/Screenshot%202024-05-09%20225227.png)
+![dbDiagram](./images/Screenshot%202024-05-11%20171111.png)
 
 ```javascript
 Table users {
