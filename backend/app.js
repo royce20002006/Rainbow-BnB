@@ -45,6 +45,43 @@ app.use(
 //use routes
 app.use(routes);
 
+//not found handling middleware
+app.use((_req, _res, next) => {
+    const err = new Error("The requested resource couldn't be found.");
+    err.title = "Resource Not Found";
+    err.errors = { message: "The requested resource couldn't be found."};
+    err.status = 404;
+    next(err);
+});
+
+//error handling middleware
+const { ValidationError } = require('sequelize');
+
+//process sequelize validation errors
+app.use((err, _req, _res, next) => {
+    if (err instanceof ValidationError) {
+        let errors = {};
+        for (let error of err.errors) {
+            errors[error.path] = error.message;
+        }
+        err.title = 'Validation error';
+        err.errors = errors;
+    }
+    next(err);
+});
+
+// error formatter
+app.use((err, _req, res, _next) => {
+    res.status(err.status || 500);
+    console.error(err);
+    res.json({
+        title: err.title || 'Server Error',
+        message: err.message,
+        errors: err.errors,
+        stack: isProduction ? null : err.stack
+    });
+});
+
 
 //export app
 module.exports = app;
