@@ -1,13 +1,18 @@
 const router = require('express').Router();
+const { restoreUser } = require('../../utils/auth');
 
-// test route
-router.post('/test', (req, res, next) => {
-    try {
-        res.json({requesBody: req.body})
-    } catch (error) {
-        console.log(error)
-    }
-});
+
+//restore user middleware
+router.use(restoreUser);
+
+
+
+
+
+
+
+
+
 
 
 
