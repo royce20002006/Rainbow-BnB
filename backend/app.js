@@ -6,6 +6,7 @@ const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const routes = require('./routes');
+const { ValidationError } = require('sequelize');
 
 const { enviroment } = require('./config');
 const isProduction = enviroment === 'production';
@@ -55,7 +56,6 @@ app.use((_req, _res, next) => {
 });
 
 //error handling middleware
-const { ValidationError } = require('sequelize');
 
 //process sequelize validation errors
 app.use((err, _req, _res, next) => {
