@@ -4,20 +4,20 @@
 ![dbDiagram](./images/Untitled.png)
 
 ```javascript
-Table users {
+Table Users {
   id int [primary key, increment, not null]
   firstName varchar(30) [not null]
   lastName varchar(30) [not null]
   email varchar(30) [not null, unique]
   username varchar(30) [not null, unique]
-  hashedPassword varchar(30) [not null]
+  hashedPassword varchar(60) [not null]
   createdAt date [default: 'current_timestamp']
   updatedAt date [default: 'current_timestamp']
   
 }
 
 
-Table spots {
+Table Spots {
   id integer [primary key, increment, not null]
   ownerId integer [not null]
   address varchar(255) [not null]
@@ -28,14 +28,14 @@ Table spots {
   lng decimal [not null]
   name varchar(50) [not null]
   description varchar(255)
-  price integer [not null]
+  price decimal [not null]
   createdAt date [default: 'current_timestamp']
   updatedAt date [default: 'current_timestamp']
 
 
 }
 
-Table spotimages {
+Table SpotImages {
   id integer [primary key, increment, not null]
   url varchar(255) [not null]
   spotId integer [not null]
@@ -45,7 +45,7 @@ Table spotimages {
   
 }
 
-Table reviewImages {
+Table ReviewImages {
   id integer [primary key, increment, not null]
   url varchar(255) [not null]
   reviewId integer [not null]
@@ -55,7 +55,7 @@ Table reviewImages {
    
 }
 
-Table reviews {
+Table Reviews {
   id integer [primary key, increment, not null]
   userId integer [not null]
   spotId integer [not null]
@@ -79,17 +79,21 @@ Table Bookings {
 
 
 
-Ref: "users"."id" < "spots"."id"
 
-Ref: "users"."id" < "Bookings"."userId"
 
-Ref: "spots"."id" < "Bookings"."spotId"
+Ref: "Spots"."id" < "SpotImages"."spotId"
 
-Ref: "reviews"."id" < "reviewImages"."reviewId"
+Ref: "Users"."id" < "Spots"."ownerId"
 
-Ref: "reviews"."userId" < "users"."id"
+Ref: "Spots"."id" < "Reviews"."spotId"
 
-Ref: "spots"."id" < "spotimages"."spotId"
+Ref: "Reviews"."id" < "ReviewImages"."reviewId"
+
+Ref: "Spots"."id" < "Bookings"."spotId"
+
+Ref: "Users"."id" < "Bookings"."userId"
+
+Ref: "Users"."id" < "Reviews"."userId"
 ```
 
 
