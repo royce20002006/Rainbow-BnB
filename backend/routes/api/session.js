@@ -44,5 +44,15 @@ router.post('/', async (req, res, next) => {
 });
 
 
+router.delete('/', (_req, res) => {
+    try {
+        res.clearCookie('token');
+        return res.json({message: 'success' });
+    } catch (error) {
+        next(error);
+    }
+});
+
+
 
 module.exports = router;
