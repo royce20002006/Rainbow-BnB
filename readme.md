@@ -1,7 +1,7 @@
 # `Rainbow BnB`
 
 ## Database Schema Design
-![dbDiagram](./images/Screenshot%202024-05-09%20225227.png)
+![dbDiagram](./images/Untitled.png)
 
 ```javascript
 Table users {
@@ -10,7 +10,7 @@ Table users {
   lastName varchar(30) [not null]
   email varchar(30) [not null, unique]
   username varchar(30) [not null, unique]
-  hashedPassword varchar(30) [not null]
+  hashedPassword varchar(60) [not null]
   createdAt date [default: 'current_timestamp']
   updatedAt date [default: 'current_timestamp']
   
@@ -87,9 +87,11 @@ Ref: "spots"."id" < "Bookings"."spotId"
 
 Ref: "reviews"."id" < "reviewImages"."reviewId"
 
-Ref: "reviews"."userId" < "users"."id"
+Ref: "reviews"."userId" > "users"."id"
 
 Ref: "spots"."id" < "spotimages"."spotId"
+
+Ref: "spots"."id" < "reviews"."spotId"
 ```
 
 
