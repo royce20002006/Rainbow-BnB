@@ -29,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [3, 30]
+          len: [3, 30],
+          isAlpha: true
         }
       },
       email: {
@@ -47,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         validate: {
           len: [4, 30],
+          isAlphanumeric:true,
           isNotEmail(value) {
             if (Validator.isEmail(value)) {
               throw new Error("Cannot be an email.");
