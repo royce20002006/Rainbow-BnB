@@ -7,6 +7,15 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const validateSignup = [
+    check('firstName')
+    .exists({ checkFalsy: true })
+    .isAlpha()
+    .isLength({min: 3})
+    .withMessage('Please provide your first name with a minimum length of 3 characters.'),
+    check('lastName')
+    .isAlpha()
+    .isLength({min: 3 })
+    .withMessage('Please provide your last name with a minimum of 3 characters.'),
     check('email')
     .exists({ checkFalsy: true })
     .isEmail()
@@ -22,7 +31,7 @@ const validateSignup = [
     check('password')
     .exists({ checkFalsy: true})
     .isLength({min: 6 })
-    ,withMessage('Password must be 6 characters or more.'),
+    .withMessage('Password must be 6 characters or more.'),
     handleValidationErrors
 ];
 
