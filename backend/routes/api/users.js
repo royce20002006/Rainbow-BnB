@@ -11,19 +11,19 @@ const validateSignup = [
     .exists({ checkFalsy: true })
     .isAlpha()
     .isLength({min: 3})
-    .withMessage('Please provide your first name with a minimum length of 3 characters.'),
+    .withMessage('First Name is required'),
     check('lastName')
     .isAlpha()
     .isLength({min: 3 })
-    .withMessage('Please provide your last name with a minimum of 3 characters.'),
+    .withMessage('Last Name is required'),
     check('email')
     .exists({ checkFalsy: true })
     .isEmail()
-    .withMessage('Please provide a valid email'),
+    .withMessage('Invalid email'),
     check('username')
     .exists({ checkFalsy: true })
     .isLength({min: 4 })
-    .withMessage('Please provide a username with at least 4 characters.'),
+    .withMessage('Username is required'),
     check('username')
     .not()
     .isEmail()
@@ -37,11 +37,39 @@ const validateSignup = [
 
 const router = express.Router();
 
-router.post('/', validateSignup, async (req, res) => {
-    const { firstName, lastName, email, password, username } = req.body;
-    const hashedPassword = bcrypt.hashSync(password);
-    const user = await User.create({ firstName, lastName, email, username, hashedPassword });
 
+router.post('/', validateSignup, async (req, res, next) => {
+
+    try {
+        const { firstName, lastName, email, password, username } = req.body;
+    const hashedPassword = bcrypt.hashSync(password);
+    
+    const emailCheck = await User.findOne({
+        where: {
+            email
+        }
+    })
+    const usernameCheck = await User.findOne({
+        where: {
+            username
+        }
+    })
+
+    if (emailCheck) {
+        const err = new Error('User already exists');
+        err.errors = {username: 'User with that email already exists'};
+        err.status = 500
+        return next(err)
+    }
+
+    if (usernameCheck) {
+        const err = new Error('User already exists');
+        err.errors = {email: 'User with that username already exists'};
+        err.status = 500
+        return next(err)
+    }
+    
+    const user = await User.create({ firstName, lastName, email, username, hashedPassword });
     const safeUser = {
         id: user.id,
         firstName: firstName,
@@ -55,6 +83,11 @@ router.post('/', validateSignup, async (req, res) => {
     return res.json({
         user: safeUser
     });
+        
+    } catch (error) {
+        next(error);
+    }
+    
 });
 
 
