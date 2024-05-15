@@ -10,11 +10,10 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-
-    await queryInterface.bulkCreate([
+    await queryInterface.insert([
       {
-        firstName: 'jani',
-        lastName: 'Wellin',
+        firstName: 'jan',
+        lastName: 'Well',
         email: 'demo@user.io',
         username: 'Demo-lition',
         hashedPassword: bcrypt.hashSync('password')
@@ -34,9 +33,6 @@ module.exports = {
         hashedPassword: bcrypt.hashSync('password3')
       }
     ], { validate: true });
-    
-    
-      
   },
 
   async down (queryInterface, Sequelize) {
