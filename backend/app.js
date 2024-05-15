@@ -16,7 +16,7 @@ const app = express();
 //morgan for logging requests and responses
 app.use(morgan('dev'));
 
-//parse cookies
+//parse cookiesssss
 app.use(cookieParser());
 
 // parse json req bodies
