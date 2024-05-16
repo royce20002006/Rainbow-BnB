@@ -35,7 +35,7 @@ module.exports = {
             hashedPassword: bcrypt.hashSync('password3'),
           },
         ],
-        { validate: true, schema: options }
+        { validate: true }
       );
     } catch (error) {
       console.error('Error during migration:', error);
