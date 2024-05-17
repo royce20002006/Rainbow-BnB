@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -19,6 +19,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+    try {
       await Spot.bulkCreate([
         {
           ownerId: 2,
@@ -69,10 +70,17 @@ module.exports = {
           price: 44.82
         },
 
-      ], {validate: true})
-  },
+      ], { validate: true })
 
-  async down (queryInterface, Sequelize) {
+    }
+   catch(e) {
+    console.error('Error during migration:', error);
+      throw error; // Re-throw the error to ensure the migration fails and logs the error
+  }
+}
+  ,
+
+  async down(queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
@@ -81,14 +89,14 @@ module.exports = {
      */
     options.tableName = 'Users';
     const Op = Sequelize.Op;
-    
-      await queryInterface.bulkDelete(
-        options,
-        {
-          username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] },
-        },
-        
-      );
-    }
-  
+
+    await queryInterface.bulkDelete(
+      options,
+      {
+        username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] },
+      },
+
+    );
+  }
+
 };
