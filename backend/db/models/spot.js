@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: [3, 50],
-        isAlphanumeric: true
+        
       }
     },
     description: {
