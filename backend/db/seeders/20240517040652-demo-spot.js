@@ -74,7 +74,7 @@ module.exports = {
 
     }
    catch(e) {
-    console.error('Error during migration:', error);
+    console.error('Error during migration:', e);
       throw error; // Re-throw the error to ensure the migration fails and logs the error
   }
 }
