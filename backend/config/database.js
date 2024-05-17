@@ -1,4 +1,4 @@
-// backend/config/database.js
+
 const config = require('./index');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
     typeValidation: true
   },
   production: {
-    use_env_variable: 'production',
+    use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
     seederStorage: 'sequelize',
     dialectOptions: {
