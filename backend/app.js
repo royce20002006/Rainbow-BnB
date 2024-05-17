@@ -11,6 +11,8 @@ const { ValidationError } = require('sequelize');
 const { enviroment } = require('./config');
 const isProduction = enviroment === 'production';
 
+
+
 const app = express();
 
 //morgan for logging requests and responses
@@ -72,6 +74,7 @@ app.use((err, _req, _res, next) => {
 
 // error formatter
 app.use((err, _req, res, _next) => {
+    console.log(isProduction);
     res.status(err.status || 500);
     console.error(err);
     res.json({
