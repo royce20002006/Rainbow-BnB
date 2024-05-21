@@ -55,15 +55,15 @@ module.exports = (sequelize, DataTypes) => {
         len: [3, 255]
       }
     },
-    lat: {type: DataTypes.DECIMAL,
+    lat: {type: DataTypes.DECIMAL(9,7),
       allowNull: false,
       validate: {
-        isDecimal: true
+        isDecimal: true,
       }
 
     },
     lng: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(10,7),
       allowNull: false,
       validate: {
         isDecimal: true
