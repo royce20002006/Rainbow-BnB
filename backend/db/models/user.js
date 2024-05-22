@@ -7,7 +7,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association
       User.hasMany(models.Spot, {
-        foreignKey: 'ownerId'
+<<<<<<< HEAD
+        foreignKey: 'ownerId', onDelete: 'CASCADE', 
+=======
+        foreignKey: 'ownerId',
+        
+        onDelete: 'Cascade'
+>>>>>>> 2b1a0473250d0564b31fb64ddab43b24eb3d5d53
+       
       });
       User.hasMany(models.Review, {foreignKey: 'userId'});
       User.hasMany(models.Booking, {foreignKey: 'userId'});
