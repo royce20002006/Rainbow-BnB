@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         len: [5, 255],
-        isAlpha: true
+        
       }
     },
     stars: {

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Spot.belongsTo(models.User, {
-        foreignKey: 'ownerId', onDelete: 'cascade'
+        foreignKey: 'ownerId', as: 'Owner'
       });
       Spot.hasMany(models.SpotImage, {foreignKey: 'spotId'});
       Spot.hasMany(models.Review, {foreignKey: 'spotId'});
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
     },
     address: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
         
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     city: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(60),
       allowNull: false,
       validate: {
         
@@ -42,20 +42,21 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     state: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(60),
       allowNull: false,
       validate: {
         len: [3, 60]
       }
     },
     country: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       allowNull: false,
       validate: {
         len: [3, 255]
       }
     },
-    lat: {type: DataTypes.DECIMAL(9,7),
+    lat: {
+      type: DataTypes.DECIMAL(9,7),
       allowNull: false,
       validate: {
         isDecimal: true,
@@ -70,7 +71,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false,
       validate: {
         len: [3, 50],
@@ -78,13 +79,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(255),
       validate: {
         len: [5, 255]
       }
     },
     price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(6,2),
       allowNull: false,
       validate: {
         min :1.00,
