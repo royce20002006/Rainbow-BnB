@@ -15,13 +15,7 @@ const validateNewSpot = [
         .exists({ checkFalsy: true })
         .isLength({ min: 5 })
         .withMessage('Street address is required'),
-        .exists({ checkFalsy: true })
-        .isLength({ min: 5 })
-        .withMessage('Street address is required'),
     check('city')
-        .exists({ checkFalsy: true })
-        .isLength({ min: 3 })
-        .withMessage('City is required'),
         .exists({ checkFalsy: true })
         .isLength({ min: 3 })
         .withMessage('City is required'),
@@ -29,13 +23,7 @@ const validateNewSpot = [
         .exists({ checkFalsy: true })
         .isLength({ min: 3 })
         .withMessage('State is required'),
-        .exists({ checkFalsy: true })
-        .isLength({ min: 3 })
-        .withMessage('State is required'),
     check('country')
-        .exists({ checkFalsy: true })
-        .isLength({ min: 3 })
-        .withMessage('Country is required'),
         .exists({ checkFalsy: true })
         .isLength({ min: 3 })
         .withMessage('Country is required'),
@@ -43,13 +31,7 @@ const validateNewSpot = [
         .exists({ checkFalsy: true })
         .isDecimal()
         .withMessage('Latitude is not valid'),
-        .exists({ checkFalsy: true })
-        .isDecimal()
-        .withMessage('Latitude is not valid'),
     check('lng') //research
-        .exists({ checkFalsy: true })
-        .isDecimal()
-        .withMessage('Longitude is not valid'),
         .exists({ checkFalsy: true })
         .isDecimal()
         .withMessage('Longitude is not valid'),
@@ -57,20 +39,11 @@ const validateNewSpot = [
         .exists({ checkFalsy: true })
         .isLength({ max: 50 })
         .withMessage('Name must be less than 50 characters'),
-        .exists({ checkFalsy: true })
-        .isLength({ max: 50 })
-        .withMessage('Name must be less than 50 characters'),
     check('description')
         .exists({ checkFalsy: true })
         .isLength({ min: 5, max: 255 })
         .withMessage('Description is required'),
-        .exists({ checkFalsy: true })
-        .isLength({ min: 5, max: 255 })
-        .withMessage('Description is required'),
     check('price') //research
-        .exists({ checkFalsy: true })
-        .isDecimal()
-        .withMessage('Price per day is required'),
         .exists({ checkFalsy: true })
         .isDecimal()
         .withMessage('Price per day is required'),
@@ -111,7 +84,7 @@ router.get('/', async (_req, res, next) => {
                         
                     }
                 }
-                console.log(previewImages)
+                
                 
                 spotFormatting.push({
                     id: spot.id,
@@ -148,7 +121,7 @@ router.get('/', async (_req, res, next) => {
     }
 });
 
-router.get('/current', requireAuth, async (req, res, next) => {
+
 router.get('/current', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
@@ -166,7 +139,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     
                     
                     let sum = 0;
-                    let previewImages = [];
+                    let previewImages = '';
                     let reviews = await spot.getReviews()
                     let images = await spot.getSpotImages();
                     for (let review of reviews) {
@@ -178,11 +151,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     for(let image of images) {
                         console.log(image.preview)
                         if (image.preview === true) {
-                            previewImages.push(image.url)
+                            previewImages += image.url
                             
                         }
                     }
-                    console.log(previewImages)
+                   
                     
                     spotFormatting.push({
                         id: spot.id,
@@ -226,8 +199,7 @@ router.post('/', validateNewSpot, requireAuth, async (req, res, next) => {
 
         const { user } = req;
         if (user) {
-            const newSpot = await Spot.create({
-                ownerId: user.id, address, city,
+            
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,
                 state, country, lat, lng, name, description, price
@@ -263,8 +235,8 @@ router.get('/:spotId', async (req, res, next) => {
             }]
         });
         if (spot) {
-            let images = await spot.SpotImage;
-            console.log(images)
+            
+            
             let reviews = await spot.getReviews();
             let count = 0;
             let sum = 0
@@ -310,12 +282,12 @@ router.get('/:spotId', async (req, res, next) => {
 
 router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
     try {
-        const { user } = req;
+        
         const { user } = req;
         const { address, city, state,
             country, lat, lng, name,
             description, price } = req.body;
-            description, price } = req.body;
+            
         const spotId = req.params.spotId;
         if (user) {
 
@@ -323,8 +295,7 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
             const spot = await Spot.findByPk(spotId)
             if (spot && spot.ownerId === user.id) {
 
-                const updatedSpot = await spot.update({
-                    ownerId: user.id, address, city,
+                
                 const updatedSpot = await spot.update({
                     ownerId: user.id, address, city,
                     state, country, lat, lng, name, description, price
@@ -354,7 +325,7 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
 //deletes a spot by the owner
 router.delete('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
     try {
-        const { user } = req;
+        
         const { user } = req;
         const spotId = req.params.spotId;
         if (user) {
@@ -365,7 +336,7 @@ router.delete('/:spotId', requireAuth, validateNewSpot, async (req, res, next) =
 
                 await spot.destroy()
 
-                res.json({ message: 'Successfully deleted' });
+                
 
                 res.json({ message: 'Successfully deleted' });
             } else if (spot && spot.ownerId !== user.id) {
