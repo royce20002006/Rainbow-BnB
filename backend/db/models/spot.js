@@ -1,6 +1,7 @@
 'use strict';
 const {
-  Model
+  Model,
+  ValidationError
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
@@ -60,6 +61,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isDecimal: true,
+        
+        
       }
 
     },
