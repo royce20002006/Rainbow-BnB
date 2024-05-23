@@ -1,7 +1,8 @@
 'use strict';
 const {
   Model,
-  ValidationError
+  ValidationError,
+  json
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
@@ -15,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       Spot.belongsTo(models.User, {
         foreignKey: 'ownerId', as: 'Owner'
       });
-      Spot.hasMany(models.SpotImage, {foreignKey: 'spotId'});
-      Spot.hasMany(models.Review, {foreignKey: 'spotId'});
-      Spot.hasMany(models.Booking, {foreignKey: 'spotId'})
+      Spot.hasMany(models.SpotImage, {foreignKey: 'spotId', onDelete: 'cascade'});
+      Spot.hasMany(models.Review, {foreignKey: 'spotId', onDelete: 'cascade'});
+      Spot.hasMany(models.Booking, {foreignKey: 'spotId', onDelete: 'cascade'})
     }
   }
   Spot.init({
@@ -60,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(9,7),
       allowNull: false,
       validate: {
-        isDecimal: true,
+        isDecimal: true
         
         
       }
@@ -71,6 +72,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isDecimal: true
+        
       }
     },
     name: {

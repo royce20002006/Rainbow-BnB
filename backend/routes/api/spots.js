@@ -5,9 +5,9 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage
 } = require('../../db/models');
 
-const { check } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Model } = require('sequelize');
+const { Model, ValidationError } = require('sequelize');
 
 const router = express.Router();
 const validateNewSpot = [
@@ -46,12 +46,59 @@ const validateNewSpot = [
     check('price') //research
         .exists({ checkFalsy: true })
         .isDecimal()
+        .isCurrency()
         .withMessage('Price per day is required'),
     handleValidationErrors
 ];
 
-router.get('/', async (_req, res, next) => {
+const queryParams = [
+    check('page')
+    .isInt({min: 1})
+    .withMessage("Page must be greater than or equal to 1"),
+    check('size')
+    .isInt({min: 1})
+    .withMessage('Size must be greater than or equal to 1'),
+    check('maxLat')
+    .isDecimal()
+    .withMessage('Maximum latitude is invalid'),
+    check('minLat')
+    .isDecimal()
+    .withMessage('Minimum latitude is invalid'),
+    check('maxLng')
+    .isDecimal()
+    .withMessage('Maximum longitude is invalid'),
+    check('minLng')
+    .isDecimal()
+    .withMessage('Minimum longitude is invalid'),
+    check('minPrice')
+    .isCurrency()
+    .isInt({min: 1.00})
+    .withMessage('Minimum price must be greater than or equal to 0'),
+    check('maxPrice')
+    .isCurrency()
+    .isInt({min: 1.00})
+    .withMessage('Maximum price must be greater than or equal to 0'),
+
+    handleValidationErrors
+];
+
+
+router.get('/', queryParams, async (req, res, next) => {
     try {
+        let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+        page = parseInt(page);
+        size = parseInt(size);
+        if (page === undefined) {
+            page = 1;
+        }
+        if (size === undefined) {
+            size = 20;
+        }
+        
+        
+
+        
+
         let spots = await Spot.findAll({
             include: [{ model: Review, attributes: [] }]
         });
@@ -117,7 +164,7 @@ router.get('/', async (_req, res, next) => {
 
         
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 });
 
@@ -186,7 +233,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 });
 
@@ -195,9 +242,10 @@ router.post('/', validateNewSpot, requireAuth, async (req, res, next) => {
         const { address, city, state,
             country, lat, lng, name,
             description, price } = req.body;
-
+            
 
         const { user } = req;
+
         if (user) {
             
             const newSpot = await Spot.create({
@@ -211,7 +259,7 @@ router.post('/', validateNewSpot, requireAuth, async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 });
 
@@ -276,7 +324,7 @@ router.get('/:spotId', async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log(error)
+        next(error)
     }
 })
 
@@ -318,7 +366,7 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
 
         }
     } catch (error) {
-        console.error(error)
+        next(error)
     }
 });
 
@@ -355,7 +403,7 @@ router.delete('/:spotId', requireAuth, validateNewSpot, async (req, res, next) =
 
         }
     } catch (error) {
-        console.error(error)
+        next(error)
     }
 })
 
