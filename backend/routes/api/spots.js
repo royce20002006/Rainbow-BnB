@@ -49,6 +49,17 @@ const validateNewSpot = [
         .withMessage('Price per day is required'),
     handleValidationErrors
 ];
+const validateReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 5 })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ min: 1, max: 5 })
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors
+];
 
 const queryParams = [
     check('page')
@@ -506,7 +517,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
                 return res.json({ Reviews: reviewFormatting });
             }
-        } else{
+        } else {
             const err = new Error("Spot couldn't be found")
             err.status = 404;
             throw err;
@@ -516,6 +527,42 @@ router.get('/:spotId/reviews', async (req, res, next) => {
         next(error)
     }
 });
+
+// create a review for a Spot based on the Spots Id
+router.post('/:spotId/reviews', validateReview, requireAuth, async (req, res, next) => {
+    try {
+        const spotId = req.params.spotId;
+        const { review, stars } = req.body;
+        const { user } = req;
+        const spot = await Spot.findByPk(spotId)
+        if (spot) {
+
+            if (user) {
+                const reviews = await spot.getReviews();
+                for (let review of reviews) {
+                    if (review.userId === user.id) {
+                        const err = new Error("User already has a review for this spot")
+                        err.status = 500;
+                        throw err;
+                    }
+                }
+            }
+            const newReview = await Review.create({ userId: user.id, spotId: parseInt(spotId), review, stars })
+            res.json(newReview)
+        } else {
+
+            const err = new Error("Spot couldn't be found")
+            err.status = 404;
+            throw err;
+
+        }
+
+
+
+    } catch (error) {
+        next(error);
+    }
+})
 
 
 
