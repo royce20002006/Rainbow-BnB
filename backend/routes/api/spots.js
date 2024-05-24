@@ -544,8 +544,8 @@ router.post('/:spotId/reviews', validateReview, requireAuth, async (req, res, ne
                 const reviews = await spot.getReviews();
                 for (let review of reviews) {
                     if (review.userId === user.id) {
-                        const err = new Error("User already has a review for this spot");
-                        err.status = 500;
+                        const err = new Error("Forbidden");
+                        err.status = 403;
                         throw err;
                     };
                 };
