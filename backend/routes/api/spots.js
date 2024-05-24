@@ -1,6 +1,6 @@
 const express = require('express');
 
-const {  requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage
 } = require('../../db/models');
 
@@ -52,38 +52,38 @@ const validateNewSpot = [
 
 const queryParams = [
     check('page')
-    .optional()
-    .isInt({min: 1})
-    .withMessage("Page must be greater than or equal to 1"),
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage("Page must be greater than or equal to 1"),
     check('size')
-    .optional()
-    .isInt({min: 1})
-    .withMessage('Size must be greater than or equal to 1'),
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage('Size must be greater than or equal to 1'),
     check('maxLat')
-    .optional()
-    .isDecimal()
-    .withMessage('Maximum latitude is invalid'),
+        .optional()
+        .isDecimal()
+        .withMessage('Maximum latitude is invalid'),
     check('minLat')
-    .optional()
-    .isDecimal()
-    .withMessage('Minimum latitude is invalid'),
+        .optional()
+        .isDecimal()
+        .withMessage('Minimum latitude is invalid'),
     check('maxLng')
-    .optional()
-    .isDecimal()
-    .withMessage('Maximum longitude is invalid'),
+        .optional()
+        .isDecimal()
+        .withMessage('Maximum longitude is invalid'),
     check('minLng')
-    .optional()
-    .isDecimal()
-    .withMessage('Minimum longitude is invalid'),
+        .optional()
+        .isDecimal()
+        .withMessage('Minimum longitude is invalid'),
     check('minPrice')
-    .optional()
-    .isCurrency({min: 1.00})
-    .optional()
-    .withMessage('Minimum price must be greater than or equal to 0'),
+        .optional()
+        .isCurrency({ min: 1.00 })
+        .optional()
+        .withMessage('Minimum price must be greater than or equal to 0'),
     check('maxPrice')
-    .optional()
-    .isCurrency({min: 1.00})
-    .withMessage('Maximum price must be greater than or equal to 0'),
+        .optional()
+        .isCurrency({ min: 1.00 })
+        .withMessage('Maximum price must be greater than or equal to 0'),
 
     handleValidationErrors
 ];
@@ -91,10 +91,10 @@ const queryParams = [
 
 router.get('/', queryParams, async (req, res, next) => {
     try {
-        let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+        let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
         page = parseInt(page);
         size = parseInt(size);
-        if(!size) {
+        if (!size) {
             size = 20
         }
         if (size > 20) {
@@ -108,44 +108,44 @@ router.get('/', queryParams, async (req, res, next) => {
         }
         let where = {}
         //price check
-        if(minPrice && maxPrice) {
-            where.price = {[Op.between]: [minPrice, maxPrice]}
+        if (minPrice && maxPrice) {
+            where.price = { [Op.between]: [minPrice, maxPrice] }
         }
         if (minPrice && !maxPrice) {
-            where.price = {[Op.gte] : minPrice}
+            where.price = { [Op.gte]: minPrice }
         }
         if (maxPrice && !minPrice) {
-            where.price = {[Op.lte] : maxPrice}
+            where.price = { [Op.lte]: maxPrice }
         }
         //latitude check
-        if(minLat && maxLat) {
-            where.lat = {[Op.between]: [minLat, maxLat]}
+        if (minLat && maxLat) {
+            where.lat = { [Op.between]: [minLat, maxLat] }
         }
         if (minLat && !maxLat) {
-            where.lat = {[Op.gte] : minLat}
+            where.lat = { [Op.gte]: minLat }
         }
         if (maxLat && !minLat) {
-            where.lat = {[Op.lte] : maxLat}
+            where.lat = { [Op.lte]: maxLat }
         }
         //longitude check
-        if(minLng && maxLng) {
-            where.lng = {[Op.between]: [minLng, maxLng]}
+        if (minLng && maxLng) {
+            where.lng = { [Op.between]: [minLng, maxLng] }
         }
         if (minLng && !maxLng) {
-            where.lng = {[Op.gte] : minLng}
+            where.lng = { [Op.gte]: minLng }
         }
         if (maxLng && !minLng) {
-            where.lng = {[Op.lte] : maxLng}
+            where.lng = { [Op.lte]: maxLng }
         }
-        
 
-        
+
+
 
         let spots = await Spot.findAll({
             include: [{ model: Review, attributes: [] }],
             where,
-            // limit: size,
-            // offset: (page - 1) * size
+            limit: size,
+            offset: (page - 1) * size
         });
         // let starRatingSum = await Review.sum("avgRating",{
 
@@ -155,10 +155,10 @@ router.get('/', queryParams, async (req, res, next) => {
         // });
         if (spots) {
             let spotFormatting = [];
-            
+
             for (let spot of spots) {
-                
-                
+
+
                 let sum = 0;
                 let previewImages = '';
                 let reviews = await spot.getReviews()
@@ -167,24 +167,24 @@ router.get('/', queryParams, async (req, res, next) => {
                     sum += review.stars
                 }
                 sum /= reviews.length
-                
-                
-                for(let image of images) {
+
+
+                for (let image of images) {
                     console.log(image.preview)
                     if (image.preview === true) {
                         previewImages += image.url
-                        
+
                     }
                 }
-                
-                
+
+
                 spotFormatting.push({
                     id: spot.id,
                     ownerId: spot.ownerId,
                     address: spot.address,
                     city: spot.city,
                     state: spot.state,
-                    country:spot.country,
+                    country: spot.country,
                     lat: spot.lat,
                     lng: spot.lng,
                     name: spot.name,
@@ -194,22 +194,22 @@ router.get('/', queryParams, async (req, res, next) => {
                     updatedAt: spot.updatedAt,
                     avgRating: sum,
                     previewImage: previewImages
-                   
-                    
+
+
                 })
             }
-            
+
             res.json({
                 Spots: spotFormatting,
                 page,
                 size
             })
         }
-        
+
         // console.log(starRatingSum);
 
 
-        
+
     } catch (error) {
         next(error);
     }
@@ -222,16 +222,16 @@ router.get('/current', requireAuth, async (req, res, next) => {
         if (user) {
             const spots = await Spot.findAll({
                 where: {
-                    ownerId: user.id, 
+                    ownerId: user.id,
                 }
 
             });
             if (spots) {
                 let spotFormatting = [];
-                
+
                 for (let spot of spots) {
-                    
-                    
+
+
                     let sum = 0;
                     let previewImages = '';
                     let reviews = await spot.getReviews()
@@ -240,24 +240,24 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         sum += review.stars
                     }
                     sum /= reviews.length
-                    
-                    
-                    for(let image of images) {
+
+
+                    for (let image of images) {
                         console.log(image.preview)
                         if (image.preview === true) {
                             previewImages += image.url
-                            
+
                         }
                     }
-                   
-                    
+
+
                     spotFormatting.push({
                         id: spot.id,
                         ownerId: spot.ownerId,
                         address: spot.address,
                         city: spot.city,
                         state: spot.state,
-                        country:spot.country,
+                        country: spot.country,
                         lat: spot.lat,
                         lng: spot.lng,
                         name: spot.name,
@@ -267,11 +267,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         updatedAt: spot.updatedAt,
                         avgRating: sum,
                         previewImage: previewImages
-                       
-                        
+
+
                     })
                 }
-                
+
                 res.json({
                     Spots: spotFormatting
                 })
@@ -289,12 +289,12 @@ router.post('/', validateNewSpot, requireAuth, async (req, res, next) => {
         const { address, city, state,
             country, lat, lng, name,
             description, price } = req.body;
-            
+
 
         const { user } = req;
 
         if (user) {
-            
+
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,
                 state, country, lat, lng, name, description, price
@@ -314,7 +314,7 @@ router.get('/:spotId', async (req, res, next) => {
     try {
         const { spotId } = req.params;
         const spot = await Spot.findByPk(spotId, {
-            
+
             include: [{
                 model: SpotImage,
                 as: 'SpotImages',
@@ -330,8 +330,8 @@ router.get('/:spotId', async (req, res, next) => {
             }]
         });
         if (spot) {
-            
-            
+
+
             let reviews = await spot.getReviews();
             let count = 0;
             let sum = 0
@@ -340,14 +340,14 @@ router.get('/:spotId', async (req, res, next) => {
                 sum += review.stars
             }
             sum /= count
-            
+
             const spotFormatting = {
                 id: spot.id,
                 ownerId: spot.ownerId,
                 address: spot.address,
                 city: spot.city,
                 state: spot.state,
-                country:spot.country,
+                country: spot.country,
                 lat: spot.lat,
                 lng: spot.lng,
                 name: spot.name,
@@ -357,11 +357,11 @@ router.get('/:spotId', async (req, res, next) => {
                 updatedAt: spot.updatedAt,
                 numReviews: count,
                 avgStarRating: sum,
-                SpotImages:spot.SpotImages,
-                Owner:spot.Owner
-                
+                SpotImages: spot.SpotImages,
+                Owner: spot.Owner
+
             }
-           
+
             res.json(spotFormatting);
 
         } else {
@@ -377,12 +377,12 @@ router.get('/:spotId', async (req, res, next) => {
 
 router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
     try {
-        
+
         const { user } = req;
         const { address, city, state,
             country, lat, lng, name,
             description, price } = req.body;
-            
+
         const spotId = req.params.spotId;
         if (user) {
 
@@ -390,7 +390,7 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
             const spot = await Spot.findByPk(spotId)
             if (spot && spot.ownerId === user.id) {
 
-                
+
                 const updatedSpot = await spot.update({
                     ownerId: user.id, address, city,
                     state, country, lat, lng, name, description, price
@@ -420,7 +420,7 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
 //deletes a spot by the owner
 router.delete('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
     try {
-        
+
         const { user } = req;
         const spotId = req.params.spotId;
         if (user) {
@@ -431,7 +431,7 @@ router.delete('/:spotId', requireAuth, validateNewSpot, async (req, res, next) =
 
                 await spot.destroy()
 
-                
+
 
                 res.json({ message: 'Successfully deleted' });
             } else if (spot && spot.ownerId !== user.id) {
@@ -452,7 +452,75 @@ router.delete('/:spotId', requireAuth, validateNewSpot, async (req, res, next) =
     } catch (error) {
         next(error)
     }
-})
+});
+
+router.get('/:spotId/reviews', async (req, res, next) => {
+    try {
+
+        const spotId = req.params.spotId;
+        const spot = await Spot.findByPk(spotId)
+
+        if (spot) {
+            let reviewFormatting = [];
+            const reviews = await Review.findAll({
+                where: {
+                    spotId: spot.id
+                },
+
+            });
+
+            if (reviews) {
+
+                for (let review of reviews) {
+                    let user = await review.getUser()
+                    let reviewImagesArr = [];
+                    let reviewImages = await review.getReviewImages();
+                    for (let image of reviewImages) {
+                        reviewImagesArr.push({
+                            id: image.id,
+                            url: image.url
+                        })
+
+                    }
+                    console.log(reviewImagesArr)
+
+                    reviewFormatting.push({
+                        id: review.id,
+                        userId: review.userId,
+                        spotId: review.spotId,
+                        review: review.review,
+                        stars: review.stars,
+                        createdAt: review.createdAt,
+                        updatedAt: review.updatedAt,
+                        User: {
+                            id: user.id,
+                            firstName: user.firstName,
+                            lastName: user.lastName
+                        },
+                        ReviewImages: reviewImagesArr
+
+                    })
+
+
+                }
+
+                return res.json({ Reviews: reviewFormatting });
+            }
+        } else{
+            const err = new Error("Spot couldn't be found")
+            err.status = 404;
+            throw err;
+
+        }
+    } catch (error) {
+        next(error)
+    }
+});
+
+
+
+
+
 
 
 module.exports = router;
