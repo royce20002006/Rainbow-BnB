@@ -62,6 +62,7 @@ const validateReview = [
         .withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors
 ];
+
 // validate query parameters and if not create error through the validator
 
 const queryParams = [
@@ -183,7 +184,7 @@ router.get('/', queryParams, async (req, res, next) => {
 
                 //loop through images to find a preview image and extract the url
                 for (let image of images) {
-                    
+
                     if (image.preview === true) {
                         previewImages += image.url;
 
@@ -256,7 +257,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
                     for (let image of images) {
-                        
+
                         if (image.preview === true) {
                             previewImages += image.url;
 
@@ -323,6 +324,51 @@ router.post('/', validateNewSpot, requireAuth, async (req, res, next) => {
         next(error);
     };
 });
+
+//add a spotImage
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+    try {
+        const { url, preview } = req.body;
+        const { spotId } = req.params;
+
+        const spot = await Spot.findByPk(spotId);
+
+        const { user } = req;
+
+
+        if (user) {
+            if (spot) {
+                if (spot.ownerId !== user.id) {
+                    const err = new Error('Forbidden');
+                    err.status = 403;
+                    throw err;
+                }
+
+                const newImage = await SpotImage.create({
+                    url, preview, spotId: parseInt(spotId)
+                });
+                const imageFormatting = {
+                    id: newImage.id,
+                    url: newImage.url,
+                    preview: newImage.preview
+                }
+                
+                res.json(imageFormatting);
+
+            } else {
+                const err = new Error("Spot couldn't be found");
+                err.status = 404;
+                throw err;
+            }
+
+
+
+        };
+
+    } catch (error) {
+        next(error);
+    };
+});
 // find the spot by its id
 router.get('/:spotId', async (req, res, next) => {
     try {
@@ -381,7 +427,7 @@ router.get('/:spotId', async (req, res, next) => {
         } else {
             const err = new Error("Spot couldn't be found");
             err.status = 404;
-            next(err);
+            throw err;
         };
 
     } catch (error) {
@@ -414,12 +460,12 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
             } else if (spot && spot.ownerId !== user.id) {
                 const err = new Error('Forbidden');
                 err.status = 403;
-                return next(err);
+                throw err;
 
             } else {
                 const err = new Error("Spot couldn't be found");
                 err.status = 404;
-                return next(err);
+                throw err;
             };
 
 
@@ -496,7 +542,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                         });
 
                     };
-                    
+
 
                     reviewFormatting.push({
                         id: review.id,

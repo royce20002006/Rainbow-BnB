@@ -7,7 +7,7 @@ const { Spot, User, Review, SpotImage, ReviewImage
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op, Model, ValidationError } = require('sequelize');
-const reviewimage = require('../../db/models/reviewimage');
+
 
 //set up express router
 const router = express.Router();
@@ -167,6 +167,58 @@ router.put('/:reviewId', validateReview, requireAuth, async (req, res, next) => 
         }
 
 
+
+    } catch (error) {
+        next(error);
+    };
+});
+
+//create a new image to a review based on review id
+router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
+    try {
+        const { url} = req.body;
+        const { reviewId } = req.params;
+
+        const review = await Review.findByPk(reviewId);
+        const reviewImages = await review.getReviewImages();
+        
+
+        const { user } = req;
+
+
+        if (user) {
+            if (review) {
+                if (review.userId !== user.id) {
+                    const err = new Error('Forbidden');
+                    err.status = 403;
+                    throw err;
+                }
+                if (reviewImages.length > 10) {
+                    const err = new Error("Maximum number of images for this resource was reached");
+                    err.status = 403;
+                    throw err;
+                }
+
+                const newImage = await ReviewImage.create({
+                    url,  reviewId: parseInt(reviewId)
+                });
+                const imageFormatting = {
+                    id: newImage.id,
+                    url: newImage.url,
+                    
+                }
+                
+                res.json(imageFormatting);
+
+            } else {
+                const err = new Error("Review couldn't be found");
+                err.status = 404;
+                throw err;
+            }
+
+
+
+        };
 
     } catch (error) {
         next(error);
