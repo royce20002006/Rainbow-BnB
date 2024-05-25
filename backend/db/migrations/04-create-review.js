@@ -1,6 +1,7 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
+options.tableName = 'Reviews'
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
@@ -26,7 +27,8 @@ module.exports = {
         onDelete: 'cascade'
       },
       review: {
-        type: Sequelize.STRING(255)
+        type: Sequelize.STRING(255),
+        allowNull: false
       },
       stars: {
         type: Sequelize.INTEGER,

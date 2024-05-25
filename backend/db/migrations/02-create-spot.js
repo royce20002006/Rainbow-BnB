@@ -1,6 +1,7 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
+options.tableName = 'Spots'
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
@@ -19,7 +20,7 @@ module.exports = {
         references: {
           model: 'Users'
         },
-        onDelete: 'cascade'
+        
       },
       address: {
         type: Sequelize.STRING(255),
@@ -43,7 +44,8 @@ module.exports = {
       },
       lng: {
         type: Sequelize.DECIMAL(10, 7),
-        allowNull: false
+        allowNull: false,
+        
       },
       name: {
         type: Sequelize.STRING(50),

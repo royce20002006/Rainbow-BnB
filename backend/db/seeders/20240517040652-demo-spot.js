@@ -3,13 +3,14 @@
 const { Spot } = require('../models');
 
 let options = {};
+options.tableName = 'Spots';
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA; // Define your schema in options objects
 }
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -19,7 +20,6 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    try {
       await Spot.bulkCreate([
         {
           ownerId: 2,
@@ -34,69 +34,74 @@ module.exports = {
           price: 995.00
         },
         {
+          ownerId: 3,
+          address: '921 artichoke rd',
+          city: 'Wilburville',
+          state: 'Iowa',
+          country: 'United States',
+          lat: 23.5324945,
+          lng: 103.1243598,
+          name: 'Artichoke cottage',
+          description: 'This small cottage has everything you need.',
+          price: 365.50
+        },
+        {
           ownerId: 1,
-          address: '900 oak ave',
-          city: 'sleepy',
-          state: 'Hollow',
-          country: 'Spain',
-          lat: 34.9328545,
-          lng: 103.1233548,
-          name: 'Cozy cabin',
-          description: 'The cabin has a nice spring that runs around it.',
-          price: 422.00
+          address: '920 cedar drive',
+          city: 'owasio',
+          state: 'oklahoma',
+          country: 'United States',
+          lat: 88.9358445,
+          lng: 114.1973598,
+          name: 'cozy cabin',
+          description: 'This cabin stay is surrounded by a peaceful rainforest.',
+          price: 225.05
         },
         {
           ownerId: 2,
-          address: '560 getaway mansion',
-          city: 'Juist',
-          state: ' Saxony',
+          address: '900 german street',
+          city: 'augustus',
+          state: 'liesterstein',
           country: 'Germany',
-          lat: 14.9328445,
-          lng: 103.1233548,
-          name: 'german paradise',
-          description: 'a nice beach house with a great view of the ocean.',
-          price: 250.10
+          lat: 25.8468945,
+          lng: 100.3784598,
+          name: 'german resort',
+          description: 'This resort has beautiful scenery and just the right weather for anything.',
+          price: 95.00
         },
         {
-          ownerId: 3,
-          address: '422 pikearich ave',
-          city: 'wilburville',
-          state: ' soaky',
-          country: 'brazil',
-          lat: 54.9368445,
-          lng: 145.1356548,
-          name: 'cozy home',
-          description: 'a nice cozy house with a warm fireplace.',
-          price: 44.82
+          ownerId: 1,
+          address: '901 acne lane',
+          city: 'buffalo gap',
+          state: 'seatle',
+          country: 'United States',
+          lat: 29.9836945,
+          lng: 103.1284598,
+          name: 'the stix',
+          description: 'this remote location is away from everything so you can enjoy your alone time.',
+          price: 104.00
         },
 
-      ], { validate: true })
+      ], {validate: true})
+  },
 
-    }
-   catch(e) {
-    console.error('Error during migration:', e);
-      throw error; // Re-throw the error to ensure the migration fails and logs the error
-  }
-}
-  ,
-
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    options.tableName = 'Users';
+    options.tableName = 'Spots';
     const Op = Sequelize.Op;
-
-    await queryInterface.bulkDelete(
-      options,
-      {
-        username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] },
-      },
-
-    );
-  }
-
+    
+      await queryInterface.bulkDelete(
+        options,
+        {
+          name: { [Op.in]: ['the stix', 'german resort', 'cozy cabin', 'Artichoke cottage', 'Richman Castle'] },
+        },
+        
+      );
+    }
+  
 };

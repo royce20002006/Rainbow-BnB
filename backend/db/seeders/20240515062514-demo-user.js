@@ -4,6 +4,7 @@ const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 
 let options = {};
+options.tableName = 'Users'
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA; // Define your schema in options objects
 }
@@ -38,7 +39,7 @@ module.exports = {
         { validate: true }
       );
     } catch (error) {
-      console.error('Error during migration:', error);
+      console.log('Error during migration:', error);
       throw error; // Re-throw the error to ensure the migration fails and logs the error
     }
   },
