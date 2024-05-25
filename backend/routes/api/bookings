@@ -32,9 +32,9 @@ router.get('/current',requireAuth, async(req, res, next) => {
                     for (let image of images) {
                         
                         if (image.preview === true) {
-                            previewImageUrl += image.url
-                        }
-                    }
+                            previewImageUrl += image.url;
+                        };
+                    };
                     let spot = {
                         id: spots.id,
                         ownerId: spots.ownerId,
@@ -47,7 +47,7 @@ router.get('/current',requireAuth, async(req, res, next) => {
                         name: spots.name,
                         price: spots.price,
                         previewImage: previewImageUrl
-                    }
+                    };
             
                     bookingFormat.push(
                         {
@@ -67,14 +67,14 @@ router.get('/current',requireAuth, async(req, res, next) => {
                     
                     
                     
-                }
-                res.json({Bookings: bookingFormat})
-            }
-        }
+                };
+                res.json({Bookings: bookingFormat});
+            };
+        };
         
     } catch (error) {
         next(error);
-    }
-})
+    };
+});
 
 module.exports = router;

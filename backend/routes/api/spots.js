@@ -1,12 +1,13 @@
 // imports
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { Spot, User, Review, SpotImage
+const { Spot, User, Review, SpotImage, Booking
 } = require('../../db/models');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op, Model, ValidationError } = require('sequelize');
+const booking = require('../../db/models/booking');
 // set up the express router
 const router = express.Router();
 // validate spots and if not create error through the validator
@@ -352,7 +353,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
                     url: newImage.url,
                     preview: newImage.preview
                 }
-                
+
                 res.json(imageFormatting);
 
             } else {
@@ -617,6 +618,53 @@ router.post('/:spotId/reviews', validateReview, requireAuth, async (req, res, ne
 
 
 
+    } catch (error) {
+        next(error);
+    };
+});
+
+
+// get all bookings for a spot based on spotId
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
+    try {
+        const { spotId } = req.params;
+        const { user } = req;
+        if (user) {
+            const spot = await Spot.findByPk(spotId);
+            if (spot) {
+                let bookingsArr = [];
+                const bookings = await Booking.findAll({
+                    where: {
+                        spotId
+                    },
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['id', 'firstName', 'lastName']
+                        },
+                    ]
+                });
+                for (let booking of bookings) {
+                    if (booking.userId !== user.id) {
+                        bookingsArr.push({
+                            spotId: booking.spotId,
+                            startDate: booking.startDate,
+                            endDate: booking.endDate
+                        });
+                    } else if (booking.userId === user.id) {
+                        bookingsArr.push(booking)
+                    }
+                }
+                res.json({bookings: bookingsArr})
+
+
+            } else {
+                const err = new Error("Spot couldn't be found");
+                err.status = 404;
+                throw err;
+            }
+
+        }
     } catch (error) {
         next(error);
     };
