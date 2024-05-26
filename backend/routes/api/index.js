@@ -7,7 +7,7 @@ const  spotsRouter  = require('./spots');
 const reviewsRouter = require('./reviews');
 const spotImages  = require('./spotsImages')
 const reviewImages = require('./reviewImages')
-const bookingsRouter = require('./bookings')
+const bookingsRouter = require('./bookings.js')
 
 //restore user middleware
 router.use(restoreUser);
