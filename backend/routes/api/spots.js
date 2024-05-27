@@ -46,7 +46,7 @@ const validateNewSpot = [
         .exists({ checkFalsy: true })
         .isLength({ min: 5, max: 255 })
         .withMessage('Description is required'),
-    check('price') //research
+    check('price') 
         .exists({ checkFalsy: true })
         .isInt({min: 0})
         .isDecimal()
@@ -318,9 +318,24 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 ownerId: user.id, address, city,
                 state, country, lat, lng, name, description, price
             });
+            let spotFormatting = {
+                id: newSpot.id,
+                ownerId: user.id,
+                address: newSpot.address,
+                city: newSpot.city,
+                state: newSpot.state,
+                country: newSpot.country,
+                lat: newSpot.lat,
+                lng: newSpot.lng,
+                name: newSpot.name,
+                description: newSpot.description,
+                price: newSpot.price,
+                createdAt: dateFormatter(newSpot.createdAt),
+                updatedAt: dateFormatter(newSpot.updatedAt)
+            };
 
 
-            res.json(newSpot);
+            res.json(spotFormatting);
 
         };
 
@@ -329,7 +344,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
     };
 });
 
-//add a spotImage   //&&&&&&&&&&&&&&&& fix&&&&&&&&&& dates also lng lat
+//add a spotImage   
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     try {
         const { url, preview } = req.body;
@@ -519,7 +534,6 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
     };
 });
 // get reviews by a spot id
-//&&&&&&&&&&&&&&&&&&&&&&&& not sure about error message
 router.get('/:spotId/reviews', async (req, res, next) => {
     try {
 
@@ -703,33 +717,61 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                         spotId
                     }
                 });
-                for (let booking of bookings) {
-                    
-                    
-                    if (formattedStartDate >= booking.startDate && formattedStartDate <= booking.endDate || formattedEndDate >= booking.startDate && formattedEndDate <= booking.endDate) {
-                        let errors = {}
-                        
-                        let err = new  Error('Sorry, this spot is already booked for the specified dates');
-                        errors.startDate = "Start date conflicts with an existing booking";
-                        errors.endDate = "End date conflicts with an existing booking";
-                        err.errors = errors;
-                        err.status = 403;
-                        throw err;
-                    }
-                }
-                //ERROR - Create a Booking - Dates Surround Existing Booking
-                //ERROR - Create a Booking - Dates In The Past
+
                 if (formattedEndDate <= formattedStartDate) {
                     const err = new Error('Bad Request');
                     err.errors = { endDate: 'endDate cannot be on or before startDate' };
                     err.status = 400;
                     throw err;
                 }
-                let currentDate = new Date()
-                if (currentDate > booking.endDate || currentDate > booking.startDate) {
-                    const err = new Error("Past bookings can't be modified");
-                    err.status = 403;
+                
+                for (let booking of bookings) {
+                    
+                    
+                    let currentDate = new Date()
+                    if (currentDate > booking.endDate || currentDate > booking.startDate) {
+                        const err = new Error("Past bookings can't be modified");
+                        err.status = 403;
+                    }
+                    
+                    const errors = {};
+                    let error = false;
+                    if (formattedStartDate.setHours(0, 0, 0, 0) === booking.startDate.setHours(0, 0, 0, 0) ||formattedStartDate.setHours(0, 0, 0, 0) === booking.endDate.setHours(0, 0, 0, 0) || formattedStartDate > booking.startDate && formattedStartDate < booking.endDate  ) {
+                        console.log('hi')
+                        
+                        
+                        errors.startDate = "Start date conflicts with an existing booking";
+                        
+                        error = true;
+                    }
+                    if (formattedEndDate.setHours(0, 0, 0, 0) === booking.startDate.setHours(0, 0, 0, 0) || formattedEndDate.setHours(0, 0, 0, 0) === booking.endDate.setHours(0, 0, 0, 0) || formattedEndDate > booking.startDate && formattedEndDate < booking.endDate) {
+                        console.log('ho')
+                        errors.endDate = "End date conflicts with an existing booking";
+                        error = true;
+                        
+                    }
+                    
+                    if (
+                        (formattedStartDate < booking.startDate && formattedEndDate > booking.endDate)
+                    
+                      ) {
+                        console.log('hey')
+                        errors.startDate = "Start date conflicts with an existing booking";
+                        errors.endDate = "End date conflicts with an existing booking";
+                        error = true;
+                      }
+
+                    if (error === true) {
+                        
+                        let err = new Error('Sorry, this spot is already booked for the specified dates');
+                        err.errors = errors
+                        throw err;
+                    }
+
                 }
+                //ERROR - Create a Booking - Dates Surround Existing Booking
+                //ERROR - Create a Booking - Dates In The Past
+                
 
                 let newBooking = await Booking.create({
                     spotId: parseInt(spotId),
