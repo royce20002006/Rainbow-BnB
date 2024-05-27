@@ -3,7 +3,7 @@ const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage, Booking
 } = require('../../db/models');
-const formatDate = require('../../helperFunction/formatDate');
+const {formatDate, formatDateWithoutTime }= require('../../helperFunction/formatDate');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -30,8 +30,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
                     const createdAtDate = formatDate(booking.createdAt);
                     const updatedAtDate = formatDate(booking.updatedAt);
-                    const startDateformat = formatDate(booking.startDate);
-                    const endDateformat = formatDate(booking.endDate);
+                    const startDateformat = formatDateWithoutTime(booking.startDate);
+                    const endDateformat = formatDateWithoutTime(booking.endDate);
 
 
 
@@ -101,7 +101,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
             const currentDate = new Date()
             if (currentDate > formattedStartDate || currentDate > formattedEndDate) {
                 const err = new Error("Past bookings can't be modified");
-                err.status = 403;
+                err.status = 400;
                 throw err;
             }
 
@@ -188,10 +188,9 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                 bookingFormat = {
                     id: newBooking.id,
                     spotId: newBooking.spotId,
-                    Spot: newBooking.spotId,
                     userId: user.id,
-                    startDate: formatDate(newBooking.startDate),
-                    endDate: formatDate(newBooking.endDate),
+                    startDate,
+                    endDate,
                     createdAt: formatDate(newBooking.createdAt),
                     updatedAt: formatDate(newBooking.updatedAt)
                 }

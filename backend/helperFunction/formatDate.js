@@ -9,6 +9,13 @@ const formatDate = ((date) => {
     const seconds = String(date.getSeconds()).padStart(2, "0");
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 });
+const formatDateWithoutTime = ((date) => {
+    const year = String(date.getFullYear());
+    const month =String(date.getMonth()).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`
+
+})
 
 
-module.exports = formatDate;
+module.exports = { formatDate, formatDateWithoutTime};

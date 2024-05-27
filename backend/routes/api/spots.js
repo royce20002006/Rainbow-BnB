@@ -50,9 +50,7 @@ const validateNewSpot = [
         .withMessage('Description is required'),
     check('price') 
         .exists({ checkFalsy: true })
-        .isInt({min: 0})
-        .isDecimal()
-        .isCurrency()
+        .isFloat({min: 0})
         .withMessage('Price per day is required'),
     handleValidationErrors
 ];
@@ -636,8 +634,8 @@ router.post('/:spotId/reviews',  requireAuth, validateReview, async (req, res, n
                 const reviews = await spot.getReviews();
                 for (let review of reviews) {
                     if (review.userId === user.id) {
-                        const err = new Error("Forbidden");
-                        err.status = 403;
+                        const err = new Error("User already has a review for this spot");
+                        err.status = 500;
                         throw err;
                     };
                 };
@@ -703,8 +701,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                             id: booking.id,
                             spotId: booking.spotId,
                             userId: booking.userId,
-                            startDate: formatDate(booking.startDate),
-                            endDate: formatDate(booking.endDate),
+                            startDate,
+                            endDate,
                             createdAt: formatDate(booking.createdAt),
                             updatedAt: formatDate(booking.updatedAt)
                         })
@@ -737,7 +735,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
         const currentDate = new Date()
         if (currentDate > formattedStartDate || currentDate > formattedEndDate) {
-            const err = new Error("Past bookings can't be modified");
+            const err = new Error("Cannot create a booking for a past date");
             err.status = 403;
             throw err;
         }
