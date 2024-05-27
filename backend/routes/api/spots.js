@@ -30,13 +30,13 @@ const validateNewSpot = [
         .exists({ checkFalsy: true })
         .isLength({ min: 3 })
         .withMessage('Country is required'),
-    check('lat') //research this spot because cannot figure it out
+    check('lat') 
         .exists({ checkFalsy: true })
-        .isDecimal()
+        .isFloat({min: -90.0000000, max: 90.0000000})
         .withMessage('Latitude is not valid'),
-    check('lng') //research
+    check('lng') 
         .exists({ checkFalsy: true })
-        .isDecimal()
+        .isFloat({min: -180.0000000, max: 180.0000000})
         .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
@@ -438,7 +438,7 @@ router.get('/:spotId', async (req, res, next) => {
         next(error);
     };
 })
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& lng lat validation
+
 // update a spot by id if it is the logged in users spot
 router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
     try {
