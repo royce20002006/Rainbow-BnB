@@ -103,63 +103,62 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                 }
                 const currentDate = new Date();
                 const allBookings = await Booking.findAll({
-                    where :{
+                    where: {
                         spotId: booking.spotId
                     }
                 });
 
-                if (currentDate > booking.endDate) {
-                    const err = new Error("Past bookings can't be modified");
-                    err.status = 403;
-                }
+                
                 for (let booking of allBookings) {
-    
-    
-    
-                    
-                    
-    
-                    const errors = {};
-                    let error = false;
-                    if (formattedStartDate.setHours(0, 0, 0, 0) === booking.startDate.setHours(0, 0, 0, 0) || formattedStartDate.setHours(0, 0, 0, 0) === booking.endDate.setHours(0, 0, 0, 0) || formattedStartDate > booking.startDate && formattedStartDate < booking.endDate) {
-                        console.log('hi')
-    
-    
-                        errors.startDate = "Start date conflicts with an existing booking";
-    
-                        error = true;
+
+                    if (booking.id !== bookingId) {
+
+                        const errors = {};
+                        let error = false;
+                        if (formattedStartDate >= booking.startDate.setHours || formattedStartDate >= booking.endDate) {
+                            console.log('hi')
+
+
+                            errors.startDate = "Start date conflicts with an existing booking";
+
+                            error = true;
+                        }
+                        if (formattedEndDate >= booking.startDate || formattedEndDate <= booking.endDate) {
+
+                            errors.endDate = "End date conflicts with an existing booking";
+                            error = true;
+
+                        }
+
+                        if (
+                            (formattedStartDate < booking.startDate && formattedEndDate > booking.endDate)
+
+                        ) {
+
+                            errors.startDate = "Start date conflicts with an existing booking";
+                            errors.endDate = "End date conflicts with an existing booking";
+                            error = true;
+                        }
+
+                        if (error === true) {
+
+                            let err = new Error('Sorry, this spot is already booked for the specified dates');
+                            err.errors = errors
+                            throw err;
+                        }
                     }
-                    if (formattedEndDate.setHours(0, 0, 0, 0) === booking.startDate.setHours(0, 0, 0, 0) || formattedEndDate.setHours(0, 0, 0, 0) === booking.endDate.setHours(0, 0, 0, 0) || formattedEndDate > booking.startDate && formattedEndDate < booking.endDate) {
-                        console.log('ho')
-                        errors.endDate = "End date conflicts with an existing booking";
-                        error = true;
-    
-                    }
-    
-                    if (
-                        (formattedStartDate < booking.startDate && formattedEndDate > booking.endDate)
-    
-                    ) {
-                        console.log('hey')
-                        errors.startDate = "Start date conflicts with an existing booking";
-                        errors.endDate = "End date conflicts with an existing booking";
-                        error = true;
-                    }
-    
-                    if (error === true) {
-    
-                        let err = new Error('Sorry, this spot is already booked for the specified dates');
-                        err.errors = errors
-                        throw err;
-                    }
-    
+
+
+
+
+
                 }
 
 
 
 
-                
-                
+
+
 
                 let newBooking = await Booking.create({
                     spotId: booking.spotId,
