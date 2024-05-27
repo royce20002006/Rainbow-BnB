@@ -117,14 +117,17 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
                 const allBookings = await Booking.findAll({
                     where: {
-                        spotId: booking.spotId
+                        spotId: booking.spotId,
+                        id: {
+                            [Op.not]: bookingId 
+                        }
                     }
                 });
 
 
                 for (let booking of allBookings) {
 
-                    if (booking.id !== parseInt(bookingId)) {
+                   
 
                         const errors = {};
                         let error = false;
@@ -160,7 +163,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                             err.errors = errors
                             throw err;
                         }
-                    }
+                    
 
 
 
