@@ -3,7 +3,7 @@ const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage, Booking
 } = require('../../db/models');
-const dateFormatter = require('../../helperFunction/formatDate')
+
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -11,7 +11,8 @@ const { Op, Model, ValidationError } = require('sequelize');
 const booking = require('../../db/models/booking');
 const { formatNamedParameters } = require('sequelize/lib/utils');
 const spotimage = require('../../db/models/spotimage');
-const formatDate = require('../../helperFunction/formatDate');
+const { formatDate, formatDateWithoutTime } = require('../../helperFunction/formatDate');
+
 // set up the express router
 const router = express.Router();
 // validate spots and if not create error through the validator
@@ -50,9 +51,7 @@ const validateNewSpot = [
         .withMessage('Description is required'),
     check('price') 
         .exists({ checkFalsy: true })
-        .isInt({min: 0})
-        .isDecimal()
-        .isCurrency()
+        .isFloat({min: 0})
         .withMessage('Price per day is required'),
     handleValidationErrors
 ];
@@ -82,19 +81,19 @@ const queryParams = [
         .withMessage('Size must be greater than or equal to 1'),
     check('maxLat')
         .optional()
-        .isDecimal()
+        .isFloat({max: 90.0000000})
         .withMessage('Maximum latitude is invalid'),
     check('minLat')
         .optional()
-        .isDecimal()
+        .isFloat({min: -90.0000000})
         .withMessage('Minimum latitude is invalid'),
     check('maxLng')
         .optional()
-        .isDecimal()
+        .isFloat({ max: 180.0000000})
         .withMessage('Maximum longitude is invalid'),
     check('minLng')
         .optional()
-        .isDecimal()
+        .isFloat({min: -180.0000000})
         .withMessage('Minimum longitude is invalid'),
     check('minPrice')
         .optional()
@@ -210,8 +209,8 @@ router.get('/', queryParams, async (req, res, next) => {
                     name: spot.name,
                     description: spot.description,
                     price: spot.price,
-                    createdAt: dateFormatter(spot.createdAt),
-                    updatedAt: dateFormatter(spot.updatedAt),
+                    createdAt: formatDate(spot.createdAt),
+                    updatedAt: formatDate(spot.updatedAt),
                     avgRating: sum,
                     previewImage: previewImages
 
@@ -283,8 +282,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         name: spot.name,
                         description: spot.description,
                         price: spot.price,
-                        createdAt: dateFormatter(spot.createdAt),
-                        updatedAt: dateFormatter(spot.updatedAt),
+                        createdAt: formatDate(spot.createdAt),
+                        updatedAt: formatDate(spot.updatedAt),
                         avgRating: sum,
                         previewImage: previewImages
 
@@ -332,8 +331,8 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 name: newSpot.name,
                 description: newSpot.description,
                 price: newSpot.price,
-                createdAt: dateFormatter(newSpot.createdAt),
-                updatedAt: dateFormatter(newSpot.updatedAt)
+                createdAt: formatDate(newSpot.createdAt),
+                updatedAt: formatDate(newSpot.updatedAt)
             };
 
 
@@ -434,8 +433,8 @@ router.get('/:spotId', async (req, res, next) => {
                 name: spot.name,
                 description: spot.description,
                 price: spot.price,
-                createdAt: dateFormatter(spot.createdAt),
-                updatedAt: dateFormatter(spot.updatedAt),
+                createdAt: formatDate(spot.createdAt),
+                updatedAt: formatDate(spot.updatedAt),
                 numReviews: count,
                 avgStarRating: sum,
                 SpotImages: spot.SpotImages,
@@ -491,8 +490,8 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
                     name: spot.name,
                     description: spot.description,
                     price: spot.price,
-                    createdAt: dateFormatter(spot.createdAt),
-                    updatedAt: dateFormatter(spot.updatedAt)
+                    createdAt: formatDate(spot.createdAt),
+                    updatedAt: formatDate(spot.updatedAt)
     
                 };
 
@@ -591,8 +590,8 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                         spotId: review.spotId,
                         review: review.review,
                         stars: review.stars,
-                        createdAt: dateFormatter(review.createdAt),
-                        updatedAt: dateFormatter(review.updatedAt),
+                        createdAt: formatDate(review.createdAt),
+                        updatedAt: formatDate(review.updatedAt),
                         User: {
                             id: user.id,
                             firstName: user.firstName,
@@ -636,8 +635,8 @@ router.post('/:spotId/reviews',  requireAuth, validateReview, async (req, res, n
                 const reviews = await spot.getReviews();
                 for (let review of reviews) {
                     if (review.userId === user.id) {
-                        const err = new Error("Forbidden");
-                        err.status = 403;
+                        const err = new Error("User already has a review for this spot");
+                        err.status = 500;
                         throw err;
                     };
                 };
@@ -649,8 +648,8 @@ router.post('/:spotId/reviews',  requireAuth, validateReview, async (req, res, n
                 spotId: newReview.spotId,
                 review: newReview.review,
                 stars: newReview.stars,
-                createdAt: dateFormatter(newReview.createdAt),
-                updatedAt: dateFormatter(newReview.updatedAt)
+                createdAt: formatDate(newReview.createdAt),
+                updatedAt: formatDate(newReview.updatedAt)
             };
             res.json(newReviewFormat);
         } else {
@@ -694,8 +693,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     if (booking.userId !== user.id) {
                         bookingsArr.push({
                             spotId: booking.spotId,
-                            startDate: dateFormatter(booking.startDate),
-                            endDate: dateFormatter(booking.endDate)
+                            startDate: formatDateWithoutTime(booking.startDate),
+                            endDate: formatDateWithoutTime(booking.endDate)
                         });
                     } else if (booking.userId === user.id) {
                         bookingsArr.push({
@@ -703,8 +702,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                             id: booking.id,
                             spotId: booking.spotId,
                             userId: booking.userId,
-                            startDate: formatDate(booking.startDate),
-                            endDate: formatDate(booking.endDate),
+                            startDate: formatDateWithoutTime(booking.startDate),
+                            endDate: formatDateWithoutTime(booking.endDate),
                             createdAt: formatDate(booking.createdAt),
                             updatedAt: formatDate(booking.updatedAt)
                         })
@@ -737,7 +736,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
         const currentDate = new Date()
         if (currentDate > formattedStartDate || currentDate > formattedEndDate) {
-            const err = new Error("Past bookings can't be modified");
+            const err = new Error("Cannot create a booking for a past date");
             err.status = 403;
             throw err;
         }
@@ -823,10 +822,10 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     id: newBooking.id,
                     spotId: newBooking.spotId,
                     userId: newBooking.userId,
-                    startDate: dateFormatter(formattedStartDate),
-                    endDate: dateFormatter(formattedEndDate),
-                    createdAt: dateFormatter(newBooking.createdAt),
-                    updatedAt: dateFormatter(newBooking.updatedAt)
+                    startDate: formatDate(formattedStartDate),
+                    endDate: formatDate(formattedEndDate),
+                    createdAt: formatDate(newBooking.createdAt),
+                    updatedAt: formatDate(newBooking.updatedAt)
                 });
             } else {
                 const err = new Error("Spot couldn't be found");

@@ -7,7 +7,7 @@ const { Spot, User, Review, SpotImage, ReviewImage
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op, Model, ValidationError } = require('sequelize');
-const formatDate = require('../../helperFunction/formatDate');
+const { formatDate } = require('../../helperFunction/formatDate');
 
 
 //set up express router
