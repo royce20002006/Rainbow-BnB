@@ -704,6 +704,16 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         const { startDate, endDate } = req.body;
         let formattedStartDate = new Date(startDate);
         let formattedEndDate = new Date(endDate)
+
+        const currentDate = new Date()
+        if (currentDate < formattedStartDate) {
+            const err = new Error("Past bookings can't be modified");
+            err.status = 403;
+        } else if (currentDate < formattedEndDate) {
+            const err = new Error("Past bookings can't be modified");
+            err.status = 403;
+        }
+
         if (user) {
             const spot = await Spot.findByPk(spotId);
             if (spot) {
@@ -725,18 +735,19 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     throw err;
                 }
                 
-                let currentDate = new Date()
-                if (currentDate > booking.endDate || currentDate > booking.startDate) {
-                    const err = new Error("Past bookings can't be modified");
-                    err.status = 403;
-                }
+                
+               console.log(currentDate);
+               console.log(formattedStartDate)
+               console.log(formattedEndDate);
+            
+                
                 for (let booking of bookings) {
                     
                     
                     
                     const errors = {};
                     let error = false;
-                    if (formattedStartDate >= booking.startDate ||formattedStartDate <= booking.endDate ) {
+                    if (formattedStartDate >= booking.startDate &&formattedStartDate <= booking.endDate ) {
                         
                         
                         
@@ -744,7 +755,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                         
                         error = true;
                     }
-                    if (formattedEndDate >= booking.startDate || formattedEndDate <= booking.endDate) {
+                    if (formattedEndDate >= booking.startDate && formattedEndDate <= booking.endDate) {
                        
                         errors.endDate = "End date conflicts with an existing booking";
                         error = true;

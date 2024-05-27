@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isBefore(date) {
           const current = new Date();
-          if (date < current) {
+          if (date > current) {
             
               const err = new Error("Past bookings can't be modified");
               err.status = 403;
@@ -46,7 +46,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     endDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isBefore(date) {
+          const current = new Date();
+          if (date > current) {
+            
+              const err = new Error("Past bookings can't be modified");
+              err.status = 403;
+          
+          }
+        }
+      }
     }
   }, {
     sequelize,
