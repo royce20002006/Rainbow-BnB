@@ -3,7 +3,7 @@ const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage, Booking
 } = require('../../db/models');
-const dateFormatter = require('../../helperFunction/formatDate')
+
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -12,6 +12,7 @@ const booking = require('../../db/models/booking');
 const { formatNamedParameters } = require('sequelize/lib/utils');
 const spotimage = require('../../db/models/spotimage');
 const { formatDate, formatDateWithoutTime } = require('../../helperFunction/formatDate');
+
 // set up the express router
 const router = express.Router();
 // validate spots and if not create error through the validator
@@ -208,8 +209,8 @@ router.get('/', queryParams, async (req, res, next) => {
                     name: spot.name,
                     description: spot.description,
                     price: spot.price,
-                    createdAt: dateFormatter(spot.createdAt),
-                    updatedAt: dateFormatter(spot.updatedAt),
+                    createdAt: formatDate(spot.createdAt),
+                    updatedAt: formatDate(spot.updatedAt),
                     avgRating: sum,
                     previewImage: previewImages
 
@@ -281,8 +282,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         name: spot.name,
                         description: spot.description,
                         price: spot.price,
-                        createdAt: dateFormatter(spot.createdAt),
-                        updatedAt: dateFormatter(spot.updatedAt),
+                        createdAt: formatDate(spot.createdAt),
+                        updatedAt: formatDate(spot.updatedAt),
                         avgRating: sum,
                         previewImage: previewImages
 
@@ -330,8 +331,8 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 name: newSpot.name,
                 description: newSpot.description,
                 price: newSpot.price,
-                createdAt: dateFormatter(newSpot.createdAt),
-                updatedAt: dateFormatter(newSpot.updatedAt)
+                createdAt: formatDate(newSpot.createdAt),
+                updatedAt: formatDate(newSpot.updatedAt)
             };
 
 
@@ -432,8 +433,8 @@ router.get('/:spotId', async (req, res, next) => {
                 name: spot.name,
                 description: spot.description,
                 price: spot.price,
-                createdAt: dateFormatter(spot.createdAt),
-                updatedAt: dateFormatter(spot.updatedAt),
+                createdAt: formatDate(spot.createdAt),
+                updatedAt: formatDate(spot.updatedAt),
                 numReviews: count,
                 avgStarRating: sum,
                 SpotImages: spot.SpotImages,
@@ -489,8 +490,8 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
                     name: spot.name,
                     description: spot.description,
                     price: spot.price,
-                    createdAt: dateFormatter(spot.createdAt),
-                    updatedAt: dateFormatter(spot.updatedAt)
+                    createdAt: formatDate(spot.createdAt),
+                    updatedAt: formatDate(spot.updatedAt)
     
                 };
 
@@ -589,8 +590,8 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                         spotId: review.spotId,
                         review: review.review,
                         stars: review.stars,
-                        createdAt: dateFormatter(review.createdAt),
-                        updatedAt: dateFormatter(review.updatedAt),
+                        createdAt: formatDate(review.createdAt),
+                        updatedAt: formatDate(review.updatedAt),
                         User: {
                             id: user.id,
                             firstName: user.firstName,
@@ -647,8 +648,8 @@ router.post('/:spotId/reviews',  requireAuth, validateReview, async (req, res, n
                 spotId: newReview.spotId,
                 review: newReview.review,
                 stars: newReview.stars,
-                createdAt: dateFormatter(newReview.createdAt),
-                updatedAt: dateFormatter(newReview.updatedAt)
+                createdAt: formatDate(newReview.createdAt),
+                updatedAt: formatDate(newReview.updatedAt)
             };
             res.json(newReviewFormat);
         } else {
@@ -821,10 +822,10 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     id: newBooking.id,
                     spotId: newBooking.spotId,
                     userId: newBooking.userId,
-                    startDate: dateFormatter(formattedStartDate),
-                    endDate: dateFormatter(formattedEndDate),
-                    createdAt: dateFormatter(newBooking.createdAt),
-                    updatedAt: dateFormatter(newBooking.updatedAt)
+                    startDate: formatDate(formattedStartDate),
+                    endDate: formatDate(formattedEndDate),
+                    createdAt: formatDate(newBooking.createdAt),
+                    updatedAt: formatDate(newBooking.updatedAt)
                 });
             } else {
                 const err = new Error("Spot couldn't be found");
