@@ -11,7 +11,7 @@ const { Op, Model, ValidationError } = require('sequelize');
 const booking = require('../../db/models/booking');
 const { formatNamedParameters } = require('sequelize/lib/utils');
 const spotimage = require('../../db/models/spotimage');
-const formatDate = require('../../helperFunction/formatDate');
+const { formatDate, formatDateWithoutTime } = require('../../helperFunction/formatDate');
 // set up the express router
 const router = express.Router();
 // validate spots and if not create error through the validator
@@ -80,19 +80,19 @@ const queryParams = [
         .withMessage('Size must be greater than or equal to 1'),
     check('maxLat')
         .optional()
-        .isDecimal()
+        .isFloat({max: 90.0000000})
         .withMessage('Maximum latitude is invalid'),
     check('minLat')
         .optional()
-        .isDecimal()
+        .isFloat({min: -90.0000000})
         .withMessage('Minimum latitude is invalid'),
     check('maxLng')
         .optional()
-        .isDecimal()
+        .isFloat({ max: 180.0000000})
         .withMessage('Maximum longitude is invalid'),
     check('minLng')
         .optional()
-        .isDecimal()
+        .isFloat({min: -180.0000000})
         .withMessage('Minimum longitude is invalid'),
     check('minPrice')
         .optional()
@@ -692,8 +692,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     if (booking.userId !== user.id) {
                         bookingsArr.push({
                             spotId: booking.spotId,
-                            startDate: dateFormatter(booking.startDate),
-                            endDate: dateFormatter(booking.endDate)
+                            startDate: formatDateWithoutTime(booking.startDate),
+                            endDate: formatDateWithoutTime(booking.endDate)
                         });
                     } else if (booking.userId === user.id) {
                         bookingsArr.push({
@@ -701,8 +701,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                             id: booking.id,
                             spotId: booking.spotId,
                             userId: booking.userId,
-                            startDate,
-                            endDate,
+                            startDate: formatDateWithoutTime(booking.startDate),
+                            endDate: formatDateWithoutTime(booking.endDate),
                             createdAt: formatDate(booking.createdAt),
                             updatedAt: formatDate(booking.updatedAt)
                         })
