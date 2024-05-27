@@ -114,12 +114,12 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                     err.status = 403;
                     throw err;
                 }
-
+                console.log(booking.id, 'booking id')
                 const allBookings = await Booking.findAll({
                     where: {
                         spotId: booking.spotId,
                         id: {
-                            [Op.not]: bookingId 
+                            [Op.ne]: bookingId 
                         }
                     }
                 });
@@ -127,7 +127,8 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
                 for (let booking of allBookings) {
 
-                   
+                    console.log(booking.id, 'should not have booking id of previous');
+
 
                         const errors = {};
                         let error = false;
@@ -147,7 +148,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                         }
 
                         if (
-                            (formattedStartDate < booking.startDate && formattedEndDate > booking.endDate)
+                            (formattedStartDate < booking.startDate && formattedEndDate >= booking.endDate)
 
                         ) {
 
@@ -177,7 +178,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
 
 
-                let newBooking = await Booking.create({
+                let newBooking = await booking.update({
                     spotId: booking.spotId,
                     userId: user.id,
                     startDate: formattedStartDate,
