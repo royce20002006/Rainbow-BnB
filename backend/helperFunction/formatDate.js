@@ -14,7 +14,7 @@ let day = new Date("2020-11-15")
 console.log(day)
 let current = new Date();
 console.log(current);
-if (day > current) {
+if (day < current) {
     console.log('works')
 }
 module.exports = formatDate;

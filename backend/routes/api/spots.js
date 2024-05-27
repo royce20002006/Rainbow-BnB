@@ -706,12 +706,10 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         let formattedEndDate = new Date(endDate)
 
         const currentDate = new Date()
-        if (currentDate < formattedStartDate) {
+        if (currentDate > formattedStartDate || currentDate > formattedEndDate) {
             const err = new Error("Past bookings can't be modified");
             err.status = 403;
-        } else if (currentDate < formattedEndDate) {
-            const err = new Error("Past bookings can't be modified");
-            err.status = 403;
+            throw err;
         }
 
         if (user) {
@@ -775,6 +773,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     if (error === true) {
                         
                         let err = new Error('Sorry, this spot is already booked for the specified dates');
+                        err.status = 403;
                         err.errors = errors
                         throw err;
                     }

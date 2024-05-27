@@ -35,10 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         isBefore(date) {
           const current = new Date();
-          if (date > current) {
+          if (date < current) {
             
               const err = new Error("Past bookings can't be modified");
               err.status = 403;
+              throw err
           
           }
         }
@@ -50,11 +51,11 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isBefore(date) {
           const current = new Date();
-          if (date > current) {
+          if (date < current) {
             
               const err = new Error("Past bookings can't be modified");
               err.status = 403;
-          
+            throw err;
           }
         }
       }
