@@ -91,6 +91,8 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
         const { user } = req;
         const { bookingId } = req.params;
         const { startDate, endDate } = req.body;
+        let formattedStartDate = new Date(startDate);
+        let formattedEndDate = new Date(endDate)
         if (user) {
             const booking = await Booking.findByPk(bookingId);
             if (booking) {
@@ -99,26 +101,27 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                     err.status = 403;
                     throw err;
                 }
-                const currentDate = formatDate(new Date());
-                const newStartDate = formatDate(startDate);
-                const newEndDate = formatDate(endDate);
+                const currentDate = new Date();
+                
 
-                const startDateformat = formatDate(booking.startDate);
-                const endDateformat = formatDate(booking.endDate);
-                console.log(currentDate > booking.endDate)
+                
+                
+               
                 if (currentDate > booking.endDate) {
                     const err = new Error("Past bookings can't be modified");
                     err.status = 403;
                 }
 
 
-                const error = {};
-
-                if (startDate >= booking.startDate && startDate <= booking.endDate || endDate >= booking.startDate && endDate <= booking.endDate) {
-                    err.startDate = "Start date conflicts with an existing booking";
-                    err.endDate = "End date conflicts with an existing booking";
-                    const err = new ValidationError('Sorry, this spot is already booked for the specified dates');
-                    err.error = error;
+                
+//-------------------------------------------
+                if (formattedStartDate >= booking.startDate && formattedStartDate <= booking.endDate || formattedEndDate >= booking.startDate && formattedEndDate <= booking.endDate) {
+                    let errors = {}
+                    
+                    let err = new  ValidationError('Sorry, this spot is already booked for the specified dates');
+                    errors.startDate = "Start date conflicts with an existing booking";
+                    errors.endDate = "End date conflicts with an existing booking";
+                    err.errors = errors;
                     err.status = 403;
                     throw err;
                 }
@@ -164,9 +167,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             throw err;
         };
 
-        const createdAtDate = booking.createdAt;
-        const year = createdAtDate.getFullYear();
-        console.log(year);
+        
 
         if (booking.userId !== user.id) {
             const err = new Error('Forbidden');
@@ -176,11 +177,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
 
 
-        if (currentDate >= booking.startDate) {
-            const err = new Error("Bookings that have been started can't be deleted");
-            err.status = 403;
-            throw err;
-        }
+        
         const deletedbooking = await booking.destroy();
         res.json({
             message: 'Successfully deleted'

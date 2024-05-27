@@ -20,7 +20,7 @@ router.use('/spots', spotsRouter)
 
 router.use('/reviews', reviewsRouter);
 
-router.use('/spots-images', spotImages);
+router.use('/spot-images', spotImages);
 
 router.use('/review-images', reviewImages);
 

@@ -26,6 +26,7 @@ const validateReview = [
 ];
 
 // get reviews by the logged in user
+//$$$$$$$$$$$$$$$$$$$$DATE
 router.get('/current', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
@@ -130,7 +131,8 @@ router.delete('/:reviewId', requireAuth, async(req, res, next) => {
     };
 });
 // update review by id
-router.put('/:reviewId', validateReview, requireAuth, async (req, res, next) => {
+//$$$$$$$$$$$$$$$$$$res date format
+router.put('/:reviewId',  requireAuth, validateReview, async (req, res, next) => {
     try {
         const { reviewId } = req.params;
         const { review, stars } = req.body;
@@ -180,20 +182,20 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
         const { reviewId } = req.params;
 
         const review = await Review.findByPk(reviewId);
-        const reviewImages = await review.getReviewImages();
         
-
+        
         const { user } = req;
-
-
+        
+        
         if (user) {
             if (review) {
+                const reviewImages = await review.getReviewImages();
                 if (review.userId !== user.id) {
                     const err = new Error('Forbidden');
                     err.status = 403;
                     throw err;
                 }
-                if (reviewImages.length > 10) {
+                if (reviewImages.length >= 10) {
                     const err = new Error("Maximum number of images for this resource was reached");
                     err.status = 403;
                     throw err;

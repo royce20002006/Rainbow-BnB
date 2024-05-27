@@ -48,6 +48,7 @@ const validateNewSpot = [
         .withMessage('Description is required'),
     check('price') //research
         .exists({ checkFalsy: true })
+        .isInt({min: 0})
         .isDecimal()
         .isCurrency()
         .withMessage('Price per day is required'),
@@ -302,7 +303,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 });
 
 // create a new spot
-router.post('/', validateNewSpot, requireAuth, async (req, res, next) => {
+router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
     try {
         const { address, city, state,
             country, lat, lng, name,
@@ -328,7 +329,7 @@ router.post('/', validateNewSpot, requireAuth, async (req, res, next) => {
     };
 });
 
-//add a spotImage
+//add a spotImage   //&&&&&&&&&&&&&&&& fix&&&&&&&&&& dates also lng lat
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     try {
         const { url, preview } = req.body;
@@ -437,6 +438,7 @@ router.get('/:spotId', async (req, res, next) => {
         next(error);
     };
 })
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& lng lat validation
 // update a spot by id if it is the logged in users spot
 router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
     try {
@@ -481,7 +483,7 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
 });
 
 //deletes a spot by the owner
-router.delete('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
+router.delete('/:spotId', requireAuth, async (req, res, next) => {
     try {
 
         const { user } = req;
@@ -517,6 +519,7 @@ router.delete('/:spotId', requireAuth, validateNewSpot, async (req, res, next) =
     };
 });
 // get reviews by a spot id
+//&&&&&&&&&&&&&&&&&&&&&&&& not sure about error message
 router.get('/:spotId/reviews', async (req, res, next) => {
     try {
 
@@ -581,7 +584,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 });
 
 // create a review for a Spot based on the Spots Id
-router.post('/:spotId/reviews', validateReview, requireAuth, async (req, res, next) => {
+router.post('/:spotId/reviews',  requireAuth, validateReview, async (req, res, next) => {
     try {
         const spotId = req.params.spotId;
         const { review, stars } = req.body;
@@ -651,7 +654,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                         },
                     ]
                 });
-                for (let booking of bookings) {
+                if (bookings)
+                {for (let booking of bookings) {
                     if (booking.userId !== user.id) {
                         bookingsArr.push({
                             spotId: dateFormatter(booking.spotId),
@@ -662,7 +666,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                         bookingsArr.push(booking)
                     }
                 }
-                res.json({ bookings: bookingsArr })
+                res.json({ Bookings: bookingsArr })}
 
 
             } else {
@@ -677,15 +681,15 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     };
 });
 
-
+//@@@@@@@@@@@@@@@@@@@@@@curret date not defined
 // create a booking from a spot based on spots id
 router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
         const { spotId } = req.params;
         const { startDate, endDate } = req.body;
-        formattedStartDate = new Date(startDate);
-        formattedEndDate = new Date(endDate)
+        let formattedStartDate = new Date(startDate);
+        let formattedEndDate = new Date(endDate)
         if (user) {
             const spot = await Spot.findByPk(spotId);
             if (spot) {
@@ -701,29 +705,37 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                 });
                 for (let booking of bookings) {
                     
-                    const e
+                    
                     if (formattedStartDate >= booking.startDate && formattedStartDate <= booking.endDate || formattedEndDate >= booking.startDate && formattedEndDate <= booking.endDate) {
+                        let errors = {}
                         
-                        
-                        const err = new ValidationError('Sorry, this spot is already booked for the specified dates');
-                        err.startDate = "Start date conflicts with an existing booking";
-                        err.endDate = "End date conflicts with an existing booking";
+                        let err = new  Error('Sorry, this spot is already booked for the specified dates');
+                        errors.startDate = "Start date conflicts with an existing booking";
+                        errors.endDate = "End date conflicts with an existing booking";
+                        err.errors = errors;
                         err.status = 403;
                         throw err;
                     }
                 }
+                //ERROR - Create a Booking - Dates Surround Existing Booking
+                //ERROR - Create a Booking - Dates In The Past
                 if (formattedEndDate <= formattedStartDate) {
-                    const err = new ValidationError();
+                    const err = new Error('Bad Request');
                     err.errors = { endDate: 'endDate cannot be on or before startDate' };
                     err.status = 400;
                     throw err;
+                }
+                let currentDate = new Date()
+                if (currentDate > booking.endDate || currentDate > booking.startDate) {
+                    const err = new Error("Past bookings can't be modified");
+                    err.status = 403;
                 }
 
                 let newBooking = await Booking.create({
                     spotId: parseInt(spotId),
                     userId: user.id,
-                    startDate,
-                    endDate
+                    startDate: formattedStartDate,
+                    endDate: formattedEndDate
 
                 })
                 res.json({
