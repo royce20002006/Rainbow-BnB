@@ -30,14 +30,35 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isBeforeEndDate(value) {
           if (value >= this.endDate) {
-            throw new Error('must be before the end date')
+            throw new Error('endDate cannot come before startDate')
+          }
+        },
+        isBefore(date) {
+          const current = new Date();
+          if (date < current) {
+            
+              const err = new Error("Past bookings can't be modified");
+              err.status = 403;
+              throw err
+          
           }
         }
       }
     },
     endDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isBefore(date) {
+          const current = new Date();
+          if (date < current) {
+            
+              const err = new Error("Past bookings can't be modified");
+              err.status = 403;
+            throw err;
+          }
+        }
+      }
     }
   }, {
     sequelize,
