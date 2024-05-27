@@ -7,6 +7,7 @@ const { Spot, User, Review, SpotImage, ReviewImage
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op, Model, ValidationError } = require('sequelize');
+const formatDate = require('../../helperFunction/formatDate');
 
 
 //set up express router
@@ -26,7 +27,7 @@ const validateReview = [
 ];
 
 // get reviews by the logged in user
-//$$$$$$$$$$$$$$$$$$$$DATE
+
 router.get('/current', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
@@ -65,8 +66,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         spotId: review.spotId,
                         review: review.review,
                         stars: review.stars,
-                        createdAt: review.createdAt,
-                        updatedAt: review.updatedAt,
+                        createdAt: formatDate(review.createdAt),
+                        updatedAt: formatDate(review.updatedAt),
                         User: {
                             id: user.id,
                             firstName: user.firstName,
@@ -131,7 +132,7 @@ router.delete('/:reviewId', requireAuth, async(req, res, next) => {
     };
 });
 // update review by id
-//$$$$$$$$$$$$$$$$$$res date format
+
 router.put('/:reviewId',  requireAuth, validateReview, async (req, res, next) => {
     try {
         const { reviewId } = req.params;
@@ -149,8 +150,8 @@ router.put('/:reviewId',  requireAuth, validateReview, async (req, res, next) =>
                     spotId: newReview.spotId,
                     review: newReview.review,
                     stars: newReview.stars,
-                    createdAt: newReview.createdAt,
-                    updatedAt: newReview.updatedAt
+                    createdAt: formatDate(newReview.createdAt),
+                    updatedAt: formatDate(newReview.updatedAt)
                 };
                 res.json(newReviewFormat);
             } else if (reviewToUpdate && reviewToUpdate.userId !== user.id) {

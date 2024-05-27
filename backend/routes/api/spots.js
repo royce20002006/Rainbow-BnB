@@ -10,6 +10,8 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { Op, Model, ValidationError } = require('sequelize');
 const booking = require('../../db/models/booking');
 const { formatNamedParameters } = require('sequelize/lib/utils');
+const spotimage = require('../../db/models/spotimage');
+const formatDate = require('../../helperFunction/formatDate');
 // set up the express router
 const router = express.Router();
 // validate spots and if not create error through the validator
@@ -476,7 +478,26 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
                     state, country, lat, lng, name, description, price
                 });
                 await spot.save();
-                res.json(updatedSpot);
+
+                const spotFormatting = {
+                    id: spot.id,
+                    ownerId: spot.ownerId,
+                    address: spot.address,
+                    city: spot.city,
+                    state: spot.state,
+                    country: spot.country,
+                    lat: spot.lat,
+                    lng: spot.lng,
+                    name: spot.name,
+                    description: spot.description,
+                    price: spot.price,
+                    createdAt: dateFormatter(spot.createdAt),
+                    updatedAt: dateFormatter(spot.updatedAt)
+    
+                };
+
+
+                res.json(spotFormatting);
             } else if (spot && spot.ownerId !== user.id) {
                 const err = new Error('Forbidden');
                 err.status = 403;
@@ -672,12 +693,21 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                 {for (let booking of bookings) {
                     if (booking.userId !== user.id) {
                         bookingsArr.push({
-                            spotId: dateFormatter(booking.spotId),
+                            spotId: booking.spotId,
                             startDate: dateFormatter(booking.startDate),
                             endDate: dateFormatter(booking.endDate)
                         });
                     } else if (booking.userId === user.id) {
-                        bookingsArr.push(booking)
+                        bookingsArr.push({
+                            User: booking.user,
+                            id: booking.id,
+                            spotId: booking.spotId,
+                            userId: booking.userId,
+                            startDate: formatDate(booking.startDate),
+                            endDate: formatDate(booking.endDate),
+                            createdAt: formatDate(booking.createdAt),
+                            updatedAt: formatDate(booking.updatedAt)
+                        })
                     }
                 }
                 res.json({ Bookings: bookingsArr })}
@@ -695,7 +725,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     };
 });
 
-//@@@@@@@@@@@@@@@@@@@@@@curret date not defined
+
 // create a booking from a spot based on spots id
 router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     try {
@@ -793,8 +823,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     id: newBooking.id,
                     spotId: newBooking.spotId,
                     userId: newBooking.userId,
-                    startDate: startDate,
-                    endDate:endDate,
+                    startDate: dateFormatter(formattedStartDate),
+                    endDate: dateFormatter(formattedEndDate),
                     createdAt: dateFormatter(newBooking.createdAt),
                     updatedAt: dateFormatter(newBooking.updatedAt)
                 });

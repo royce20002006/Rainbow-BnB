@@ -124,7 +124,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
                 for (let booking of allBookings) {
 
-                    if (booking.id !== bookingId) {
+                    if (booking.id !== parseInt(bookingId)) {
 
                         const errors = {};
                         let error = false;
@@ -177,11 +177,21 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                 let newBooking = await Booking.create({
                     spotId: booking.spotId,
                     userId: user.id,
-                    startDate,
-                    endDate
+                    startDate: formattedStartDate,
+                    endDate: formattedEndDate
 
                 })
-                res.json(newBooking);
+                bookingFormat = {
+                    id: newBooking.id,
+                    spotId: newBooking.spotId,
+                    Spot: newBooking.spotId,
+                    userId: user.id,
+                    startDate: formatDate(newBooking.startDate),
+                    endDate: formatDate(newBooking.endDate),
+                    createdAt: formatDate(newBooking.createdAt),
+                    updatedAt: formatDate(newBooking.updatedAt)
+                }
+                res.json(bookingFormat);
             } else {
                 const err = new Error("Booking couldn't be found");
                 err.status = 404;
