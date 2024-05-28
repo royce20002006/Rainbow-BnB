@@ -126,9 +126,18 @@ router.get('/', queryParams, async (req, res, next) => {
         if (page > 10) {
             page = 10;
         };
+        
+        minPrice ? minPrice = parseInt(minPrice) : null;
+        maxPrice ? maxPrice = parseInt(maxPrice) : null;
+        minLat ? minLat = parseInt(minLat) : null;
+        maxLat? maxLat = parseInt(maxLat) : null;
+        minLng? minLng = parseInt(minLng) : null;
+        maxLng? maxLng = parseInt(maxLng) : null;
+        
         let where = {};
         //price check
         if (minPrice && maxPrice) {
+            
             where.price = { [Op.between]: [minPrice, maxPrice] };
         };
         if (minPrice && !maxPrice) {
@@ -690,6 +699,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                 });
                 if (bookings)
                 {for (let booking of bookings) {
+            
                     if (booking.userId !== user.id) {
                         bookingsArr.push({
                             spotId: booking.spotId,
@@ -698,7 +708,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                         });
                     } else if (booking.userId === user.id) {
                         bookingsArr.push({
-                            User: booking.user,
+                            User: booking.User,
                             id: booking.id,
                             spotId: booking.spotId,
                             userId: booking.userId,
@@ -745,7 +755,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
             const spot = await Spot.findByPk(spotId);
             if (spot) {
                 if (spot.ownerId === user.id) {
-                    const err = new Error('Cannot book your own spot');
+                    const err = new Error('Forbidden');
                     err.status = 403;
                     throw err;
                 }
@@ -822,8 +832,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     id: newBooking.id,
                     spotId: newBooking.spotId,
                     userId: newBooking.userId,
-                    startDate: formatDate(formattedStartDate),
-                    endDate: formatDate(formattedEndDate),
+                    startDate: formatDateWithoutTime(formattedStartDate),
+                    endDate: formatDateWithoutTime(formattedEndDate),
                     createdAt: formatDate(newBooking.createdAt),
                     updatedAt: formatDate(newBooking.updatedAt)
                 });
