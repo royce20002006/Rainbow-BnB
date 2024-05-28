@@ -204,11 +204,11 @@ router.get('/', queryParams, async (req, res, next) => {
                     city: spot.city,
                     state: spot.state,
                     country: spot.country,
-                    lat: spot.lat,
-                    lng: spot.lng,
+                    lat: Number(spot.lat),
+                    lng: Number(spot.lng),
                     name: spot.name,
                     description: spot.description,
-                    price: spot.price,
+                    price: Number(spot.price),
                     createdAt: formatDate(spot.createdAt),
                     updatedAt: formatDate(spot.updatedAt),
                     avgRating: sum,
@@ -277,11 +277,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         city: spot.city,
                         state: spot.state,
                         country: spot.country,
-                        lat: spot.lat,
-                        lng: spot.lng,
+                        lat: Number(spot.lat),
+                        lng: Number(spot.lng),
                         name: spot.name,
                         description: spot.description,
-                        price: spot.price,
+                        price: Number(spot.price),
                         createdAt: formatDate(spot.createdAt),
                         updatedAt: formatDate(spot.updatedAt),
                         avgRating: sum,
@@ -326,11 +326,11 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 city: newSpot.city,
                 state: newSpot.state,
                 country: newSpot.country,
-                lat: newSpot.lat,
-                lng: newSpot.lng,
+                lat: Number(newSpot.la)t,
+                lng: Number(newSpot.lng),
                 name: newSpot.name,
                 description: newSpot.description,
-                price: newSpot.price,
+                price: Number(newSpot.price),
                 createdAt: formatDate(newSpot.createdAt),
                 updatedAt: formatDate(newSpot.updatedAt)
             };
@@ -428,11 +428,11 @@ router.get('/:spotId', async (req, res, next) => {
                 city: spot.city,
                 state: spot.state,
                 country: spot.country,
-                lat: spot.lat,
-                lng: spot.lng,
+                lat: Number(spot.lat),
+                lng: Number(spot.lng),
                 name: spot.name,
                 description: spot.description,
-                price: spot.price,
+                price: Number(spot.price),
                 createdAt: formatDate(spot.createdAt),
                 updatedAt: formatDate(spot.updatedAt),
                 numReviews: count,
@@ -485,11 +485,11 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
                     city: spot.city,
                     state: spot.state,
                     country: spot.country,
-                    lat: spot.lat,
-                    lng: spot.lng,
+                    lat: Number(spot.lat),
+                    lng: Number(spot.lng),
                     name: spot.name,
                     description: spot.description,
-                    price: spot.price,
+                    price: Number(spot.price),
                     createdAt: formatDate(spot.createdAt),
                     updatedAt: formatDate(spot.updatedAt)
     
@@ -741,7 +741,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
             throw err;
         }
 
-        if (user) {
+        if (user){
             const spot = await Spot.findByPk(spotId);
             if (spot) {
                 if (spot.ownerId === user.id) {
