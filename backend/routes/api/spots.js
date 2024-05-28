@@ -690,6 +690,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                 });
                 if (bookings)
                 {for (let booking of bookings) {
+            
                     if (booking.userId !== user.id) {
                         bookingsArr.push({
                             spotId: booking.spotId,
@@ -698,7 +699,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                         });
                     } else if (booking.userId === user.id) {
                         bookingsArr.push({
-                            User: booking.user,
+                            User: booking.User,
                             id: booking.id,
                             spotId: booking.spotId,
                             userId: booking.userId,
