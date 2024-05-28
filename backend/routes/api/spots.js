@@ -326,7 +326,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 city: newSpot.city,
                 state: newSpot.state,
                 country: newSpot.country,
-                lat: Number(newSpot.la)t,
+                lat: Number(newSpot.lat),
                 lng: Number(newSpot.lng),
                 name: newSpot.name,
                 description: newSpot.description,
