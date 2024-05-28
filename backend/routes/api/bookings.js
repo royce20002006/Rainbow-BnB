@@ -51,10 +51,10 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         city: spots.city,
                         state: spots.state,
                         country: spots.country,
-                        lat: spots.lat,
-                        lng: spots.lng,
+                        lat: parseInt(spots.lat),
+                        lng: parseInt(spots.lng),
                         name: spots.name,
-                        price: spots.price,
+                        price: parseInt(spots.price),
                         previewImage: previewImageUrl
                     };
 
@@ -99,7 +99,9 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
         if (user) {
             const currentDate = new Date()
+            
             if (currentDate > formattedStartDate || currentDate > formattedEndDate) {
+                
                 const err = new Error("Past bookings can't be modified");
                 err.status = 400;
                 throw err;
@@ -114,6 +116,14 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                     err.status = 403;
                     throw err;
                 }
+
+                if (formattedEndDate <= formattedStartDate) {
+                    const err = new Error('Bad Request');
+                    err.errors = { endDate: 'endDate cannot come before startDate' };
+                    err.status = 400;
+                    throw err;
+                }
+
                 console.log(booking.id, 'booking id')
                 const allBookings = await Booking.findAll({
                     where: {
@@ -148,7 +158,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                         }
 
                         if (
-                            (formattedStartDate < booking.startDate && formattedEndDate >= booking.endDate)
+                            (formattedStartDate < booking.startDate && formattedEndDate > booking.endDate)
 
                         ) {
 

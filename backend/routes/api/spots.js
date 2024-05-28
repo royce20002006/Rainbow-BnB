@@ -690,6 +690,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                 });
                 if (bookings)
                 {for (let booking of bookings) {
+            
                     if (booking.userId !== user.id) {
                         bookingsArr.push({
                             spotId: booking.spotId,
@@ -698,7 +699,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                         });
                     } else if (booking.userId === user.id) {
                         bookingsArr.push({
-                            User: booking.user,
+                            User: booking.User,
                             id: booking.id,
                             spotId: booking.spotId,
                             userId: booking.userId,
@@ -822,8 +823,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     id: newBooking.id,
                     spotId: newBooking.spotId,
                     userId: newBooking.userId,
-                    startDate: formatDate(formattedStartDate),
-                    endDate: formatDate(formattedEndDate),
+                    startDate: formatDateWithoutTime(formattedStartDate),
+                    endDate: formatDateWithoutTime(formattedEndDate),
                     createdAt: formatDate(newBooking.createdAt),
                     updatedAt: formatDate(newBooking.updatedAt)
                 });
