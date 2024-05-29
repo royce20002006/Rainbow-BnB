@@ -127,12 +127,12 @@ router.get('/', queryParams, async (req, res, next) => {
             page = 10;
         };
 
-        minPrice ? minPrice = parseInt(minPrice) : null;
-        maxPrice ? maxPrice = parseInt(maxPrice) : null;
-        minLat ? minLat = parseInt(minLat) : null;
-        maxLat ? maxLat = parseInt(maxLat) : null;
-        minLng ? minLng = parseInt(minLng) : null;
-        maxLng ? maxLng = parseInt(maxLng) : null;
+        minPrice ? minPrice = Number(minPrice) : null;
+        maxPrice ? maxPrice = Number(maxPrice) : null;
+        minLat ? minLat = Number(minLat) : null;
+        maxLat ? maxLat = Number(maxLat) : null;
+        minLng ? minLng = Number(minLng) : null;
+        maxLng ? maxLng = Number(maxLng) : null;
 
         let where = {};
         //price check
