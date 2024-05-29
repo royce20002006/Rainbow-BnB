@@ -26,7 +26,13 @@ const development = [
 ]
 
 module.exports = {
-  development: process.env.DB_DIALECT === 'postgres' ? development[1] : development[0],
+  development:  {
+    storage: config.dbFile,
+    dialect: "sqlite",
+    seederStorage: "sequelize",
+    logQueryParameters: true,
+    typeValidation: true
+  },
   production: {
     use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
