@@ -345,7 +345,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
             };
 
 
-            res.json(spotFormatting);
+            res.json(spotFormatting).status(201);
 
         };
 
@@ -660,7 +660,7 @@ router.post('/:spotId/reviews',  requireAuth, validateReview, async (req, res, n
                 createdAt: formatDate(newReview.createdAt),
                 updatedAt: formatDate(newReview.updatedAt)
             };
-            res.json(newReviewFormat);
+            res.json(newReviewFormat).status(201);
         } else {
 
             const err = new Error("Spot couldn't be found");
