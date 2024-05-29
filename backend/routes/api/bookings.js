@@ -51,10 +51,10 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         city: spots.city,
                         state: spots.state,
                         country: spots.country,
-                        lat: parseInt(spots.lat),
-                        lng: parseInt(spots.lng),
+                        lat: Number(spots.lat),
+                        lng: Number(spots.lng),
                         name: spots.name,
-                        price: parseInt(spots.price),
+                        price: Number(spots.price),
                         previewImage: previewImageUrl
                     };
 
