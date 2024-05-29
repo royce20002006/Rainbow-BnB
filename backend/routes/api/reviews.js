@@ -80,10 +80,10 @@ router.get('/current', requireAuth, async (req, res, next) => {
                             city: spot.city,
                             state: spot.state,
                             country: spot.country,
-                            lat: parseInt(spot.lat),
-                            lng: parseInt(spot.lng),
+                            lat: Number(spot.lat),
+                            lng: Number(spot.lng),
                             name: spot.name,
-                            price: parseInt(spot.price),
+                            price: Number(spot.price),
                             previewImage: url
                         },
                         ReviewImages: reviewImageArr
