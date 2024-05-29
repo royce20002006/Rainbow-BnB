@@ -6,11 +6,11 @@
   "scripts": {
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
-    "reset": "npx dotenv sequelize db:migrate:undo:all && npx dotenv sequelize db:migrate && npx dotenv sequelize db:seed:all",
+    "add": "npx dotenv sequelize db:migrate && npx dotenv sequelize db:seed:all",
     "start": "per-env",
     "start:development": "nodemon ./bin/www",
-    "start:production": "node ./bin/www",
-    "build": "node psql-setup-script.js"
+    "start:production": "dotenv node ./bin/www",
+    "build": "dotenv node psql-setup-script.js"
   },
   "keywords": [],
   "author": "",
