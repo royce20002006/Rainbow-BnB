@@ -234,7 +234,7 @@ router.get('/', queryParams, async (req, res, next) => {
             });
         };
 
-        // console.log(starRatingSum);
+
 
 
 
@@ -323,6 +323,16 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
         const { user } = req;
 
         if (user) {
+            const allSpots = await Spot.findAll({
+                where: {
+                    [Op.or]: [{name}, {address}]
+                }
+            })
+            if(allSpots) {
+                const err = new Error('Cannot create a duplicate spot');
+                err.status = 403;
+                throw err;
+            }
 
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,

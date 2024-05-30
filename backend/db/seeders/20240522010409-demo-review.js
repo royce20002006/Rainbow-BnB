@@ -41,11 +41,11 @@ module.exports = {
           spotId: 3,
           review: 'such a great oasis.',
           stars: 5
-        },], {validate: true}
+        },], { validate: true }
       )
 
     } catch (error) {
-      console.log(error)
+
     }
   },
 
@@ -62,7 +62,7 @@ module.exports = {
     await queryInterface.bulkDelete(
       options,
       {
-        id: { [Op.in]: [1,2,3,4,5] },
+        id: { [Op.in]: [1, 2, 3, 4, 5] },
       },
     )
   }
