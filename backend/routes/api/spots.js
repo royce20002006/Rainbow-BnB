@@ -43,7 +43,7 @@ const validateNewSpot = [
         .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
-        .isLength({ max: 50 })
+        .isLength({ min:3, max: 50 })
         .withMessage('Name must be less than 50 characters'),
     check('description')
         .exists({ checkFalsy: true })
@@ -328,7 +328,8 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                     [Op.or]: [{name}, {address}]
                 }
             })
-            if(allSpots) {
+            
+            if(allSpots.length) {
                 const err = new Error('Cannot create a duplicate spot');
                 err.status = 403;
                 throw err;
