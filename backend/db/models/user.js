@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association
       User.hasMany(models.Spot, {
         foreignKey: 'ownerId', as: 'Owner'
-        
-        
-       
+
+
+
       });
-      User.hasMany(models.Review, {foreignKey: 'userId'});
-      User.hasMany(models.Booking, {foreignKey: 'userId'});
-      
+      User.hasMany(models.Review, { foreignKey: 'userId' });
+      User.hasMany(models.Booking, { foreignKey: 'userId' });
+
     }
   };
 
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len :[3, 30],
+          len: [3, 30],
           isAlpha: true
         }
       },
@@ -66,14 +66,14 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     }, {
-      sequelize,
-      modelName: 'User',
-      defaultScope: {
-        attributes: {
-          exclude: ['hashedPassword', 'updatedAt', 'email', 'createdAt']
-        }
+    sequelize,
+    modelName: 'User',
+    defaultScope: {
+      attributes: {
+        exclude: ['hashedPassword', 'updatedAt', 'email', 'createdAt']
       }
-    },
+    }
+  },
 
   );
   return User;

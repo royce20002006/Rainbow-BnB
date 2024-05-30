@@ -234,7 +234,7 @@ router.get('/', queryParams, async (req, res, next) => {
             });
         };
 
-        // console.log(starRatingSum);
+
 
 
 

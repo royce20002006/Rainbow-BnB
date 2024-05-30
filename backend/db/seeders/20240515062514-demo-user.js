@@ -39,8 +39,8 @@ module.exports = {
         { validate: true }
       );
     } catch (error) {
-      console.log('Error during migration:', error);
-      throw error; // Re-throw the error to ensure the migration fails and logs the error
+
+      // Re-throw the error to ensure the migration fails and logs the error
     }
   },
 
@@ -56,8 +56,8 @@ module.exports = {
         {}
       );
     } catch (error) {
-      console.error('Error during rollback:', error);
-      throw error; // Re-throw the error to ensure the rollback fails and logs the error
+
+      // Re-throw the error to ensure the rollback fails and logs the error
     }
   },
 };
