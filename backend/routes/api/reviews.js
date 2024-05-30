@@ -71,7 +71,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         User: {
                             id: user.id,
                             firstName: user.firstName,
-                            lastname: user.lastName
+                            lastName: user.lastName
                         },
                         Spot: {
                             id: spot.id,
