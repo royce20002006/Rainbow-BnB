@@ -323,17 +323,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
         const { user } = req;
 
         if (user) {
-            const allSpots = await Spot.findAll({
-                where: {
-                    [Op.or]: [{name}, {address}]
-                }
-            })
             
-            if(allSpots.length) {
-                const err = new Error('Cannot create a duplicate spot');
-                err.status = 403;
-                throw err;
-            }
 
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,
@@ -393,7 +383,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
                     preview: newImage.preview
                 }
 
-                return res.json(imageFormatting);
+                return res.status(201).json(imageFormatting);
 
             } else {
                 const err = new Error("Spot couldn't be found");

@@ -211,7 +211,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
                 }
 
-                res.json(imageFormatting);
+                return res.status(201).json(imageFormatting);
 
             } else {
                 const err = new Error("Review couldn't be found");
