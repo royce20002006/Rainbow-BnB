@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Spot.belongsTo(models.User, {
-        foreignKey: 'ownerId', as: 'Owner'
+        foreignKey: 'ownerId', as: 'Owner', onDelete: 'cascade'
       });
-      Spot.hasMany(models.SpotImage, {foreignKey: 'spotId', onDelete: 'cascade'});
-      Spot.hasMany(models.Review, {foreignKey: 'spotId', onDelete: 'cascade'});
-      Spot.hasMany(models.Booking, {foreignKey: 'spotId', onDelete: 'cascade'})
+      Spot.hasMany(models.SpotImage, { foreignKey: 'spotId' });
+      Spot.hasMany(models.Review, { foreignKey: 'spotId' });
+      Spot.hasMany(models.Booking, { foreignKey: 'spotId' })
     }
   }
   Spot.init({
@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     address: {
       type: DataTypes.STRING(255),
       allowNull: false,
+      unique: true,
       validate: {
         
         len: [5, 255]
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(60),
       allowNull: false,
       validate: {
-        
+
         len: [3, 60]
       }
     },
@@ -58,29 +59,31 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     lat: {
-      type: DataTypes.DECIMAL(9,7),
+      type: DataTypes.DECIMAL(9, 7),
       allowNull: false,
       validate: {
         isDecimal: true
-        
-        
+
+
       }
 
     },
     lng: {
-      type: DataTypes.DECIMAL(10,7),
+      type: DataTypes.DECIMAL(10, 7),
       allowNull: false,
       validate: {
         isDecimal: true
-        
+
       }
     },
     name: {
       type: DataTypes.STRING(50),
       allowNull: false,
+      unique: true,
       validate: {
-        len: [3, 50],
+        len: [3, 55],
         
+
       }
     },
     description: {
@@ -90,10 +93,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.DECIMAL(6,2),
+      type: DataTypes.DECIMAL(6, 2),
       allowNull: false,
       validate: {
-        min :1.00,
+        min: 1.00,
         max: 9999.99,
         isDecimal: true
       }

@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     try {
       await ReviewImage.bulkCreate([
         {
@@ -29,13 +29,13 @@ module.exports = {
           reviewId: 4
         },
 
-      ], {validate: true})
+      ], { validate: true })
     } catch (error) {
-      console.log(error)
+
     }
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     options.tableName = 'ReviewImages';
     const Op = Sequelize.Op;
 
@@ -44,5 +44,6 @@ module.exports = {
       {
         id: { [Op.in]: [1, 2, 3, 4] },
       },
-    )}
+    )
+  }
 };

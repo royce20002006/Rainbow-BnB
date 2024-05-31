@@ -1,4 +1,8 @@
 'use strict';
+
+const { Model } = require('sequelize');
+const { sequelize } = require('../models');
+
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
 options.tableName = 'Spots'
@@ -17,14 +21,14 @@ module.exports = {
       ownerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: 'Users'
-        },
-        
+        references: { model: 'Users' },
+        onDelete: 'cascade'
       },
       address: {
         type: Sequelize.STRING(255),
-        allowNull: false
+        allowNull: false,
+        unique: true
+        
       },
       city: {
         type: Sequelize.STRING(60),
@@ -45,11 +49,12 @@ module.exports = {
       lng: {
         type: Sequelize.DECIMAL(10, 7),
         allowNull: false,
-        
+
       },
       name: {
         type: Sequelize.STRING(50),
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       description: {
         type: Sequelize.STRING(255)

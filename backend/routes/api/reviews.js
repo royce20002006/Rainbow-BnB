@@ -1,7 +1,7 @@
 
 //imports
 const express = require('express');
-const {  requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage, ReviewImage
 } = require('../../db/models');
 const { check } = require('express-validator');
@@ -36,12 +36,12 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 where: {
                     userId: user.id
                 },
-                include: [{model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']}]
+                include: [{ model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'] }]
             });
 
             let reviewFormatting = [];
             if (reviews) {
-                
+
                 for (let review of reviews) {
                     let url = '';
                     let spot = await Spot.findByPk(review.spotId);
@@ -58,7 +58,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                             id: image.id,
                             url: image.url
                         });
-                        
+
                     };
                     reviewFormatting.push({
                         id: review.id,
@@ -71,7 +71,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                         User: {
                             id: user.id,
                             firstName: user.firstName,
-                            lastname: user.lastName
+                            lastName: user.lastName
                         },
                         Spot: {
                             id: spot.id,
@@ -80,24 +80,24 @@ router.get('/current', requireAuth, async (req, res, next) => {
                             city: spot.city,
                             state: spot.state,
                             country: spot.country,
-                            lat: parseInt(spot.lat),
-                            lng: parseInt(spot.lng),
+                            lat: Number(spot.lat),
+                            lng: Number(spot.lng),
                             name: spot.name,
-                            price: parseInt(spot.price),
+                            price: Number(spot.price),
                             previewImage: url
                         },
                         ReviewImages: reviewImageArr
-                        
 
-                        
-                            
+
+
+
 
                     });
                 };
-                res.json({Reviews : reviewFormatting});
+                res.json({ Reviews: reviewFormatting });
             };
         };
-        
+
     } catch (error) {
         next(error);
     };
@@ -105,20 +105,20 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 // delete an existing review
-router.delete('/:reviewId', requireAuth, async(req, res, next) => {
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     try {
         const reviewId = req.params.reviewId;
-        const {user} = req;
+        const { user } = req;
         const review = await Review.findByPk(reviewId);
         if (!review) {
             const err = new Error("Review couldn't be found");
-                err.status = 404;
-                throw err;
+            err.status = 404;
+            throw err;
         };
-        if(review.userId !== user.id) {
+        if (review.userId !== user.id) {
             const err = new Error('Forbidden');
-                err.status = 403;
-                throw err;
+            err.status = 403;
+            throw err;
         };
         const deletedReview = await review.destroy();
         res.json({
@@ -126,14 +126,14 @@ router.delete('/:reviewId', requireAuth, async(req, res, next) => {
         });
 
 
-        
+
     } catch (error) {
         next(error);
     };
 });
 // update review by id
 
-router.put('/:reviewId',  requireAuth, validateReview, async (req, res, next) => {
+router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
     try {
         const { reviewId } = req.params;
         const { review, stars } = req.body;
@@ -141,8 +141,8 @@ router.put('/:reviewId',  requireAuth, validateReview, async (req, res, next) =>
         const reviewToUpdate = await Review.findByPk(reviewId);
         if (user) {
             if (reviewToUpdate && reviewToUpdate.userId === user.id) {
-    
-                
+
+
                 const newReview = await reviewToUpdate.update({ userId: user.id, spotId: reviewToUpdate.spotId, review, stars });
                 const newReviewFormat = {
                     id: newReview.id,
@@ -159,12 +159,12 @@ router.put('/:reviewId',  requireAuth, validateReview, async (req, res, next) =>
                 err.status = 403;
                 return next(err);
 
-            }else {
-    
+            } else {
+
                 const err = new Error("Review couldn't be found");
                 err.status = 404;
                 throw err;
-    
+
             };
 
         }
@@ -179,15 +179,15 @@ router.put('/:reviewId',  requireAuth, validateReview, async (req, res, next) =>
 //create a new image to a review based on review id
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     try {
-        const { url} = req.body;
+        const { url } = req.body;
         const { reviewId } = req.params;
 
         const review = await Review.findByPk(reviewId);
-        
-        
+
+
         const { user } = req;
-        
-        
+
+
         if (user) {
             if (review) {
                 const reviewImages = await review.getReviewImages();
@@ -203,15 +203,15 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
                 }
 
                 const newImage = await ReviewImage.create({
-                    url,  reviewId: parseInt(reviewId)
+                    url, reviewId: parseInt(reviewId)
                 });
                 const imageFormatting = {
                     id: newImage.id,
                     url: newImage.url,
-                    
+
                 }
-                
-                res.json(imageFormatting);
+
+                return res.status(201).json(imageFormatting);
 
             } else {
                 const err = new Error("Review couldn't be found");
@@ -230,4 +230,4 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
 
 // export the router
- module.exports = router;
+module.exports = router;

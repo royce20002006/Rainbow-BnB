@@ -52,7 +52,7 @@ app.use(routes);
 app.use((_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
     err.title = "Resource Not Found";
-    err.errors = { message: "The requested resource couldn't be found."};
+    err.errors = { message: "The requested resource couldn't be found." };
     err.status = 404;
     next(err);
 });
@@ -75,7 +75,7 @@ app.use((err, _req, _res, next) => {
 // error formatter
 app.use((err, _req, res, _next) => {
     res.status(err.status || 500);
-    console.error(err);
+
     if (isProduction) {
         res.json({
             message: err.message,
@@ -83,7 +83,7 @@ app.use((err, _req, res, _next) => {
         })
     } else {
         res.json({
-            title: isProduction ? null :err.title || 'Server Error' ,
+            title: isProduction ? null : err.title || 'Server Error',
             message: err.message,
             errors: err.errors,
             stack: isProduction ? null : err.stack
