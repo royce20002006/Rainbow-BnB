@@ -12,6 +12,16 @@ const { Op, Model, ValidationError } = require('sequelize');
 // set up the express router
 const router = express.Router();
 
+const validateBooking = [
+    check('startDate')
+        .exists({ checkFalsy: true })
+        .withMessage('Start date is required'),
+    check('endDate')
+        .exists({ checkFalsy: true })
+        .withMessage('End date is required'),
+    handleValidationErrors
+];
+
 // get all bookings for current user
 router.get('/current', requireAuth, async (req, res, next) => {
     try {
@@ -86,7 +96,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     };
 });
 
-router.put('/:bookingId', requireAuth, async (req, res, next) => {
+router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
     try {
         const { user } = req;
         const { bookingId } = req.params;
@@ -219,7 +229,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
 // delete a existing booking by id
 // delete an existing review
-router.delete('/:bookingId', requireAuth, async (req, res, next) => {
+router.delete('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
     try {
         const { bookingId } = req.params;
 
@@ -245,14 +255,8 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             err.status = 403;
             throw err;
         };
-        const currentDate = new Date();
-        const endDate = new Date(booking.endDate);
-        if (endDate > currentDate) {
-            const err = new Error("Bookings that have been started can't be deleted");
-            err.status = 403;
-            throw err;
-
-        }
+     
+        
 
 
 
