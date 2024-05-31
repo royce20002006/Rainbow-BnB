@@ -16,6 +16,17 @@ const { formatDate, formatDateWithoutTime } = require('../../helperFunction/form
 // set up the express router
 const router = express.Router();
 // validate spots and if not create error through the validator
+
+const validateBooking = [
+    check('startDate')
+        .exists({ checkFalsy: true })
+        .withMessage('Start date is required'),
+    check('endDate')
+        .exists({ checkFalsy: true })
+        .withMessage('End date is required'),
+    handleValidationErrors
+];
+
 const validateNewSpot = [
     check('address')
         .exists({ checkFalsy: true })
@@ -703,6 +714,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
                         if (booking.userId !== user.id) {
                             bookingsArr.push({
+                                id: booking.id,
                                 spotId: booking.spotId,
                                 startDate: formatDateWithoutTime(booking.startDate),
                                 endDate: formatDateWithoutTime(booking.endDate)
@@ -738,7 +750,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
 
 // create a booking from a spot based on spots id
-router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
+router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, next) => {
     try {
         const { user } = req;
         const { spotId } = req.params;
