@@ -87,7 +87,7 @@ module.exports = {
 
     ], { validate: true })
   } catch(e) {
-    console.log(error);
+    console.log(e);
   }
   
 
