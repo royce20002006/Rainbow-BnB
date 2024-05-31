@@ -20,6 +20,9 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+   try{
+
+   
     await Spot.bulkCreate([
       {
         ownerId: 2,
@@ -83,7 +86,12 @@ module.exports = {
       },
 
     ], { validate: true })
-  },
+  } catch(e) {
+    console.log(error);
+  }
+  
+
+},
 
   async down(queryInterface, Sequelize) {
     /**
