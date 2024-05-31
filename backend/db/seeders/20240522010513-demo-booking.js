@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     try {
       await Booking.bulkCreate([
         {
@@ -43,13 +43,13 @@ module.exports = {
           startDate: '10-20-2028',
           endDate: '11-30-2028'
         },
-      ], {validate: true})
+      ], { validate: true })
     } catch (error) {
-      console.log(error)
+
     }
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     options.tableName = 'ReviewImages';
     const Op = Sequelize.Op;
 

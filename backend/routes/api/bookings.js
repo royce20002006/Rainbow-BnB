@@ -3,7 +3,7 @@ const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage, Booking
 } = require('../../db/models');
-const {formatDate, formatDateWithoutTime }= require('../../helperFunction/formatDate');
+const { formatDate, formatDateWithoutTime } = require('../../helperFunction/formatDate');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -99,9 +99,9 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
         if (user) {
             const currentDate = new Date()
-            
+
             if (currentDate > formattedStartDate || currentDate > formattedEndDate) {
-                
+
                 const err = new Error("Past bookings can't be modified");
                 err.status = 403;
                 throw err;
@@ -124,12 +124,12 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
                     throw err;
                 }
 
-                console.log(booking.id, 'booking id')
+
                 const allBookings = await Booking.findAll({
                     where: {
                         spotId: booking.spotId,
                         id: {
-                            [Op.ne]: bookingId 
+                            [Op.ne]: bookingId
                         }
                     }
                 });
@@ -137,44 +137,44 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
 
                 for (let booking of allBookings) {
 
-                    console.log(booking.id, 'should not have booking id of previous');
 
 
-                        const errors = {};
-                        let error = false;
-                        if (formattedStartDate >= booking.startDate && formattedStartDate <= booking.endDate) {
-                            console.log('hi')
+
+                    const errors = {};
+                    let error = false;
+                    if (formattedStartDate >= booking.startDate && formattedStartDate <= booking.endDate) {
 
 
-                            errors.startDate = "Start date conflicts with an existing booking";
 
-                            error = true;
-                        }
-                        if (formattedEndDate >= booking.startDate && formattedEndDate <= booking.endDate) {
+                        errors.startDate = "Start date conflicts with an existing booking";
 
-                            errors.endDate = "End date conflicts with an existing booking";
-                            error = true;
+                        error = true;
+                    }
+                    if (formattedEndDate >= booking.startDate && formattedEndDate <= booking.endDate) {
 
-                        }
+                        errors.endDate = "End date conflicts with an existing booking";
+                        error = true;
 
-                        if (
-                            (formattedStartDate < booking.startDate && formattedEndDate > booking.endDate)
+                    }
 
-                        ) {
+                    if (
+                        (formattedStartDate < booking.startDate && formattedEndDate > booking.endDate)
 
-                            errors.startDate = "Start date conflicts with an existing booking";
-                            errors.endDate = "End date conflicts with an existing booking";
-                            error = true;
-                        }
+                    ) {
 
-                        if (error === true) {
+                        errors.startDate = "Start date conflicts with an existing booking";
+                        errors.endDate = "End date conflicts with an existing booking";
+                        error = true;
+                    }
 
-                            let err = new Error('Sorry, this spot is already booked for the specified dates');
-                            err.status = 403
-                            err.errors = errors
-                            throw err;
-                        }
-                    
+                    if (error === true) {
+
+                        let err = new Error('Sorry, this spot is already booked for the specified dates');
+                        err.status = 403
+                        err.errors = errors
+                        throw err;
+                    }
+
 
 
 
@@ -230,6 +230,13 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             err.status = 404;
             throw err;
         };
+        const startDate = new Date(booking.startDate);
+        const currentDate = new Date();
+
+        if (startDate >= currentDate) {
+            const err = new Error("Bookings that have been started can't be deleted");
+            err.staus = 403
+        }
 
 
 
