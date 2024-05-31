@@ -838,7 +838,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     endDate: formattedEndDate
 
                 })
-                return res.json({
+                return res.status(201).json({
                     id: newBooking.id,
                     spotId: newBooking.spotId,
                     userId: newBooking.userId,
