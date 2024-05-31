@@ -745,7 +745,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
         const { startDate, endDate } = req.body;
         let formattedStartDate = new Date(startDate);
         let formattedEndDate = new Date(endDate)
-
+        
         const currentDate = new Date()
         if (currentDate > formattedStartDate || currentDate > formattedEndDate) {
             const err = new Error("Cannot create a booking for a past date");
@@ -773,10 +773,6 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     err.status = 400;
                     throw err;
                 }
-
-
-
-
 
                 for (let booking of bookings) {
 
@@ -832,8 +828,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     id: newBooking.id,
                     spotId: newBooking.spotId,
                     userId: newBooking.userId,
-                    startDate: formatDateWithoutTime(formattedStartDate),
-                    endDate: formatDateWithoutTime(formattedEndDate),
+                    startDate: startDate,
+                    endDate: endDate,
                     createdAt: formatDate(newBooking.createdAt),
                     updatedAt: formatDate(newBooking.updatedAt)
                 });
