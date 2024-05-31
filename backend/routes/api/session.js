@@ -13,12 +13,12 @@ const router = express.Router();
 
 const validateLogin = [
     check('credential')
-    .exists({ checkFalsy: true})
-    .notEmpty()
-    .withMessage('Email or username is required'),
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Email or username is required'),
     check('password')
-    .exists({ checkFalsy: true })
-    .withMessage('Password is required'),
+        .exists({ checkFalsy: true })
+        .withMessage('Password is required'),
     handleValidationErrors
 ];
 
@@ -61,7 +61,7 @@ router.post('/', validateLogin, async (req, res, next) => {
 router.delete('/', (_req, res) => {
     try {
         res.clearCookie('token');
-        return res.json({message: 'success' });
+        return res.json({ message: 'success' });
     } catch (error) {
         next(error);
     }
@@ -80,7 +80,7 @@ router.get('/', (req, res) => {
         return res.json({
             user: safeUser
         });
-    } else return res.json({ user: null});
+    } else return res.json({ user: null });
 });
 
 module.exports = router;

@@ -43,7 +43,7 @@ const validateNewSpot = [
         .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
-        .isLength({ max: 50 })
+        .isLength({ min:3, max: 50 })
         .withMessage('Name must be less than 50 characters'),
     check('description')
         .exists({ checkFalsy: true })
@@ -234,7 +234,7 @@ router.get('/', queryParams, async (req, res, next) => {
             });
         };
 
-        // console.log(starRatingSum);
+
 
 
 
@@ -323,6 +323,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
         const { user } = req;
 
         if (user) {
+            
 
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,
@@ -382,7 +383,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
                     preview: newImage.preview
                 }
 
-                return res.json(imageFormatting);
+                return res.status(201).json(imageFormatting);
 
             } else {
                 const err = new Error("Spot couldn't be found");
@@ -827,7 +828,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
                     endDate: formattedEndDate
 
                 })
-                return res.json({
+                return res.status(201).json({
                     id: newBooking.id,
                     spotId: newBooking.spotId,
                     userId: newBooking.userId,
