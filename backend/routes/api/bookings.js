@@ -229,7 +229,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
 
 // delete a existing booking by id
 // delete an existing review
-router.delete('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
+router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     try {
         const { bookingId } = req.params;
 
