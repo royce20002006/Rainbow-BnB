@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import ProfileButton from "./ProfileButton"
 import * as SessionActions from '../../store/session';
-
+import './Navigation.css';
 
 
 export default function Navigation({ isLoaded }) {
@@ -20,9 +20,9 @@ export default function Navigation({ isLoaded }) {
             <li>
                 <ProfileButton user={sessionUser} />
             </li>
-            <li>
+            {/* <li>
                 <button onClick={logout}>Log Out</button>
-            </li>
+            </li> */}
         </>
     ) : (
         <>
