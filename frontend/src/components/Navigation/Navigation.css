@@ -21,6 +21,7 @@
 }
 .button {
     background-color: #FF5A5F;
+    border-radius: 5rem;
 }
 
 button {

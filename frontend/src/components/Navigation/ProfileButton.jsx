@@ -54,7 +54,7 @@ function ProfileButton({ user }) {
             <li>Hello, {user.username}</li>
             <li>{user.email}</li>
             </div>
-            <div className='manageSpots'>
+            <div className='manageSpots cursor'>
             <li>Manage spots</li>
             </div>
             <li className='logout'>
