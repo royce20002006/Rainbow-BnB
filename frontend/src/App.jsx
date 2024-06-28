@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import * as sessionActions from './store/session';
 import Navigation from "./components/Navigation/Navigation";
+import Header from "./components/Header/Header";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ function Layout() {
   }, [dispatch]);
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
+      <Header isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
     </>
   );
