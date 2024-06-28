@@ -5,6 +5,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import { GiHamburgerMenu } from "react-icons/gi";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -42,32 +43,40 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={toggleMenu}>
+      <button className='dropdownButton' onClick={toggleMenu}>
+        <GiHamburgerMenu />
         <FaUserCircle />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <ul id='profileMenu' className={ulClassName} ref={ulRef}>
         {user ? (
-          <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+          <div className='profileMenu'>
+            <div className='userDetails'>
+            <li>Hello, {user.username}</li>
             <li>{user.email}</li>
-            <li>
-              <button onClick={logout}>Log Out</button>
+            </div>
+            <div className='manageSpots'>
+            <li>Manage spots</li>
+            </div>
+            <li className='logout'>
+              <button className='button' onClick={logout}>Log Out</button>
             </li>
-          </>
+          </div>
+
         ) : (
-          <>
+          <div className='profileMenu'>
             <OpenModalMenuItem
+              className='cursor'
               itemText="Log In"
               onItemClick={closeMenu}
               modalComponent={<LoginFormModal />}
             />
             <OpenModalMenuItem
+              className='cursor'
               itemText="Sign Up"
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-          </>
+          </div>
         )}
       </ul>
     </>

@@ -1,0 +1,22 @@
+.mainDiv {
+    
+    
+    font-weight: bold;
+    color: #FF5A5F;
+    
+    
+}
+a {
+    font-weight: bold;
+    color: #FF5A5F;
+    text-decoration: none;
+}
+.rainbowLogo {
+    position: relative;
+    top: .3rem;
+    margin-right: .4rem;
+    font-size: 19pt;
+    color: blue;
+    
+    
+}
