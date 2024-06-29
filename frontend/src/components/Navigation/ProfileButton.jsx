@@ -55,7 +55,8 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             </div>
             <div className='manageSpots cursor'>
-            <li>Manage spots</li>
+            <li>Manage Spots</li>
+            <li>Manage Reviews</li>
             </div>
             <li className='logout'>
               <button className='button' onClick={logout}>Log Out</button>
