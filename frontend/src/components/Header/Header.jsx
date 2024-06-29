@@ -1,8 +1,8 @@
 
-import Navigation from '../Navigation/Navigation'
+import Navigation from './Navigation/Navigation'
 import './Header.css'
-import Logo from '../Logo/Logo'
-import SpotButton from '../spotButton/SpotButton'
+import Logo from './Logo/Logo'
+import SpotButton from './spotButton/SpotButton'
 
 export default function Header({ isLoaded }) {
   return (
