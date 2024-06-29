@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom";
+// import { useNavigate, useParams } from "react-router-dom";
 import { getSpotsThunk } from "../../../store/spots";
 import { FaStar } from "react-icons/fa6";
 import './Splash.css'
@@ -9,9 +9,9 @@ import './Splash.css'
 export default function Splash() {
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const spots = useSelector(state => state.spotState.allSpots)
-  const [id, setId] = useState(0);
+  // const [id, setId] = useState(0);
 
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
@@ -35,8 +35,8 @@ export default function Splash() {
 
   return (
     <div className='spotSection'>
-      {spots.map(spot => (
-       <div role='tooltip'>
+      {spots.map((spot, idx) => (
+       <div key={`${idx}--${spot.id}`} role='tooltip'>
         <img src={spot.previewImage} />
         <div className="locationAndRating">
         <span className="spotLocation spotInfo">{spot.city}, {spot.state} </span>
