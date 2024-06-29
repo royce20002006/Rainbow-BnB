@@ -4,6 +4,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import * as sessionActions from './store/session';
 // import Navigation from "./components/Navigation/Navigation";
 import Header from "./components/Header/Header";
+import Splash from "./screens/Splash/components/Splash";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>Welcome</h1>
+        element: <Splash />
       }
 
     ]

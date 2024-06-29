@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
-import * as sessionActions from '../../store/session';
+import * as sessionActions from '../../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
-import LoginFormModal from '../LoginFormModal/LoginFormModal';
-import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import LoginFormModal from '../../Modal/LoginFormModal/LoginFormModal';
+import SignupFormModal from '../../Modal/SignupFormModal/SignupFormModal';
 import { GiHamburgerMenu } from "react-icons/gi";
 
 function ProfileButton({ user }) {
