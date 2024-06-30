@@ -5,6 +5,7 @@ import * as sessionActions from './store/session';
 // import Navigation from "./components/Navigation/Navigation";
 import Header from "./components/Header/Header";
 import Splash from "./screens/Splash/components/Splash";
+import Spot from "./screens/Spot/components/Spot/Spot";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Splash />
+      },
+      {
+        path: '/spots/:id',
+        element: <Spot />
       }
 
     ]
