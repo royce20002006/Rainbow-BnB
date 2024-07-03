@@ -5,6 +5,7 @@ import { getSingleSpotThunk } from "../../../../store/spots";
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
 import Reviews from "../reviews/reviews";
+import './spot.css'
 
 
 export default function Spot() {
@@ -37,29 +38,43 @@ export default function Spot() {
 
   return (
     // <h1>yea idk</h1>
-    <div>
-      <h1>{spot.name}</h1>
-      <div>{spot.city}, {spot.state}, {spot.country}</div>
-      <div>
-        <img className="firstImage" src={isLoaded ? spot.SpotImages[0].url : null} />
-        <div>
-          {spot.SpotImages.filter((image) => image.id !== spot.SpotImages[0].id).map((image, idx) => (
-            <img key={`${idx}--${image.id}`} src={image.url} />
-          ))}
+    <div className="spotDetails">
+      <h1 className="heading">{spot.name}</h1>
+      <div className="subheading">{spot.city}, {spot.state}, {spot.country}</div>
+      <div className="images">
+        <div className="firstImage">
+        <img   src={isLoaded && spot.SpotImages[0] ? spot.SpotImages[0].url : null} />
+        </div>
+       
+
+        <div className="smallImageDivRow1">
+        <img   src={isLoaded && spot.SpotImages[1] ? spot.SpotImages[1].url : null} />
+        <img   src={isLoaded && spot.SpotImages[2]  ? spot.SpotImages[2].url : null} />
         </div>
 
-      </div>
-      <div>
-        <div>
-          <div>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</div>
-          <div>{spot.description}</div>
+        <div className="smallImageDivRow2">
+        <img   src={isLoaded && spot.SpotImages[3] ? spot.SpotImages[3].url : null} />
+        <img   src={isLoaded && spot.SpotImages[4] ? spot.SpotImages[4].url : null} />
         </div>
+       
+
+        
+
+      </div>
+      <div className="ownerAndPriceDiv">
         <div>
+          <div className="subheading">Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</div>
+          <div className="normal">{spot.description}</div>
+        </div>
+        <div className="reservationDiv">
+          <div className="priceAndReview">
           <div>${spot.price} night</div>
           <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating : 'New'} · {spot.numReviews} reviews</div>
+          </div>
+
+          <button>work in progress</button>
         </div>
         <div>
-          <button>work in progress</button>
         </div>
       </div>
       <Reviews />

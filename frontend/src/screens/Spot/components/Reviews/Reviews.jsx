@@ -4,28 +4,36 @@ import { useParams } from "react-router-dom"
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
 
+
 export default function Reviews() {
     const { id } = useParams();
+    
     const [isLoaded, setIsLoaded] = useState(false);
     const dispatch = useDispatch();
     const reviews = useSelector(state => state.reviewsState.allReviews)
     const spot = useSelector(state => state.spotState.singleSpot['spot'])
     const sessionUser = useSelector(state => state.session.user);
+
     const [isOwner, setIsOwner] = useState(false);
     const [alreadyReviewed, setAlreadyReviewed] = useState(false)
     
+    
 
-    useEffect(() => {
-        if (spot.ownerId === sessionUser.id) {
-            setIsOwner(true);
-        }
-        for (let review of reviews) {
-            if (review.userId === sessionUser.id) {
-                console.log("reviewed")
-                setAlreadyReviewed(true);
+        useEffect(() => {
+            if (sessionUser) {
+
+                if (spot.ownerId === sessionUser.id) {
+                    setIsOwner(true);
+                }
+                for (let review of reviews) {
+                    if (review.userId === sessionUser.id) {
+                        console.log("reviewed")
+                        setAlreadyReviewed(true);
+                    }
+                }
             }
-        }
-    },[reviews, sessionUser.id, spot.ownerId])
+        },[reviews, spot.ownerId])
+    
     
     
 
@@ -39,7 +47,7 @@ export default function Reviews() {
         if (!isLoaded) {
             getData();
         }
-    }, [dispatch, id, isLoaded])
+    }, [dispatch, isLoaded])
 
     if (!isLoaded || reviews === undefined) {
 
@@ -51,19 +59,26 @@ export default function Reviews() {
     
     
     return (
+        
         <div>
-            <div>
+            <div className="subheading">
                 <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating : 'New'} · {spot.numReviews} reviews</div>
             </div>
-            <div><button disabled={isOwner || alreadyReviewed}>Post Your Review</button></div>
-            {reviews.length === 0 ? <p>Be the first to post a review!</p> : null}
+            {
+                !sessionUser ? null : <div><button  disabled={isOwner}>Post Your Review</button></div>
+            }
+            {reviews.length === 0 && sessionUser ? <p>Be the first to post a review!</p> : null}
+            
             <div>
                 {reviews.map((review, idx) => (
                     
-                    <div key={`${idx}--${review.id}`}>
-                        <h2>{review.User.firstName}</h2>
+                    <div  className='review' key={`${idx}--${review.id}`}>
+                        <h3>{review.User.firstName}</h3>
+                        <div className="date">
                         <div>{review.updatedAt.slice(5,7)}</div>
                         <div>{review.updatedAt.split('-')[0]}</div>
+
+                        </div>
                         <p>{review.review}</p>
                     </div>
 
