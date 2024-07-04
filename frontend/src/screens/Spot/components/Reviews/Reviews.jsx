@@ -77,7 +77,7 @@ export default function Reviews() {
                     <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating : 'New'} · {spot.numReviews} reviews</div>
                 </div>
                 {
-                    !sessionUser || isOwner || alreadyReviewed ? null : <div ><button >Post Your Review</button></div>
+                    !sessionUser || isOwner || alreadyReviewed ? null : <div className="postDiv"><button className="postButton">Post Your Review</button></div>
                 }
                 {reviews.length === 0 && sessionUser ? <p>Be the first to post a review!</p> : null}
 

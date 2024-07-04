@@ -33,6 +33,12 @@ export default function Spot() {
 
   }
 
+  const reserveSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    alert('Feature coming soon')
+  }
+
 
 
 
@@ -72,7 +78,7 @@ export default function Spot() {
           <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating : 'New'} · {spot.numReviews} reviews</div>
           </div>
 
-          <button>work in progress</button>
+          <button className="red" onClick={(e) => reserveSubmit(e)}>Reserve</button>
         </div>
         <div>
         </div>
