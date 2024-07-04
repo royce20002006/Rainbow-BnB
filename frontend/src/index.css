@@ -1,2 +1,19 @@
 /* TODO: Add sitewide styles */
 
+
+
+.heading {
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+.subheading {
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.normal {
+    font-size: 14pt;
+    
+}
+

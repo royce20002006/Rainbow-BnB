@@ -182,7 +182,7 @@ router.get('/', queryParams, async (req, res, next) => {
 
         //get all the spots in the database
         let spots = await Spot.findAll({
-            include: [{ model: Review, attributes: [] }],
+            include: [{ model: Review, attributes: [] }, ],
             where,
             limit: size,
             offset: (page - 1) * size
