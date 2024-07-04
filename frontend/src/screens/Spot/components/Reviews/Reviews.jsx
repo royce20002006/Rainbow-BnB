@@ -13,9 +13,9 @@ export default function Reviews() {
     const reviews = useSelector(state => state.reviewsState.allReviews)
     const spot = useSelector(state => state.spotState.singleSpot['spot'])
     const sessionUser = useSelector(state => state.session.user);
-
     const [isOwner, setIsOwner] = useState(false);
     const [alreadyReviewed, setAlreadyReviewed] = useState(false)
+
 
 
 
@@ -24,15 +24,19 @@ export default function Reviews() {
 
             if (spot.ownerId === sessionUser.id) {
                 setIsOwner(true);
+            } else {
+                setIsOwner(false)
             }
             for (let review of reviews) {
+                console.log('review', review.userId)
+                console.log('sessionn', sessionUser.id)
                 if (review.userId === sessionUser.id) {
                     console.log("reviewed")
                     setAlreadyReviewed(true);
                 }
             }
         }
-    }, [reviews, spot.ownerId])
+    }, [reviews, spot, sessionUser])
 
 
 
@@ -47,7 +51,7 @@ export default function Reviews() {
         if (!isLoaded) {
             getData();
         }
-    }, [dispatch, isLoaded])
+    }, [dispatch, id, isLoaded])
 
     if (!isLoaded || reviews === undefined) {
 
@@ -56,19 +60,26 @@ export default function Reviews() {
 
     }
 
+    const getMonth = (date) => {
+        const month = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+        return month[date]
+    }
+
+
 
 
     return (
 
         <div className="reviewsStart">
             <div className="ratingsWithButton">
-            <div className="subheading">
-                <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating : 'New'} · {spot.numReviews} reviews</div>
-            </div>
-            {
-                !sessionUser ? null : <div classname='red' ><button disabled={isOwner}>Post Your Review</button></div>
-            }
-            {reviews.length === 0 && sessionUser ? <p>Be the first to post a review!</p> : null}
+                <div className="subheading">
+                    <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating : 'New'} · {spot.numReviews} reviews</div>
+                </div>
+                {
+                    !sessionUser || isOwner || alreadyReviewed ? null : <div ><button >Post Your Review</button></div>
+                }
+                {reviews.length === 0 && sessionUser ? <p>Be the first to post a review!</p> : null}
 
             </div>
 
@@ -76,13 +87,16 @@ export default function Reviews() {
                 {reviews.map((review, idx) => (
 
                     <div className='review' key={`${idx}--${review.id}`}>
-                        <h3>{review.User.firstName}</h3>
-                        <div className="date">
-                            <div>{review.updatedAt.slice(5, 7)}</div>
+                        <h3 className="reviewUser normal">{review.User.firstName}</h3>
+                        <div className="date normal">
+                            <div>{(getMonth(new Date(review.updatedAt).getMonth())
+                            )
+
+                            }</div>
                             <div>{review.updatedAt.split('-')[0]}</div>
 
                         </div>
-                        <p>{review.review}</p>
+                        <p className="normal reviewText">{review.review}</p>
                     </div>
 
 

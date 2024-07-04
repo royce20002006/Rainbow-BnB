@@ -101,3 +101,12 @@
     background-color: #FF385c;
 }
 
+.reviewUser {
+    margin: 0;
+    margin-top: 1rem;
+}
+
+.reviewText {
+    margin: 0;
+}
+
