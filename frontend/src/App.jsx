@@ -6,6 +6,7 @@ import * as sessionActions from './store/session';
 import Header from "./components/Header/Header";
 import Splash from "./screens/Splash/components/Splash";
 import Spot from "./screens/Spot/components/Spot/Spot";
+import SpotForm from "./screens/CreateSpot/components/main/SpotForm";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: '/spots/:id',
         element: <Spot />
+      },
+      {
+        path: '/spots/new',
+        element: <SpotForm />
       }
 
     ]
