@@ -1,8 +1,9 @@
-.formDiv {
+.form {
     max-width: 1000px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
 }
 
 .onlyShows {
@@ -12,12 +13,13 @@
 .location {
     display: flex;
     flex-direction: column;
-    margin-left: auto;
-    
     /* align-items: center; */
 }
 
 .location h2 {
+    margin-bottom: .3rem;
+}
+.descriptionSub {
     margin-bottom: .3rem;
 }
 
@@ -36,7 +38,11 @@
     margin-right: .5rem;
 }
 .cityInput {
-    width: 30rem;
+    width: 40rem;
+}
+
+.stateInput {
+    width: 20rem;
 }
 .city {
     display: flex;
@@ -64,16 +70,31 @@
     gap: 1rem;
     border-bottom: 2px solid black;
     padding-bottom: 2rem;
+    /* align-items: center; */
+}
+
+#description {
+    height: 5rem;
+}
+.section2 {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    
+    border-bottom: 2px solid black;
+    padding-bottom: 2rem;
 }
 
 .longInput {
     
-    width: 41rem;
+    width: 100%;
 }
 .lat {
-    width: 20rem;
+    width: 30rem;
 }
 .lng {
-    width: 19rem;
+    width: 30rem;
 }
+
+
 
