@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './SpotForm.css'
+import { useDispatch } from 'react-redux';
 
 export default function SpotForm() {
   const [country, setCountry] = useState('');
@@ -9,8 +10,24 @@ export default function SpotForm() {
   const [lat, setLat] = useState('');
   const [lng, setLng] = useState('');
   const [description, setDescription] = useState('')
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [previewImage, setPreviewImage] = useState('');
+  const [imageOne, setImageOne] = useState('')
+  const [imageTwo, setImageTwo] = useState('')
+  const [imageThree, setImageThree] = useState('')
+  const [imageFour, setImageFour] = useState('')
+  const [errors, setErrors] = useState({});
+
+  const dispatch = useDispatch();
 
 
+
+  const submit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+  }
 
   return (
     <div className="form">
@@ -95,15 +112,95 @@ export default function SpotForm() {
           <h2 className='subheading bottom'>Describe your place to guests</h2>
           <p className='normal onlyShows'>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
           <textarea
-          className='colorInput longInput'
-          placeholder='Please write at least 30 characters'
-          name="description"
-          id="description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
+            className='colorInput longInput'
+            placeholder='Please write at least 30 characters'
+            name="description"
+            id="description"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
           ></textarea>
+        </div>
+        <div className='section2'>
+          <h2 className='subheading bottom'>Create a title for your spot</h2>
+          <p className='normal onlyShows'>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+          <input
+            className='colorInput longInput'
+            type="text"
+            placeholder='Name of your spot'
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+        </div>
+        <div className='section2'>
+          <h2 className='subheading bottom'>Set a base price for your spot</h2>
+          <p className='normal onlyShows'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+
+          <div className='priceInput'>
+            <div className='normal'>$</div>
+            <input
+              className='colorInput longInput'
+              type="text"
+              placeholder='Name of your spot'
+              value={price}
+              onChange={e => setPrice(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className='section2'>
+          <h2 className='subheading bottom'>Liven up your spot with photos</h2>
+          <p className='normal onlyShows'>Submit a link to at least one photo to publish your spot..</p>
+
+          <div className='imageInputs'>
+
+            <input
+              className='colorInput longInput'
+              type="url"
+
+              placeholder='Preview Image URL'
+              value={previewImage}
+              onChange={e => setPreviewImage(e.target.value)}
+            />
+            <input
+              className='colorInput longInput'
+              type="url"
+
+              placeholder='Image URL'
+              value={imageOne}
+              onChange={e => setImageOne(e.target.value)}
+            />
+            <input
+              className='colorInput longInput'
+              type="url"
+
+              placeholder='Image URL'
+              value={imageTwo}
+              onChange={e => setImageTwo(e.target.value)}
+            />
+            <input
+              className='colorInput longInput'
+              type="url"
+
+              placeholder='Image URL'
+              value={imageThree}
+              onChange={e => setImageThree(e.target.value)}
+            />
+            <input
+              className='colorInput longInput'
+              type="url"
+
+              placeholder='Image URL'
+              value={imageFour}
+              onChange={e => setImageFour(e.target.value)}
+            />
+          </div>
 
         </div>
+
+          <div className='buttonDiv'>
+            <button onClick={(e) => submit(e)} className='red'>Create Spot</button>
+          </div>
+
+
 
       </div>
 
