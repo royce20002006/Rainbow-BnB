@@ -28,6 +28,16 @@
     display: flex;
     gap: .3rem;
 }
+
+.labelAndError {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.error {
+    color: #FF385c;
+}
 .location {
     display: flex;
     flex-direction: column;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './SpotForm.css'
 import { useDispatch } from 'react-redux';
 
@@ -21,6 +21,77 @@ export default function SpotForm() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const error = {};
+    if (!country.length) {
+      error.country = 'Country is required';
+    }
+
+    if (!street.length) {
+      error.street = 'Address is required';
+    }
+
+    if (!city.length) {
+      error.city = 'City is required';
+    }
+
+    if (!state.length) {
+      error.state = 'State is required';
+    }
+
+    if (!lat.length) {
+      error.lat = 'Latitude is required';
+    }
+
+    if (!lng.length) {
+      error.lng = 'Longitude is required';
+    }
+
+    if (description.length < 30) {
+      error.description = 'Description needs a minimum of 30 characters';
+    }
+
+    if (!name.length) {
+      error.name = 'Name is required';
+    }
+
+    if (!price.length) {
+      error.price = 'Price is required';
+    }
+
+    if (!previewImage.length) {
+      error.preview = 'Preview Image is required'
+    }
+    if (previewImage.length) {
+      if (!previewImage.endsWith('.png') && !previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg')) {
+        error.image = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+
+    if (imageOne.length) {
+      if (!imageOne.endsWith('.png') && !imageOne.endsWith('.jpg') && !imageOne.endsWith('.jpeg')) {
+        error.imageOne = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+
+    if (imageTwo.length) {
+      if (!imageTwo.endsWith('.png') && !imageTwo.endsWith('.jpg') && !imageTwo.endsWith('.jpeg')) {
+        error.imageTwo = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+    if (imageThree.length) {
+      if (!imageThree.endsWith('.png') && !imageThree.endsWith('.jpg') && !imageThree.endsWith('.jpeg')) {
+        error.imageThree = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+    if (imageFour.length) {
+      if (!imageFour.endsWith('.png') && !imageFour.endsWith('.jpg') && !imageFour.endsWith('.jpeg')) {
+        error.imageFour = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+    setErrors(error)
+  }, [country, street, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour])
+
 
 
   const submit = (e) => {
@@ -38,7 +109,10 @@ export default function SpotForm() {
 
         <div className='sectionOne'>
           <div className='country labelTop'>
-            <label htmlFor="country">Country</label>
+            <div className='labelAndError'>
+              <label htmlFor="country">Country</label>
+              <div className='error'>{errors.country && errors.country}</div>
+            </div>
             <input
               className='longInput colorInput'
               type="text"
@@ -47,7 +121,11 @@ export default function SpotForm() {
               onChange={e => setCountry(e.target.value)}
             />
           </div>
-          <div className='streetAddress labelTop'><label htmlFor="street">Street Address</label>
+          <div className='streetAddress labelTop'>
+            <div className='labelAndError'>
+              <label htmlFor="street">Street Address</label>
+              <div className='error'>{errors.street && errors.street}</div>
+            </div>
             <input
               className='longInput colorInput'
               type="text"
@@ -58,8 +136,11 @@ export default function SpotForm() {
           </div>
           <div className='cityState'>
             <div className='city'>
+              <div className='labelAndError'>
+                <label className='cityLabel' htmlFor="city">City</label>
+                <div className='error'>{errors.city && errors.city}</div>
 
-              <label className='cityLabel' htmlFor="city">City</label>
+              </div>
               <input
                 className='cityInput colorInput'
                 type="text"
@@ -70,8 +151,11 @@ export default function SpotForm() {
             </div>
             <div className='normal comma'>,</div>
             <div className='state'>
-
+              <div className='labelAndError'>
               <label className='stateLabel' htmlFor="state">State</label>
+              <div className='error'>{errors.state && errors.state}</div>
+
+              </div>
               <input
                 className='stateInput colorInput'
                 type="text"
@@ -83,8 +167,11 @@ export default function SpotForm() {
           </div>
           <div className='cityState'>
             <div className='city'>
+            <div className='labelAndError'>
+              <label className='cityLabel' htmlFor="latitude">Latitude</label>
+              <div className='error'>{errors.lat && errors.lat}</div>
 
-              <label className='cityLabel' htmlFor="city">Latitude</label>
+            </div>
               <input
                 className='lat colorInput'
                 type="text"
@@ -95,8 +182,12 @@ export default function SpotForm() {
             </div>
             <div className='normal comma'>,</div>
             <div className='state'>
+            <div className='labelAndError'>
+              <label className='stateLabel' htmlFor="longitude">Longitude</label>
+              <div className='error'>{errors.lng && errors.lng}</div>
 
-              <label className='stateLabel' htmlFor="state">Longitude</label>
+            </div>
+
               <input
                 className='lng colorInput'
                 type="text"
@@ -119,6 +210,7 @@ export default function SpotForm() {
             value={description}
             onChange={e => setDescription(e.target.value)}
           ></textarea>
+          <div className='error'>{errors.description && errors.description}</div>
         </div>
         <div className='section2'>
           <h2 className='subheading bottom'>Create a title for your spot</h2>
@@ -130,6 +222,7 @@ export default function SpotForm() {
             value={name}
             onChange={e => setName(e.target.value)}
           />
+          <div className='error'>{errors.name && errors.name}</div>
         </div>
         <div className='section2'>
           <h2 className='subheading bottom'>Set a base price for your spot</h2>
@@ -145,13 +238,14 @@ export default function SpotForm() {
               onChange={e => setPrice(e.target.value)}
             />
           </div>
+            <div className='error'>{errors.price && errors.price}</div>
         </div>
         <div className='section2'>
           <h2 className='subheading bottom'>Liven up your spot with photos</h2>
           <p className='normal onlyShows'>Submit a link to at least one photo to publish your spot..</p>
 
           <div className='imageInputs'>
-
+            <div>
             <input
               className='colorInput longInput'
               type="url"
@@ -160,6 +254,10 @@ export default function SpotForm() {
               value={previewImage}
               onChange={e => setPreviewImage(e.target.value)}
             />
+            <div className='error'>{errors.preview && errors.preview || errors.image && errors.image}</div>
+
+            </div>
+            <div>
             <input
               className='colorInput longInput'
               type="url"
@@ -168,6 +266,10 @@ export default function SpotForm() {
               value={imageOne}
               onChange={e => setImageOne(e.target.value)}
             />
+            <div className='error'>{errors.imageOne && errors.imageOne}</div>
+
+            </div>
+            <div>
             <input
               className='colorInput longInput'
               type="url"
@@ -176,6 +278,10 @@ export default function SpotForm() {
               value={imageTwo}
               onChange={e => setImageTwo(e.target.value)}
             />
+            <div className='error'>{errors.imageTwo && errors.imageTwo}</div>
+
+            </div>
+            <div>
             <input
               className='colorInput longInput'
               type="url"
@@ -184,6 +290,10 @@ export default function SpotForm() {
               value={imageThree}
               onChange={e => setImageThree(e.target.value)}
             />
+            <div className='error'>{errors.imageThree && errors.imageThree}</div>
+
+            </div>
+            <div>
             <input
               className='colorInput longInput'
               type="url"
@@ -192,13 +302,20 @@ export default function SpotForm() {
               value={imageFour}
               onChange={e => setImageFour(e.target.value)}
             />
+              <div className='error'>{errors.imageFour && errors.imageFour}</div>
+            </div>
           </div>
 
         </div>
 
-          <div className='buttonDiv'>
-            <button onClick={(e) => submit(e)} className='red'>Create Spot</button>
-          </div>
+        <div className='buttonDiv'>
+
+          <button
+            onClick={(e) => submit(e)}
+            // disabled={Object.keys(errors).length}
+            className='red'
+          >Create Spot</button>
+        </div>
 
 
 
