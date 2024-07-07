@@ -18,11 +18,16 @@ export default function SpotForm() {
   const [imageThree, setImageThree] = useState('')
   const [imageFour, setImageFour] = useState('')
   const [errors, setErrors] = useState({});
+  const [buttonClicked, setButtonClicked] = useState(false)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const error = {};
+
+    if (buttonClicked) {
+
+    
     if (!country.length) {
       error.country = 'Country is required';
     }
@@ -89,12 +94,14 @@ export default function SpotForm() {
         error.imageFour = 'Image URL must end in .png, .jpg, or .jpeg'
       }
     }
+  }
     setErrors(error)
-  }, [country, street, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour])
+  }, [country, street, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked])
 
 
 
   const submit = (e) => {
+    setButtonClicked(!buttonClicked)
     e.preventDefault();
     e.stopPropagation();
 
@@ -312,7 +319,7 @@ export default function SpotForm() {
 
           <button
             onClick={(e) => submit(e)}
-            // disabled={Object.keys(errors).length}
+            
             className='red'
           >Create Spot</button>
         </div>
