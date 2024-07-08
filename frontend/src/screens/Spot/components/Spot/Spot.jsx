@@ -14,7 +14,7 @@ export default function Spot() {
   const dispatch = useDispatch();
   
   const spot = useSelector(state => state.spotState.singleSpot)
-  console.log(spot.SpotImages);
+  
 
   useEffect(() => {
     const getData = async () => {
