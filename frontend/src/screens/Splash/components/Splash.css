@@ -6,6 +6,7 @@
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    flex-basis: 21%;
     flex-wrap: wrap;
     padding: 20px 5px;
     cursor: pointer;
@@ -17,8 +18,8 @@
 }
 
 .spotSection img {
-    width: 13rem;
-    height: 13rem;
+    width: 14rem;
+    height: 14rem;
     border-radius: 3%;
 }
 

@@ -112,6 +112,10 @@ export default function SpotForm() {
     setButtonClicked(!buttonClicked)
     e.preventDefault();
     e.stopPropagation();
+
+  
+
+
     const spot = { country, address, state, city, lat, lng, description, name, price }
     const newSpot = await dispatch(addSpotThunk(spot))
 
