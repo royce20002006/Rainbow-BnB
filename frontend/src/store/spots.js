@@ -94,7 +94,7 @@ export const addImageThunk = (id, image) => async (dispatch) => {
             header: {'Content-Type': 'application/json'},
             body: JSON.stringify(image)
         }
-        const res = await csrfFetch(`api/spots/${id}/images`, options)
+        const res = await csrfFetch(`/api/spots/${id}/images`, options)
         console.log(res)
         if (res.ok) {
             const data = await res.json();
