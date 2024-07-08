@@ -12,13 +12,14 @@ export default function Spot() {
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
-  const spot = useSelector(state => state.spotState.singleSpot['spot'])
-  // console.log(spot);
+  
+  const spot = useSelector(state => state.spotState.singleSpot)
+  console.log(spot.SpotImages);
 
   useEffect(() => {
     const getData = async () => {
-      dispatch(getSingleSpotThunk(id));
-      dispatch(getReviewsThunk(id));
+      await dispatch(getSingleSpotThunk(id));
+      await dispatch(getReviewsThunk(id));
       setIsLoaded(true);
     }
 

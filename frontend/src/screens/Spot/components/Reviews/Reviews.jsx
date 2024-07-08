@@ -11,7 +11,7 @@ export default function Reviews() {
     const [isLoaded, setIsLoaded] = useState(false);
     const dispatch = useDispatch();
     const reviews = useSelector(state => state.reviewsState.allReviews)
-    const spot = useSelector(state => state.spotState.singleSpot['spot'])
+    const spot = useSelector(state => state.spotState.singleSpot)
     const sessionUser = useSelector(state => state.session.user);
     const [isOwner, setIsOwner] = useState(false);
     const [alreadyReviewed, setAlreadyReviewed] = useState(false)

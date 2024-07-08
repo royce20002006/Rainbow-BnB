@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import './SpotForm.css'
-import { useDispatch } from 'react-redux';
+
+
+import { useDispatch} from 'react-redux';
+import { addImageThunk, addSpotThunk } from '../../../../store/spots';
+import { useNavigate } from 'react-router-dom';
 
 export default function SpotForm() {
   const [country, setCountry] = useState('');
-  const [street, setStreet] = useState('');
+  const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [lat, setLat] = useState('');
@@ -19,91 +23,114 @@ export default function SpotForm() {
   const [imageFour, setImageFour] = useState('')
   const [errors, setErrors] = useState({});
   const [buttonClicked, setButtonClicked] = useState(false)
-
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+
+
 
   useEffect(() => {
     const error = {};
 
     if (buttonClicked) {
 
-    
-    if (!country.length) {
-      error.country = 'Country is required';
-    }
 
-    if (!street.length) {
-      error.street = 'Address is required';
-    }
+      if (!country.length) {
+        error.country = 'Country is required';
+      }
 
-    if (!city.length) {
-      error.city = 'City is required';
-    }
+      if (!address.length) {
+        error.address = 'Address is required';
+      }
 
-    if (!state.length) {
-      error.state = 'State is required';
-    }
+      if (!city.length) {
+        error.city = 'City is required';
+      }
 
-    if (!lat.length) {
-      error.lat = 'Latitude is required';
-    }
+      if (!state.length) {
+        error.state = 'State is required';
+      }
 
-    if (!lng.length) {
-      error.lng = 'Longitude is required';
-    }
+      if (!lat.length) {
+        error.lat = 'Latitude is required';
+      }
 
-    if (description.length < 30) {
-      error.description = 'Description needs a minimum of 30 characters';
-    }
+      if (!lng.length) {
+        error.lng = 'Longitude is required';
+      }
 
-    if (!name.length) {
-      error.name = 'Name is required';
-    }
+      if (description.length < 30) {
+        error.description = 'Description needs a minimum of 30 characters';
+      }
 
-    if (!price.length) {
-      error.price = 'Price is required';
-    }
+      if (!name.length) {
+        error.name = 'Name is required';
+      }
 
-    if (!previewImage.length) {
-      error.preview = 'Preview Image is required'
-    }
-    if (previewImage.length) {
-      if (!previewImage.endsWith('.png') && !previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg')) {
-        error.image = 'Image URL must end in .png, .jpg, or .jpeg'
+      if (!price.length) {
+        error.price = 'Price is required';
+      }
+
+      if (!previewImage.length) {
+        error.preview = 'Preview Image is required'
+      }
+      if (previewImage.length) {
+        if (!previewImage.endsWith('.png') && !previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg')) {
+          error.image = 'Image URL must end in .png, .jpg, or .jpeg'
+        }
+      }
+
+      if (imageOne.length) {
+        if (!imageOne.endsWith('.png') && !imageOne.endsWith('.jpg') && !imageOne.endsWith('.jpeg')) {
+          error.imageOne = 'Image URL must end in .png, .jpg, or .jpeg'
+        }
+      }
+
+      if (imageTwo.length) {
+        if (!imageTwo.endsWith('.png') && !imageTwo.endsWith('.jpg') && !imageTwo.endsWith('.jpeg')) {
+          error.imageTwo = 'Image URL must end in .png, .jpg, or .jpeg'
+        }
+      }
+      if (imageThree.length) {
+        if (!imageThree.endsWith('.png') && !imageThree.endsWith('.jpg') && !imageThree.endsWith('.jpeg')) {
+          error.imageThree = 'Image URL must end in .png, .jpg, or .jpeg'
+        }
+      }
+      if (imageFour.length) {
+        if (!imageFour.endsWith('.png') && !imageFour.endsWith('.jpg') && !imageFour.endsWith('.jpeg')) {
+          error.imageFour = 'Image URL must end in .png, .jpg, or .jpeg'
+        }
       }
     }
-
-    if (imageOne.length) {
-      if (!imageOne.endsWith('.png') && !imageOne.endsWith('.jpg') && !imageOne.endsWith('.jpeg')) {
-        error.imageOne = 'Image URL must end in .png, .jpg, or .jpeg'
-      }
-    }
-
-    if (imageTwo.length) {
-      if (!imageTwo.endsWith('.png') && !imageTwo.endsWith('.jpg') && !imageTwo.endsWith('.jpeg')) {
-        error.imageTwo = 'Image URL must end in .png, .jpg, or .jpeg'
-      }
-    }
-    if (imageThree.length) {
-      if (!imageThree.endsWith('.png') && !imageThree.endsWith('.jpg') && !imageThree.endsWith('.jpeg')) {
-        error.imageThree = 'Image URL must end in .png, .jpg, or .jpeg'
-      }
-    }
-    if (imageFour.length) {
-      if (!imageFour.endsWith('.png') && !imageFour.endsWith('.jpg') && !imageFour.endsWith('.jpeg')) {
-        error.imageFour = 'Image URL must end in .png, .jpg, or .jpeg'
-      }
-    }
-  }
     setErrors(error)
-  }, [country, street, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked])
+  }, [country, address, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked])
 
 
 
-  const submit = (e) => {
+  const submit = async (e) => {
     setButtonClicked(!buttonClicked)
     e.preventDefault();
     e.stopPropagation();
+    const spot = { country, address, state, city, lat, lng, description, name, price }
+    const newSpot = await dispatch(addSpotThunk(spot))
+
+    console.log(newSpot.id)
+    
+    const images = [{ url: previewImage, preview: true },
+      {url: imageOne || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false},
+      {url: imageTwo || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false},
+      {url: imageThree || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false},
+      {url: imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false},
+    ]
+    
+
+    for (let image of images) {
+      await dispatch(addImageThunk(newSpot.id ,image))
+
+    }
+    navigate(`/spots/${newSpot.id}`)
+    
 
   }
 
@@ -131,14 +158,14 @@ export default function SpotForm() {
           <div className='streetAddress labelTop'>
             <div className='labelAndError'>
               <label htmlFor="street">Street Address</label>
-              <div className='error'>{errors.street && errors.street}</div>
+              <div className='error'>{errors.address && errors.address}</div>
             </div>
             <input
               className='longInput colorInput'
               type="text"
               placeholder='Street Address'
-              value={street}
-              onChange={e => setStreet(e.target.value)}
+              value={address}
+              onChange={e => setAddress(e.target.value)}
             />
           </div>
           <div className='cityState'>
@@ -159,8 +186,8 @@ export default function SpotForm() {
             <div className='normal comma'>,</div>
             <div className='state'>
               <div className='labelAndError'>
-              <label className='stateLabel' htmlFor="state">State</label>
-              <div className='error'>{errors.state && errors.state}</div>
+                <label className='stateLabel' htmlFor="state">State</label>
+                <div className='error'>{errors.state && errors.state}</div>
 
               </div>
               <input
@@ -174,11 +201,11 @@ export default function SpotForm() {
           </div>
           <div className='cityState'>
             <div className='city'>
-            <div className='labelAndError'>
-              <label className='cityLabel' htmlFor="latitude">Latitude</label>
-              <div className='error'>{errors.lat && errors.lat}</div>
+              <div className='labelAndError'>
+                <label className='cityLabel' htmlFor="latitude">Latitude</label>
+                <div className='error'>{errors.lat && errors.lat}</div>
 
-            </div>
+              </div>
               <input
                 className='lat colorInput'
                 type="text"
@@ -189,11 +216,11 @@ export default function SpotForm() {
             </div>
             <div className='normal comma'>,</div>
             <div className='state'>
-            <div className='labelAndError'>
-              <label className='stateLabel' htmlFor="longitude">Longitude</label>
-              <div className='error'>{errors.lng && errors.lng}</div>
+              <div className='labelAndError'>
+                <label className='stateLabel' htmlFor="longitude">Longitude</label>
+                <div className='error'>{errors.lng && errors.lng}</div>
 
-            </div>
+              </div>
 
               <input
                 className='lng colorInput'
@@ -240,12 +267,12 @@ export default function SpotForm() {
             <input
               className='colorInput longInput'
               type="text"
-              placeholder='Name of your spot'
+              placeholder='Price per night (USD)'
               value={price}
               onChange={e => setPrice(e.target.value)}
             />
           </div>
-            <div className='error'>{errors.price && errors.price}</div>
+          <div className='error'>{errors.price && errors.price}</div>
         </div>
         <div className='section2'>
           <h2 className='subheading bottom'>Liven up your spot with photos</h2>
@@ -253,62 +280,62 @@ export default function SpotForm() {
 
           <div className='imageInputs'>
             <div>
-            <input
-              className='colorInput longInput'
-              type="url"
+              <input
+                className='colorInput longInput'
+                type="url"
 
-              placeholder='Preview Image URL'
-              value={previewImage}
-              onChange={e => setPreviewImage(e.target.value)}
-            />
-            <div className='error'>{errors.preview && errors.preview || errors.image && errors.image}</div>
-
-            </div>
-            <div>
-            <input
-              className='colorInput longInput'
-              type="url"
-
-              placeholder='Image URL'
-              value={imageOne}
-              onChange={e => setImageOne(e.target.value)}
-            />
-            <div className='error'>{errors.imageOne && errors.imageOne}</div>
+                placeholder='Preview Image URL'
+                value={previewImage}
+                onChange={e => setPreviewImage(e.target.value)}
+              />
+              <div className='error'>{errors.preview && errors.preview || errors.image && errors.image}</div>
 
             </div>
             <div>
-            <input
-              className='colorInput longInput'
-              type="url"
+              <input
+                className='colorInput longInput'
+                type="url"
 
-              placeholder='Image URL'
-              value={imageTwo}
-              onChange={e => setImageTwo(e.target.value)}
-            />
-            <div className='error'>{errors.imageTwo && errors.imageTwo}</div>
-
-            </div>
-            <div>
-            <input
-              className='colorInput longInput'
-              type="url"
-
-              placeholder='Image URL'
-              value={imageThree}
-              onChange={e => setImageThree(e.target.value)}
-            />
-            <div className='error'>{errors.imageThree && errors.imageThree}</div>
+                placeholder='Image URL'
+                value={imageOne}
+                onChange={e => setImageOne(e.target.value)}
+              />
+              <div className='error'>{errors.imageOne && errors.imageOne}</div>
 
             </div>
             <div>
-            <input
-              className='colorInput longInput'
-              type="url"
+              <input
+                className='colorInput longInput'
+                type="url"
 
-              placeholder='Image URL'
-              value={imageFour}
-              onChange={e => setImageFour(e.target.value)}
-            />
+                placeholder='Image URL'
+                value={imageTwo}
+                onChange={e => setImageTwo(e.target.value)}
+              />
+              <div className='error'>{errors.imageTwo && errors.imageTwo}</div>
+
+            </div>
+            <div>
+              <input
+                className='colorInput longInput'
+                type="url"
+
+                placeholder='Image URL'
+                value={imageThree}
+                onChange={e => setImageThree(e.target.value)}
+              />
+              <div className='error'>{errors.imageThree && errors.imageThree}</div>
+
+            </div>
+            <div>
+              <input
+                className='colorInput longInput'
+                type="url"
+
+                placeholder='Image URL'
+                value={imageFour}
+                onChange={e => setImageFour(e.target.value)}
+              />
               <div className='error'>{errors.imageFour && errors.imageFour}</div>
             </div>
           </div>
@@ -319,7 +346,7 @@ export default function SpotForm() {
 
           <button
             onClick={(e) => submit(e)}
-            
+            disabled={Object.keys(errors).length !== 0}
             className='red'
           >Create Spot</button>
         </div>
