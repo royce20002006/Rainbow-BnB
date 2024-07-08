@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './SpotForm.css'
 
 
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addImageThunk, addSpotThunk } from '../../../../store/spots';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ export default function SpotForm() {
   useEffect(() => {
     const error = {};
 
-    if (buttonClicked) {
+    
 
 
       if (!country.length) {
@@ -101,9 +101,10 @@ export default function SpotForm() {
         if (!imageFour.endsWith('.png') && !imageFour.endsWith('.jpg') && !imageFour.endsWith('.jpeg')) {
           error.imageFour = 'Image URL must end in .png, .jpg, or .jpeg'
         }
-      }
+      
     }
     setErrors(error)
+    console.log(Object.keys(errors))
   }, [country, address, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked])
 
 
@@ -113,28 +114,30 @@ export default function SpotForm() {
     e.preventDefault();
     e.stopPropagation();
 
-  
+
+    if (Object.keys(errors).length === 0) {
+
+      const spot = { country, address, state, city, lat, lng, description, name, price }
+      const newSpot = await dispatch(addSpotThunk(spot))
+
+      console.log(newSpot.id)
+
+      const images = [{ url: previewImage, preview: true },
+      { url: imageOne || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+      { url: imageTwo || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+      { url: imageThree || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+      { url: imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+      ]
 
 
-    const spot = { country, address, state, city, lat, lng, description, name, price }
-    const newSpot = await dispatch(addSpotThunk(spot))
+      for (let image of images) {
+        await dispatch(addImageThunk(newSpot.id, image))
 
-    console.log(newSpot.id)
-    
-    const images = [{ url: previewImage, preview: true },
-      {url: imageOne || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false},
-      {url: imageTwo || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false},
-      {url: imageThree || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false},
-      {url: imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false},
-    ]
-    
+      }
 
-    for (let image of images) {
-      await dispatch(addImageThunk(newSpot.id ,image))
-
+      navigate(`/spots/${newSpot.id}`)
     }
-    navigate(`/spots/${newSpot.id}`)
-    
+
 
   }
 
@@ -149,7 +152,7 @@ export default function SpotForm() {
           <div className='country labelTop'>
             <div className='labelAndError'>
               <label htmlFor="country">Country</label>
-              <div className='error'>{errors.country && errors.country}</div>
+              <div className='error'>{buttonClicked && errors.country && errors.country}</div>
             </div>
             <input
               className='longInput colorInput'
@@ -162,7 +165,7 @@ export default function SpotForm() {
           <div className='streetAddress labelTop'>
             <div className='labelAndError'>
               <label htmlFor="street">Street Address</label>
-              <div className='error'>{errors.address && errors.address}</div>
+              <div className='error'>{buttonClicked &&errors.address && errors.address}</div>
             </div>
             <input
               className='longInput colorInput'
@@ -176,7 +179,7 @@ export default function SpotForm() {
             <div className='city'>
               <div className='labelAndError'>
                 <label className='cityLabel' htmlFor="city">City</label>
-                <div className='error'>{errors.city && errors.city}</div>
+                <div className='error'>{buttonClicked && errors.city && errors.city}</div>
 
               </div>
               <input
@@ -191,7 +194,7 @@ export default function SpotForm() {
             <div className='state'>
               <div className='labelAndError'>
                 <label className='stateLabel' htmlFor="state">State</label>
-                <div className='error'>{errors.state && errors.state}</div>
+                <div className='error'>{buttonClicked && errors.state && errors.state}</div>
 
               </div>
               <input
@@ -207,7 +210,7 @@ export default function SpotForm() {
             <div className='city'>
               <div className='labelAndError'>
                 <label className='cityLabel' htmlFor="latitude">Latitude</label>
-                <div className='error'>{errors.lat && errors.lat}</div>
+                <div className='error'>{buttonClicked && errors.lat && errors.lat}</div>
 
               </div>
               <input
@@ -222,7 +225,7 @@ export default function SpotForm() {
             <div className='state'>
               <div className='labelAndError'>
                 <label className='stateLabel' htmlFor="longitude">Longitude</label>
-                <div className='error'>{errors.lng && errors.lng}</div>
+                <div className='error'>{buttonClicked&& errors.lng && errors.lng}</div>
 
               </div>
 
@@ -248,7 +251,7 @@ export default function SpotForm() {
             value={description}
             onChange={e => setDescription(e.target.value)}
           ></textarea>
-          <div className='error'>{errors.description && errors.description}</div>
+          <div className='error'>{buttonClicked && errors.description && errors.description}</div>
         </div>
         <div className='section2'>
           <h2 className='subheading bottom'>Create a title for your spot</h2>
@@ -260,7 +263,7 @@ export default function SpotForm() {
             value={name}
             onChange={e => setName(e.target.value)}
           />
-          <div className='error'>{errors.name && errors.name}</div>
+          <div className='error'>{buttonClicked && errors.name && errors.name}</div>
         </div>
         <div className='section2'>
           <h2 className='subheading bottom'>Set a base price for your spot</h2>
@@ -276,7 +279,7 @@ export default function SpotForm() {
               onChange={e => setPrice(e.target.value)}
             />
           </div>
-          <div className='error'>{errors.price && errors.price}</div>
+          <div className='error'>{buttonClicked && errors.price && errors.price}</div>
         </div>
         <div className='section2'>
           <h2 className='subheading bottom'>Liven up your spot with photos</h2>
@@ -292,7 +295,7 @@ export default function SpotForm() {
                 value={previewImage}
                 onChange={e => setPreviewImage(e.target.value)}
               />
-              <div className='error'>{errors.preview && errors.preview || errors.image && errors.image}</div>
+              <div className='error'>{buttonClicked && errors.preview && errors.preview ||buttonClicked &&  errors.image && errors.image}</div>
 
             </div>
             <div>
@@ -304,7 +307,7 @@ export default function SpotForm() {
                 value={imageOne}
                 onChange={e => setImageOne(e.target.value)}
               />
-              <div className='error'>{errors.imageOne && errors.imageOne}</div>
+              <div className='error'>{buttonClicked && errors.imageOne && errors.imageOne}</div>
 
             </div>
             <div>
@@ -316,7 +319,7 @@ export default function SpotForm() {
                 value={imageTwo}
                 onChange={e => setImageTwo(e.target.value)}
               />
-              <div className='error'>{errors.imageTwo && errors.imageTwo}</div>
+              <div className='error'>{buttonClicked && errors.imageTwo && errors.imageTwo}</div>
 
             </div>
             <div>
@@ -328,7 +331,7 @@ export default function SpotForm() {
                 value={imageThree}
                 onChange={e => setImageThree(e.target.value)}
               />
-              <div className='error'>{errors.imageThree && errors.imageThree}</div>
+              <div className='error'>{buttonClicked && errors.imageThree && errors.imageThree}</div>
 
             </div>
             <div>
@@ -340,7 +343,7 @@ export default function SpotForm() {
                 value={imageFour}
                 onChange={e => setImageFour(e.target.value)}
               />
-              <div className='error'>{errors.imageFour && errors.imageFour}</div>
+              <div className='error'>{buttonClicked && errors.imageFour && errors.imageFour}</div>
             </div>
           </div>
 

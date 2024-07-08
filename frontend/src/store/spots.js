@@ -80,6 +80,9 @@ export const addSpotThunk = (spot) => async (dispatch) => {
             dispatch(getSingleSpot(data))
             return data;
             
+        } else {
+            
+            throw res
         }
         
     } catch (error) {
@@ -101,6 +104,8 @@ export const addImageThunk = (id, image) => async (dispatch) => {
             dispatch(addImage(id, data))
             return data
 
+        } else {
+            throw res
         }
         
     } catch (error) {
