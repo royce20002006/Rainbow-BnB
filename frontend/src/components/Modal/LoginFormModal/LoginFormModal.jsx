@@ -10,6 +10,20 @@ export default function LoginFormModal() {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
+    
+
+    const demoLogin = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        return dispatch(sessionActions.login({credential: 'FakeUser1', password: 'password2'})).then(closeModal)
+        .catch(
+            async (res) => {
+                const data = await res.json();
+                if (data?.errors) setErrors(data.errors);
+            }
+        );
+
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -48,6 +62,7 @@ export default function LoginFormModal() {
             {errors.credential && <p>{errors.credential}</p>}
             <button type='submit'>Log In</button>
         </label>
+        <button onClick={(e) => demoLogin(e)}>log in as demo user</button>
     </form>
     </>
   )

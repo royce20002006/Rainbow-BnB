@@ -4,21 +4,23 @@ import { useParams } from "react-router-dom"
 import { getSingleSpotThunk } from "../../../../store/spots";
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
-import Reviews from "../reviews/reviews";
-import './spot.css'
+
+import './Spot.css'
+import Reviews from '../Reviews/Reviews';
 
 
 export default function Spot() {
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
-  const spot = useSelector(state => state.spotState.singleSpot['spot'])
-  // console.log(spot);
+  
+  const spot = useSelector(state => state.spotState.singleSpot)
+  
 
   useEffect(() => {
     const getData = async () => {
-      dispatch(getSingleSpotThunk(id));
-      dispatch(getReviewsThunk(id));
+      await dispatch(getSingleSpotThunk(id));
+      await dispatch(getReviewsThunk(id));
       setIsLoaded(true);
     }
 

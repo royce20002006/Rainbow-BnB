@@ -1,4 +1,4 @@
-.spotSection {
+.allSpotsContainer{
     display: flex;
     flex-direction: row;
     margin: 0 1.5rem;
@@ -16,8 +16,19 @@
     font-size: 14pt;
    
 }
+.h1Manage {
+    margin: 0;
+    padding-top: 20px;
+    margin-bottom: .5rem;;
+}
 
-.spotSection img {
+.imageButtons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.allSpotsContainer img {
     width: 14rem;
     height: 14rem;
     border-radius: 3%;
