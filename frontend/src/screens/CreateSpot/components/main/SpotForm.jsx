@@ -105,7 +105,7 @@ export default function SpotForm() {
     }
     setErrors(error)
     console.log(Object.keys(errors))
-  }, [country, address, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked])
+  }, [country, address, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked, errors])
 
 
 
