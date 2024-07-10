@@ -182,7 +182,7 @@ router.get('/', queryParams, async (req, res, next) => {
 
         //get all the spots in the database
         let spots = await Spot.findAll({
-            include: [{ model: Review, attributes: [] }],
+            include: [{ model: Review, attributes: [] }, ],
             where,
             limit: size,
             offset: (page - 1) * size
@@ -330,11 +330,12 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
             country, lat, lng, name,
             description, price } = req.body;
 
-
+            console.log(address)
         const { user } = req;
+        console.log(user)
 
         if (user) {
-            
+             
 
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,
@@ -371,8 +372,10 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     try {
         const { url, preview } = req.body;
         const { spotId } = req.params;
+        console.log(url)
 
         const spot = await Spot.findByPk(spotId);
+        console.log('spot', spot)
 
         const { user } = req;
 
@@ -388,6 +391,8 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
                 const newImage = await SpotImage.create({
                     url, preview, spotId: parseInt(spotId)
                 });
+
+                console.log('newimage', newImage)
                 const imageFormatting = {
                     id: newImage.id,
                     url: newImage.url,

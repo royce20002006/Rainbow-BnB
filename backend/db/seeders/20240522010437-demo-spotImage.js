@@ -18,6 +18,24 @@ module.exports = {
 
         },
         {
+          url: 'https://i.pinimg.com/originals/22/68/f3/2268f3afb704a4d19c287a6595b74eb8.jpg',
+          spotId: 2,
+          preview: false
+
+        },
+        {
+          url: 'https://i.pinimg.com/originals/22/68/f3/2268f3afb704a4d19c287a6595b74eb8.jpg',
+          spotId: 2,
+          preview: false
+
+        },
+        {
+          url: 'https://i.pinimg.com/originals/22/68/f3/2268f3afb704a4d19c287a6595b74eb8.jpg',
+          spotId: 2,
+          preview: false
+
+        },
+        {
           url: 'https://a.cdn-hotels.com/gdcs/production12/d1130/83f1c8c6-e12d-4e69-8433-c5bbc90b5ad6.jpg',
           spotId: 1,
           preview: true

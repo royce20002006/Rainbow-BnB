@@ -1,0 +1,123 @@
+.images {
+    display: flex;
+    gap: .4rem;
+}
+
+.spotDetails {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+
+.firstImage img{
+    width: 100%;
+    height: 100%;
+    
+}
+
+.allSmallImagesDiv {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    flex-wrap: wrap;
+    
+}
+
+.smallImageDivRow1 {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    width: 30%;
+    height: 30%;
+    flex-wrap: nowrap;
+    
+    
+    
+}
+.smallImageDivRow2 {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    width: 30%;
+    height: 30%;
+    flex-wrap: nowrap;
+}
+
+.ownerAndPriceDiv {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+    
+    justify-content: space-between;
+}
+
+.priceAndReview {
+    
+    display: flex;
+    flex-direction: row;
+    
+    gap: 2rem;
+}
+
+.reservationDiv {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgray;
+    border-radius: 1rem;
+    padding: 10px;
+    gap: .6rem;
+    box-shadow: 3px 3px 20px lightgray;
+    
+
+}
+
+.reservationDiv button {
+    background-color: #FF385c;
+    border-radius: .4rem;
+    box-shadow: 1px 1px 1px black;
+    color: white;
+}
+
+.date {
+    display: flex;
+    gap: .4rem;
+}
+
+.ratingsWithButton {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+.reviewsStart {
+    border-top: 2px solid lightgrey;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.red button {
+    background-color: #FF385c;
+    border-radius: .4rem;
+    box-shadow: 1px 1px 1px black;
+    color: white;
+}
+.postButton {
+    background-color: darkslategrey;
+    border-radius: .4rem;
+    box-shadow: 1px 1px 1px black;
+    color: white;
+}
+
+.reviewUser {
+    margin: 0;
+    margin-top: 1rem;
+}
+
+.reviewText {
+    margin: 0;
+}
+

@@ -1,2 +1,29 @@
 /* TODO: Add sitewide styles */
 
+
+
+.heading {
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+.subheading {
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.normal {
+    font-size: 14pt;
+    
+}
+
+.colorInput {
+    background-color: #e9f0fe;
+}
+
+.red button {
+    background-color: #FF385c;
+    border-radius: .4rem;
+    box-shadow: 1px 1px 1px black;
+    color: white;
+}
