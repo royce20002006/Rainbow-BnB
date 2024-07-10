@@ -258,6 +258,7 @@ router.get('/', queryParams, async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
+        
         if (user) {
             const spots = await Spot.findAll({
                 where: {

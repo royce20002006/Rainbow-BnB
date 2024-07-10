@@ -1,0 +1,60 @@
+.allSpotsContainer{
+    display: flex;
+    flex-direction: row;
+    margin: 0 1.5rem;
+    gap: 2rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    flex-basis: 21%;
+    flex-wrap: wrap;
+    padding: 20px 5px;
+    
+}
+
+.spotInfo {
+    font-size: 14pt;
+   
+}
+.h1Manage {
+    margin: 0;
+    padding-top: 20px;
+    margin-bottom: .5rem;;
+}
+
+.imageButtons {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.allSpotsContainer img {
+    width: 14rem;
+    height: 14rem;
+    border-radius: 3%;
+}
+
+.locationAndRating {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.rating {
+    font-size: 14pt;
+    
+}
+
+.star {
+    font-size: 12pt;
+    position: relative;
+    top: .1rem;
+}
+
+.spotPrice {
+    font-weight: bold;
+}
+
+

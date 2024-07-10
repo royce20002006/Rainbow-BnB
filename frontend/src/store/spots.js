@@ -1,7 +1,7 @@
 import { csrfFetch } from './csrf';
 
 const GET_ALL_SPOTS = 'spots/getAllSpots';
-const GET_USER_SPOTS = 'spots/current'
+const GET_USER_SPOTS = 'spots/getUserSpots'
 const GET_SINGLE_SPOT = 'spots/spot';
 const ADD_SPOT = 'spots/add'
 const ADD_IMAGE = 'spots/images/add'
@@ -76,9 +76,8 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
         const res = await csrfFetch(`/api/spots/current`);
         if (res.ok) {
             const data = await res.json();
-            console.log(data)
-            dispatch(getSingleSpot(data))
             
+            dispatch(getUserSpots(data))
             
         } else {
             throw res
@@ -175,10 +174,8 @@ function spotsReducer(state = initialState, action) {
 
             case GET_USER_SPOTS:
                 newState = { ...state };
-                newState.currentUser = action.payload.spots;
-                for(let spot of action.payload.Spots) {
-                    newState.byId[spot.id] = spot;
-                }
+                newState.currentUser = action.payload.Spots;
+                
 
                 return newState;
 
