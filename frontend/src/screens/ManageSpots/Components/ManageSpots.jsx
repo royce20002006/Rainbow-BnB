@@ -9,7 +9,7 @@ export default function ManageSpots() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const spots = useSelector(state => state.spotState.currentUser)
-    console.log(spots)
+    
     
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,7 +26,7 @@ export default function ManageSpots() {
       getData();
     }
 
-  }, [dispatch, isLoaded])
+  }, [dispatch, isLoaded,])
 
   const goToSpot = (e,spot) => {
     
