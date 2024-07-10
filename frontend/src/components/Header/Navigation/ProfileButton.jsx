@@ -6,11 +6,13 @@ import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../../Modal/LoginFormModal/LoginFormModal';
 import SignupFormModal from '../../Modal/SignupFormModal/SignupFormModal';
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useNavigate } from 'react-router-dom';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const navigate = useNavigate();
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
@@ -55,7 +57,7 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             </div>
             <div className='manageSpots cursor'>
-            <li>Manage Spots</li>
+            <li> <div onClick={() => navigate('/spots/manage')}>Manage Spots</div></li>
             <li>Manage Reviews</li>
             </div>
             <li className='logout'>

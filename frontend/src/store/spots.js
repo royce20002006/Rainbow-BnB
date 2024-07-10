@@ -1,6 +1,7 @@
 import { csrfFetch } from './csrf';
 
 const GET_ALL_SPOTS = 'spots/getAllSpots';
+const GET_USER_SPOTS = 'spots/current'
 const GET_SINGLE_SPOT = 'spots/spot';
 const ADD_SPOT = 'spots/add'
 const ADD_IMAGE = 'spots/images/add'
@@ -9,6 +10,10 @@ const ADD_IMAGE = 'spots/images/add'
 // action creator
 const getAllSpots = (spots) => ({
     type: GET_ALL_SPOTS,
+    payload: spots
+})
+const getUserSpots = (spots) => ({
+    type: GET_USER_SPOTS,
     payload: spots
 })
 
@@ -55,6 +60,23 @@ export const getSingleSpotThunk = (id) => async (dispatch) => {
         if (res.ok) {
             const data = await res.json();
             
+            dispatch(getSingleSpot(data))
+            
+            
+        } else {
+            throw res
+        }
+
+    } catch (error) {
+        return error;
+    }
+}
+export const getCurrentUserSpotsThunk = () => async (dispatch) => {
+    try {
+        const res = await csrfFetch(`/api/spots/current`);
+        if (res.ok) {
+            const data = await res.json();
+            console.log(data)
             dispatch(getSingleSpot(data))
             
             
@@ -150,6 +172,16 @@ function spotsReducer(state = initialState, action) {
                 newState.singleSpot.SpotImages = [...newState?.singleSpot?.SpotImages || []]
                 newState.singleSpot.SpotImages.push(action.image)
                 return newState
+
+            case GET_USER_SPOTS:
+                newState = { ...state };
+                newState.currentUser = action.payload.spots;
+                for(let spot of action.payload.Spots) {
+                    newState.byId[spot.id] = spot;
+                }
+
+                return newState;
+
 
         default: 
             return state;
