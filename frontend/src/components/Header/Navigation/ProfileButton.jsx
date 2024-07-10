@@ -57,7 +57,7 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             </div>
             <div className='manageSpots cursor'>
-            <li> <div onClick={() => navigate('/spots/manage')}>Manage Spots</div></li>
+            <li> {<div onClick={() => navigate('/spots/manage')}>Manage Spots</div>}</li>
             <li>Manage Reviews</li>
             </div>
             <li className='logout'>

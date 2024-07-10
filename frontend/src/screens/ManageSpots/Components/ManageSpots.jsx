@@ -42,6 +42,17 @@ export default function ManageSpots() {
     
   }
 
+  const updateSpot = (e, spot) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('update functionality goes here')
+  }
+  const deleteSpot = (e, spot) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('delete functionality goes here')
+  }
+
 
 
 
@@ -51,7 +62,7 @@ export default function ManageSpots() {
         <button className='red' onClick={() => navigate('/spots/new')}>Create a new Spot</button>
         <div className='allSpotsContainer'>
         {spots.map((spot, idx) => (
-        <div key={`${idx}--${spot.id}`} role='tooltip'>
+        <div onClick={e => goToSpot(e,spot)} key={`${idx}--${spot.id}`} role='tooltip'>
             
             <img src={spot.previewImage} />
             <div className="locationAndRating">
@@ -64,8 +75,9 @@ export default function ManageSpots() {
             <span className="spotPrice spotInfo">${spot.price}</span><span> night </span>
 
             <div className='imageButtons'>
-              <button className='red'>update</button>
-              <button className='red'>delete</button>
+              <button onClick={(e, spot) => updateSpot(e, spot)} className='red'>update</button>
+              <button onClick={(e, spot) => deleteSpot(e, spot)}
+              className='red'>delete</button>
             </div>
           
         </div>
