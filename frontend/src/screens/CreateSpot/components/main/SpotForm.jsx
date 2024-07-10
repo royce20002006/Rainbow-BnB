@@ -36,76 +36,76 @@ export default function SpotForm() {
     
 
 
-      if (!country.length) {
+      if (!country.trim().length) {
         error.country = 'Country is required';
       }
 
-      if (!address.length) {
+      if (!address.trim().length) {
         error.address = 'Address is required';
       }
 
-      if (!city.length) {
+      if (!city.trim().length) {
         error.city = 'City is required';
       }
 
-      if (!state.length) {
+      if (!state.trim().length) {
         error.state = 'State is required';
       }
 
-      if (!lat.length) {
+      if (!lat.trim().length) {
         error.lat = 'Latitude is required';
       }
 
-      if (!lng.length) {
+      if (!lng.trim().length) {
         error.lng = 'Longitude is required';
       }
 
-      if (description.length < 30) {
+      if (description.trim().length < 30) {
         error.description = 'Description needs a minimum of 30 characters';
       }
 
-      if (!name.length) {
+      if (!name.trim().length) {
         error.name = 'Name is required';
       }
 
-      if (!price.length) {
+      if (!price.trim().length) {
         error.price = 'Price is required';
       }
 
-      if (!previewImage.length) {
+      if (!previewImage.trim().length) {
         error.preview = 'Preview Image is required'
       }
-      if (previewImage.length) {
+      if (previewImage.trim().length) {
         if (!previewImage.endsWith('.png') && !previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg')) {
           error.image = 'Image URL must end in .png, .jpg, or .jpeg'
         }
       }
 
-      if (imageOne.length) {
+      if (imageOne.trim().length) {
         if (!imageOne.endsWith('.png') && !imageOne.endsWith('.jpg') && !imageOne.endsWith('.jpeg')) {
           error.imageOne = 'Image URL must end in .png, .jpg, or .jpeg'
         }
       }
 
-      if (imageTwo.length) {
+      if (imageTwo.trim().length) {
         if (!imageTwo.endsWith('.png') && !imageTwo.endsWith('.jpg') && !imageTwo.endsWith('.jpeg')) {
           error.imageTwo = 'Image URL must end in .png, .jpg, or .jpeg'
         }
       }
-      if (imageThree.length) {
+      if (imageThree.trim().length) {
         if (!imageThree.endsWith('.png') && !imageThree.endsWith('.jpg') && !imageThree.endsWith('.jpeg')) {
           error.imageThree = 'Image URL must end in .png, .jpg, or .jpeg'
         }
       }
-      if (imageFour.length) {
+      if (imageFour.trim().length) {
         if (!imageFour.endsWith('.png') && !imageFour.endsWith('.jpg') && !imageFour.endsWith('.jpeg')) {
           error.imageFour = 'Image URL must end in .png, .jpg, or .jpeg'
         }
       
     }
     setErrors(error)
-    console.log(Object.keys(errors))
-  }, [country, address, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked, errors])
+    
+  }, [country, address, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked])
 
 
 
@@ -115,28 +115,44 @@ export default function SpotForm() {
     e.stopPropagation();
 
 
-    if (Object.keys(errors).length === 0) {
-
+    
+      let resOkCount = 0
+      const submitErrors = {};
       const spot = { country, address, state, city, lat, lng, description, name, price }
       const newSpot = await dispatch(addSpotThunk(spot))
+      console.log(newSpot.ok)
 
-      console.log(newSpot.id)
+      if (newSpot.ok) {
 
-      const images = [{ url: previewImage, preview: true },
-      { url: imageOne || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
-      { url: imageTwo || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
-      { url: imageThree || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
-      { url: imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
-      ]
+        const images = [{ url: previewImage, preview: true },
+        { url: imageOne || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+        { url: imageTwo || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+        { url: imageThree || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+        { url: imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+        ]
+  
+  
+        for (let image of images) {
+          const res = await dispatch(addImageThunk(newSpot.id, image))
+          
+          if (res.ok) {
+            resOkCount++
+  
+          } else submitErrors[res] = res
+        }
+        console.log(resOkCount, 'count')
+        if (resOkCount === 5) {
+          
+          navigate(`/spots/${newSpot.id}`)
 
-
-      for (let image of images) {
-        await dispatch(addImageThunk(newSpot.id, image))
-
+        }
+      } else { 
+        submitErrors[newSpot] = newSpot
+        setErrors(submitErrors)
       }
 
-      navigate(`/spots/${newSpot.id}`)
-    }
+
+    
 
 
   }
