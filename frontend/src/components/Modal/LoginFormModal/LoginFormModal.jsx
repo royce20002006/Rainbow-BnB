@@ -39,32 +39,34 @@ export default function LoginFormModal() {
     };
 
   return (
-    <>
-    <h1>Log In</h1>
-    <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username or Email 
+    <div className='modal'>
+    <h1 id="login">Log In</h1>
+    <form className="formContainer" onSubmit={handleSubmit}>
+        
             <input
             type="text"
             value={credential}
             onChange={e => setCredential(e.target.value)}
             required
+            placeholder="username or email"
             />
-        </label>
-        <label htmlFor="password">Password
+        
+          
             <input
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             required
+            placeholder="password"
             />
-        </label>
+        
         <label htmlFor="errors">
             {errors.credential && <p>{errors.credential}</p>}
-            <button type='submit'>Log In</button>
+            <button className="red" type='submit'>Log In</button>
         </label>
-        <button onClick={(e) => demoLogin(e)}>log in as demo user</button>
+        <button className="red" onClick={(e) => demoLogin(e)}>log in as demo user</button>
     </form>
-    </>
+    </div>
   )
 }
 
