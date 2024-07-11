@@ -28,3 +28,7 @@
     box-shadow: 1px 1px 1px black;
     color: white;
 }
+
+.not-found {
+    text-align: center;
+}

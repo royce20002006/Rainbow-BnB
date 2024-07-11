@@ -32,6 +32,7 @@ function SignupFormModal() {
         .catch(async (res) => {
           const data = await res.json();
           if (data?.errors) {
+            
             setErrors(data.errors);
           }
         });
@@ -47,6 +48,7 @@ function SignupFormModal() {
       <form className='form-container' onSubmit={handleSubmit}>
 
 
+        {errors.email && <div className='error'>{errors.email}</div>}
         <input
           className='colorInput signup'
           type="text"
@@ -56,9 +58,9 @@ function SignupFormModal() {
           placeholder='Email'
         />
 
-        {errors.email && <p>{errors.email}</p>}
 
 
+        {errors.username && <div className='error'>{errors.username}</div>}
         <input
           className='colorInput signup'
           type="text"
@@ -68,9 +70,9 @@ function SignupFormModal() {
           placeholder='Username'
         />
 
-        {errors.username && <p>{errors.username}</p>}
 
 
+        {errors.firstName && <div className='error'>{errors.firstName}</div>}
         <input
           className='colorInput signup'
           type="text"
@@ -80,9 +82,9 @@ function SignupFormModal() {
           placeholder='First Name'
         />
 
-        {errors.firstName && <p>{errors.firstName}</p>}
 
 
+        {errors.lastName && <div className='error'>{errors.lastName}</div>}
         <input
           className='colorInput signup'
           type="text"
@@ -92,9 +94,9 @@ function SignupFormModal() {
           placeholder='Last Name'
         />
 
-        {errors.lastName && <p>{errors.lastName}</p>}
 
 
+        {errors.password && <div className='error'>{errors.password}</div>}
         <input
           className='colorInput signup'
           type="password"
@@ -104,9 +106,11 @@ function SignupFormModal() {
           placeholder='Password'
         />
 
-        {errors.password && <p>{errors.password}</p>}
 
 
+        {errors.confirmPassword && (
+          <div className='error'>{errors.confirmPassword}</div>
+        )}
         <input
           className='colorInput signup'
           type="password"
@@ -116,10 +120,9 @@ function SignupFormModal() {
           placeholder='Confirm Password'
         />
 
-        {errors.confirmPassword && (
-          <p>{errors.confirmPassword}</p>
-        )}
-        <button className='red' type="submit">Sign Up</button>
+        <button 
+        disabled={email.length <= 0 || username.length < 4  || firstName.length <= 0 || lastName.length <=0 || password.length < 6 || confirmPassword.length < 6 || password !== confirmPassword}
+        className='red' type="submit">Sign Up</button>
       </form>
     </>
   );

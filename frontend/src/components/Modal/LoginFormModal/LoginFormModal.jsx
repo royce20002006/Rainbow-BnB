@@ -33,13 +33,19 @@ export default function LoginFormModal() {
         .catch(
             async (res) => {
                 const data = await res.json();
-                if (data?.errors) setErrors(data.errors);
+                
+                if (data?.message) {
+                    
+                    setErrors({message: 'The provided credentials were invalid'});
+                   
+                }
             }
         );
     };
 
   return (
     <>
+    {errors.message && <div className="error center">{errors.message}</div>}
     <h1 id="login">Log In</h1>
     <form className="formContainer" onSubmit={handleSubmit}>
         
@@ -63,8 +69,8 @@ export default function LoginFormModal() {
             />
         
         <label htmlFor="errors">
-            {errors.credential && <p>{errors.credential}</p>}
-            <button className="red" type='submit'>Log In</button>
+            
+            <button disabled={credential.length < 4 || password.length < 6}className="red" type='submit'>Log In</button>
         </label>
         <button className="red" onClick={(e) => demoLogin(e)}>log in as demo user</button>
     </form>

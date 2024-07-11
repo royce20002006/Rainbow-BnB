@@ -45,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: '/spots/manage',
         element: <ManageSpots />
+      },
+      {
+        path: '*',
+        element: <h1 className="not-found">Sorry this page does not exist!</h1>
       }
 
     ]

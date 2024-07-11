@@ -9,6 +9,9 @@
 .login {
     padding-right: 3rem;
 }
+.center {
+    text-align: center;
+}
 
 #login {
     margin-bottom: .5rem;
