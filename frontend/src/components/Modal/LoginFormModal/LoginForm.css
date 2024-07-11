@@ -6,10 +6,8 @@
     
 }
 
-.modal {
-    padding: 0 .5rem .5rem .5rem;
-    border: 2px solid black;
-    box-shadow: 1px 1px 10px black;
+.login {
+    padding-right: 3rem;
 }
 
 #login {
