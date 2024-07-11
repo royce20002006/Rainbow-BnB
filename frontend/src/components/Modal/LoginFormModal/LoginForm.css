@@ -1,0 +1,19 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: center;
+    
+}
+
+.login {
+    padding-right: 3rem;
+}
+.center {
+    text-align: center;
+}
+
+#login {
+    margin-bottom: .5rem;
+    text-align: center;
+}

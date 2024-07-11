@@ -32,6 +32,7 @@ function SignupFormModal() {
         .catch(async (res) => {
           const data = await res.json();
           if (data?.errors) {
+            
             setErrors(data.errors);
           }
         });
@@ -43,71 +44,85 @@ function SignupFormModal() {
 
   return (
     <>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Username
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
-        <label>
-          First Name
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
-        <label>
-          Last Name
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <label>
-          Confirm Password
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </label>
+      <h1 id='signup'>Sign Up</h1>
+      <form className='form-container' onSubmit={handleSubmit}>
+
+
+        {errors.email && <div className='error'>{errors.email}</div>}
+        <input
+          className='colorInput signup'
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder='Email'
+        />
+
+
+
+        {errors.username && <div className='error'>{errors.username}</div>}
+        <input
+          className='colorInput signup'
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          placeholder='Username'
+        />
+
+
+
+        {errors.firstName && <div className='error'>{errors.firstName}</div>}
+        <input
+          className='colorInput signup'
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+          placeholder='First Name'
+        />
+
+
+
+        {errors.lastName && <div className='error'>{errors.lastName}</div>}
+        <input
+          className='colorInput signup'
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
+          placeholder='Last Name'
+        />
+
+
+
+        {errors.password && <div className='error'>{errors.password}</div>}
+        <input
+          className='colorInput signup'
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder='Password'
+        />
+
+
+
         {errors.confirmPassword && (
-          <p>{errors.confirmPassword}</p>
+          <div className='error'>{errors.confirmPassword}</div>
         )}
-        <button type="submit">Sign Up</button>
+        <input
+          className='colorInput signup'
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          placeholder='Confirm Password'
+        />
+
+        <button 
+        disabled={email.length <= 0 || username.length < 4  || firstName.length <= 0 || lastName.length <=0 || password.length < 6 || confirmPassword.length < 6 || password !== confirmPassword}
+        className='red' type="submit">Sign Up</button>
       </form>
     </>
   );
