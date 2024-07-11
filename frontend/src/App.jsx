@@ -7,6 +7,7 @@ import Header from "./components/Header/Header";
 import Splash from "./screens/Splash/components/Splash";
 import Spot from "./screens/Spot/components/Spot/Spot";
 import SpotForm from "./screens/CreateSpot/components/main/SpotForm";
+import ManageSpots from "./screens/ManageSpots/Components/ManageSpots";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: '/spots/new',
         element: <SpotForm />
+      },
+      {
+        path: '/spots/manage',
+        element: <ManageSpots />
       }
 
     ]

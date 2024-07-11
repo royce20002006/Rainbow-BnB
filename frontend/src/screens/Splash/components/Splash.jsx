@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
-import { getSpotsThunk } from "../../../store/spots";
+import { getCurrentUserSpotsThunk, getSpotsThunk } from "../../../store/spots";
 import { FaStar } from "react-icons/fa6";
 import './Splash.css'
 
@@ -10,14 +10,41 @@ export default function Splash() {
   const navigate= useNavigate();
   const dispatch = useDispatch();
   const spots = useSelector(state => state.spotState.allSpots)
+  const user = useSelector(state => state.session.user);
 
   const [isLoaded, setIsLoaded] = useState(false);
 
+  
 
   useEffect(() => {
     //grab data
+
+
+    
+
+    
     const getData = async () => {
-      dispatch(getSpotsThunk());
+      await dispatch(getCurrentUserSpotsThunk());
+      
+
+      setIsLoaded(true);
+    }
+
+    if (user) {
+
+      getData();
+    }
+    
+
+  }, [dispatch, user])
+
+  useEffect(() => {
+    //grab data
+    
+    
+    const getData = async () => {
+      await dispatch(getSpotsThunk());
+
       setIsLoaded(true);
     }
 
@@ -25,7 +52,7 @@ export default function Splash() {
       getData();
     }
 
-  }, [dispatch, isLoaded])
+  }, [dispatch, isLoaded, user])
 
   const goToSpot = (e,spot) => {
     

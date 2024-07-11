@@ -1,24 +1,35 @@
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../../Modal/LoginFormModal/LoginFormModal';
 import SignupFormModal from '../../Modal/SignupFormModal/SignupFormModal';
 import { GiHamburgerMenu } from "react-icons/gi";
+import { NavLink, useNavigate } from 'react-router-dom';
+import { getCurrentUserSpotsThunk } from '../../../store/spots';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const navigate = useNavigate();
+  
+  const spots = useSelector(state => state.spotState.currentUser)
+  
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
   };
 
+  
+
+  
+
   useEffect(() => {
     if (!showMenu) return;
+    
 
     const closeMenu = (e) => {
       if (!ulRef.current.contains(e.target)) {
@@ -55,7 +66,7 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             </div>
             <div className='manageSpots cursor'>
-            <li>Manage Spots</li>
+            <li> { spots ? <div onClick={() => navigate('/spots/manage')}>Manage Spots</div> : <NavLink to={'/spots/new'} >Create a New Spot</NavLink> }</li>
             <li>Manage Reviews</li>
             </div>
             <li className='logout'>
