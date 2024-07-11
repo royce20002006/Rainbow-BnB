@@ -113,17 +113,16 @@ export default function SpotForm() {
     setButtonClicked(!buttonClicked)
     e.preventDefault();
     e.stopPropagation();
-
-
-    
+    try {
+      
       let resOkCount = 0
       const submitErrors = {};
       const spot = { country, address, state, city, lat, lng, description, name, price }
       const newSpot = await dispatch(addSpotThunk(spot))
-      console.log(newSpot.ok)
-
-      if (newSpot.ok) {
-
+      console.log(newSpot.id)
+  
+      
+  
         const images = [{ url: previewImage, preview: true },
         { url: imageOne || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
         { url: imageTwo || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
@@ -134,22 +133,30 @@ export default function SpotForm() {
   
         for (let image of images) {
           const res = await dispatch(addImageThunk(newSpot.id, image))
-          
-          if (res.ok) {
-            resOkCount++
+          console.log(res.ok)
+          if (!res.ok) {
+            console.log(res.message,'no s')
+            console.log(res,'s')
   
           } else submitErrors[res] = res
         }
         console.log(resOkCount, 'count')
-        if (resOkCount === 5) {
-          
-          navigate(`/spots/${newSpot.id}`)
+        
+          if (!Object.keys(errors).length) {
 
-        }
-      } else { 
-        submitErrors[newSpot] = newSpot
-        setErrors(submitErrors)
-      }
+            navigate(`/spots/${newSpot.id}`)
+          }
+  
+        
+      
+      
+      if (submitErrors) throw errors;
+    } catch (error) {
+      console.log(errors)
+    }
+
+
+    
 
 
     
