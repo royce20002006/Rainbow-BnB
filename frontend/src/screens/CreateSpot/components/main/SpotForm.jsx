@@ -3,10 +3,12 @@ import './SpotForm.css'
 
 
 import { useDispatch } from 'react-redux';
-import { addImageThunk, addSpotThunk } from '../../../../store/spots';
+import { addSpotThunk } from '../../../../store/spots';
 import { useNavigate } from 'react-router-dom';
 
 export default function SpotForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [country, setCountry] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
@@ -23,8 +25,6 @@ export default function SpotForm() {
   const [imageFour, setImageFour] = useState('')
   const [errors, setErrors] = useState({});
   const [buttonClicked, setButtonClicked] = useState(false)
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
 
 
@@ -33,155 +33,149 @@ export default function SpotForm() {
   useEffect(() => {
     const error = {};
 
-    
 
 
-      if (!country.trim().length) {
-        error.country = 'Country is required';
+
+    if (!country.trim().length) {
+      error.country = 'Country is required';
+    }
+
+    if (!address.trim().length) {
+      error.address = 'Address is required';
+    }
+
+    if (!city.trim().length) {
+      error.city = 'City is required';
+    }
+
+    if (!state.trim().length) {
+      error.state = 'State is required';
+    }
+
+    if (!lat.trim().length) {
+      error.lat = 'Latitude is required';
+    }
+
+    if (!lng.trim().length) {
+      error.lng = 'Longitude is required';
+    }
+
+    if (description.trim().length < 30) {
+      error.description = 'Description needs a minimum of 30 characters';
+    }
+
+    if (!name.trim().length) {
+      error.name = 'Name is required';
+    }
+
+    if (!price.trim().length) {
+      error.price = 'Price is required';
+    }
+
+    if (!previewImage.trim().length) {
+      error.preview = 'Preview Image is required'
+    }
+    if (previewImage.trim().length) {
+      if (!previewImage.endsWith('.png') && !previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg')) {
+        error.image = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+
+    if (imageOne.trim().length) {
+      if (!imageOne.endsWith('.png') && !imageOne.endsWith('.jpg') && !imageOne.endsWith('.jpeg')) {
+        error.imageOne = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+
+    if (imageTwo.trim().length) {
+      if (!imageTwo.endsWith('.png') && !imageTwo.endsWith('.jpg') && !imageTwo.endsWith('.jpeg')) {
+        error.imageTwo = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+    if (imageThree.trim().length) {
+      if (!imageThree.endsWith('.png') && !imageThree.endsWith('.jpg') && !imageThree.endsWith('.jpeg')) {
+        error.imageThree = 'Image URL must end in .png, .jpg, or .jpeg'
+      }
+    }
+    if (imageFour.trim().length) {
+      if (!imageFour.endsWith('.png') && !imageFour.endsWith('.jpg') && !imageFour.endsWith('.jpeg')) {
+        error.imageFour = 'Image URL must end in .png, .jpg, or .jpeg'
       }
 
-      if (!address.trim().length) {
-        error.address = 'Address is required';
-      }
-
-      if (!city.trim().length) {
-        error.city = 'City is required';
-      }
-
-      if (!state.trim().length) {
-        error.state = 'State is required';
-      }
-
-      if (!lat.trim().length) {
-        error.lat = 'Latitude is required';
-      }
-
-      if (!lng.trim().length) {
-        error.lng = 'Longitude is required';
-      }
-
-      if (description.trim().length < 30) {
-        error.description = 'Description needs a minimum of 30 characters';
-      }
-
-      if (!name.trim().length) {
-        error.name = 'Name is required';
-      }
-
-      if (!price.trim().length) {
-        error.price = 'Price is required';
-      }
-
-      if (!previewImage.trim().length) {
-        error.preview = 'Preview Image is required'
-      }
-      if (previewImage.trim().length) {
-        if (!previewImage.endsWith('.png') && !previewImage.endsWith('.jpg') && !previewImage.endsWith('.jpeg')) {
-          error.image = 'Image URL must end in .png, .jpg, or .jpeg'
-        }
-      }
-
-      if (imageOne.trim().length) {
-        if (!imageOne.endsWith('.png') && !imageOne.endsWith('.jpg') && !imageOne.endsWith('.jpeg')) {
-          error.imageOne = 'Image URL must end in .png, .jpg, or .jpeg'
-        }
-      }
-
-      if (imageTwo.trim().length) {
-        if (!imageTwo.endsWith('.png') && !imageTwo.endsWith('.jpg') && !imageTwo.endsWith('.jpeg')) {
-          error.imageTwo = 'Image URL must end in .png, .jpg, or .jpeg'
-        }
-      }
-      if (imageThree.trim().length) {
-        if (!imageThree.endsWith('.png') && !imageThree.endsWith('.jpg') && !imageThree.endsWith('.jpeg')) {
-          error.imageThree = 'Image URL must end in .png, .jpg, or .jpeg'
-        }
-      }
-      if (imageFour.trim().length) {
-        if (!imageFour.endsWith('.png') && !imageFour.endsWith('.jpg') && !imageFour.endsWith('.jpeg')) {
-          error.imageFour = 'Image URL must end in .png, .jpg, or .jpeg'
-        }
-      
     }
     setErrors(error)
-    
+
   }, [country, address, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked])
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setErrors({});
-    return dispatch(sessionActions.login({ credential, password})).then(closeModal)
-    .catch(
-        async (res) => {
-            const data = await res.json();
-            if (data?.errors) setErrors(data.errors);
-        }
-    );
-};
+
 
   const submit = async (e) => {
     setButtonClicked(!buttonClicked)
     e.preventDefault();
     e.stopPropagation();
-    setErrors({});
-    try {
-      
-      
-      const submitErrors = {};
+    const submitErrors = {};
+    
+
+
+      const images = [{ url: previewImage, preview: true },
+      { url: imageOne || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+      { url: imageTwo || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+      { url: imageThree || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+      { url: imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
+      ]
       const spot = { country, address, state, city, lat, lng, description, name, price }
-      const newSpot = await dispatch(addSpotThunk(spot))
+
+
+
+      const newSpot = await dispatch(addSpotThunk({ spot, images }))
       if (!newSpot.ok) {
         const data = await newSpot.json()
-        console.log(data, 'datathunk')
+        console.log(data, 'data');
+        setErrors(data.errors);
+        console.log(errors, 'errors')
+        console.log(data.errors, 'data.errors')
+        
+
+
       }
-      console.log(newSpot, 'newspot thunk')
-        console.log(errors, 'kjkk')
-  
-      
-  
-        const images = [{ url: previewImage, preview: true },
-        { url: imageOne || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
-        { url: imageTwo || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
-        { url: imageThree || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
-        { url: imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
-        ]
-  
-  
-        for (let image of images) {
-          const res = await dispatch(addImageThunk(newSpot.id, image)).catch(
-            async (res) => {
-              const data = await res.json();
-              console.log(data,'form front')
-              if (data?.errors) setErrors(data.errors)
-                
-            })
-
-          
-          
-        }
-       
-        
-          
-  
-        
-      
-      
-      if (errors) 
-        {
-          console.log(errors)
-          throw errors
-        };
-    } catch (error) {
-      console.log()
-    }
-
 
     
 
 
+   
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   }
@@ -210,7 +204,7 @@ export default function SpotForm() {
           <div className='streetAddress labelTop'>
             <div className='labelAndError'>
               <label htmlFor="street">Street Address</label>
-              <div className='error'>{buttonClicked &&errors.address && errors.address}</div>
+              <div className='error'>{buttonClicked && errors.address && errors.address}</div>
             </div>
             <input
               className='longInput colorInput'
@@ -270,7 +264,7 @@ export default function SpotForm() {
             <div className='state'>
               <div className='labelAndError'>
                 <label className='stateLabel' htmlFor="longitude">Longitude</label>
-                <div className='error'>{buttonClicked&& errors.lng && errors.lng}</div>
+                <div className='error'>{buttonClicked && errors.lng && errors.lng}</div>
 
               </div>
 
@@ -340,7 +334,7 @@ export default function SpotForm() {
                 value={previewImage}
                 onChange={e => setPreviewImage(e.target.value)}
               />
-              <div className='error'>{buttonClicked && errors.preview && errors.preview ||buttonClicked &&  errors.image && errors.image}</div>
+              <div className='error'>{buttonClicked && errors.preview && errors.preview || buttonClicked && errors.image && errors.image}</div>
 
             </div>
             <div>

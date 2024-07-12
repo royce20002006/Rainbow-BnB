@@ -22,17 +22,12 @@ const getSingleSpot = (spot) => ({
     payload: spot
 })
 
-const addSpot = (spot) => ({
+const addSpot = (data) => ({
     type: ADD_SPOT,
-    payload: spot
+    payload: data
 })
 
-const addImage = (spotId, image) => ({
-    type: ADD_IMAGE,
-    payload: image,
-    spotId
 
-})
 
 
 
@@ -89,59 +84,70 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
     }
 }
 
-export const addSpotThunk = (spot) => async (dispatch) => {
+export const addSpotThunk = (data) => async (dispatch) => {
     try {
+        console.log(data, 'data at top of thunk')
         const options = {
             method: 'POST',
             header: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(spot)
+            body: JSON.stringify(data)
         }
-        const res = await csrfFetch('/api/spots', options)
-            if (res.ok) {
+        const spot = await csrfFetch('/api/spots', options)
+        if (spot.ok) {
 
-                const data = await res.json();
-                dispatch(getSingleSpot(dathja))
-               
-                return res;
-            } else {
-                console.log (res, 'res in thunk');
-                
 
-                throw res;
+            const spotData = await spot.json();
+            console.log(spotData, 'spotData')
+            const imageData = [];
+
+
+
+
+            for (let image of data.images) {
+                const options = {
+                    method: 'POST',
+                    header: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(image)
+                }
+
+
+
+                const res = await csrfFetch(`/api/spots/${spotData.id}/images`, options)
+
+                if (res.ok) {
+                    imageData.push(await res.json())
+
+
+
+
+
+                } else {
+                    throw res;
+                }
+
             }
+            console.log(imageData)
+            const result = { images: imageData, spot: spotData }
+            console.log(result, 'result');
+            await dispatch(addSpot(result));
+            return result;
+        } else {
+            console.log(res, 'res in thunk');
 
 
-        
+            throw spot;
+        }
+
+
+
+
 
     } catch (error) {
+        console.log(error, 'thunk error');
         return error;
     }
 }
 
-export const addImageThunk = (id, image) => async (dispatch) => {
-    try {
-        const options = {
-            method: 'POST',
-            header: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(image)
-        }
-        const res = await csrfFetch(`/api/spots/${id}/images`, options)
-
-        if (res.ok) {
-            const data = await res.json();
-            
-            dispatch(addImage(id, data))
-            return data;
-
-        } else {
-            throw res;
-        }
-
-    } catch (error) {
-        return error
-    }
-
-}
 
 
 //reducer
@@ -172,17 +178,14 @@ function spotsReducer(state = initialState, action) {
 
             return newState;
 
-
-
-        case ADD_IMAGE:
-            newState = { ...state };
-            newState.singleSpot.SpotImages = [...newState?.singleSpot?.SpotImages || []]
-            newState.singleSpot.SpotImages.push(action.image)
-            return newState
-
         case GET_USER_SPOTS:
             newState = { ...state };
             newState.currentUser = action.payload.Spots;
+            return newState;
+
+        case ADD_SPOT:
+            newState = { ...state }
+            newState.addSpot = action.payload;
             return newState;
 
 
