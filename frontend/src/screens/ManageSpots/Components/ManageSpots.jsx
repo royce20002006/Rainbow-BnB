@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getCurrentUserSpotsThunk } from '../../../store/spots';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaStar } from 'react-icons/fa';
 import './ManageSpots.css'
+
 
 export default function ManageSpots() {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function ManageSpots() {
     
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [deleteS, setDeleteS] = useState(false)
 
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export default function ManageSpots() {
   const deleteSpot = (e, spot) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('delete functionality goes here')
+    setDeleteS(!deleteS)
   }
 
 
@@ -61,6 +63,7 @@ export default function ManageSpots() {
         <h1 className='heading h1Manage'>Manage your Spots</h1>
         <button className='red' onClick={() => navigate('/spots/new')}>Create a new Spot</button>
         <div className='allSpotsContainer'>
+          
         {spots.map((spot, idx) => (
         <div onClick={e => goToSpot(e,spot)} key={`${idx}--${spot.id}`} role='tooltip'>
             
@@ -73,9 +76,12 @@ export default function ManageSpots() {
             </div>
 
             <span className="spotPrice spotInfo">${spot.price}</span><span> night </span>
-
             <div className='imageButtons'>
               <button onClick={(e, spot) => updateSpot(e, spot)} className='red'>update</button>
+              <div>
+
+              
+              </div>
               <button onClick={(e, spot) => deleteSpot(e, spot)}
               className='red'>delete</button>
             </div>

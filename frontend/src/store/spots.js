@@ -96,17 +96,22 @@ export const addSpotThunk = (spot) => async (dispatch) => {
             header: { 'Content-Type': 'application/json' },
             body: JSON.stringify(spot)
         }
-        const res = await csrfFetch('/api/spots/', options)
-        if (res.ok) {
-            const data = await res.json();
-            dispatch(getSingleSpot(data))
-            return data;
+        const res = await csrfFetch('/api/spots', options)
+            if (res.ok) {
+
+                const data = await res.json();
+                dispatch(getSingleSpot(dathja))
+               
+                return res;
+            } else {
+                console.log (res, 'res in thunk');
+                
+
+                throw res;
+            }
 
 
-        } else {
-
-            throw res
-        }
+        
 
     } catch (error) {
         return error;

@@ -108,18 +108,36 @@ export default function SpotForm() {
   }, [country, address, state, city, lat, lng, description, name, price, previewImage, imageOne, imageTwo, imageThree, imageFour, buttonClicked])
 
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setErrors({});
+    return dispatch(sessionActions.login({ credential, password})).then(closeModal)
+    .catch(
+        async (res) => {
+            const data = await res.json();
+            if (data?.errors) setErrors(data.errors);
+        }
+    );
+};
 
   const submit = async (e) => {
     setButtonClicked(!buttonClicked)
     e.preventDefault();
     e.stopPropagation();
+    setErrors({});
     try {
       
-      let resOkCount = 0
+      
       const submitErrors = {};
       const spot = { country, address, state, city, lat, lng, description, name, price }
       const newSpot = await dispatch(addSpotThunk(spot))
-      console.log(newSpot.id)
+      if (!newSpot.ok) {
+        const data = await newSpot.json()
+        console.log(data, 'datathunk')
+      }
+      console.log(newSpot, 'newspot thunk')
+        console.log(errors, 'kjkk')
   
       
   
@@ -132,27 +150,31 @@ export default function SpotForm() {
   
   
         for (let image of images) {
-          const res = await dispatch(addImageThunk(newSpot.id, image))
-          console.log(res.ok)
-          if (!res.ok) {
-            console.log(res.message,'no s')
-            console.log(res,'s')
-  
-          } else submitErrors[res] = res
-        }
-        console.log(resOkCount, 'count')
-        
-          if (!Object.keys(errors).length) {
+          const res = await dispatch(addImageThunk(newSpot.id, image)).catch(
+            async (res) => {
+              const data = await res.json();
+              console.log(data,'form front')
+              if (data?.errors) setErrors(data.errors)
+                
+            })
 
-            navigate(`/spots/${newSpot.id}`)
-          }
+          
+          
+        }
+       
+        
+          
   
         
       
       
-      if (submitErrors) throw errors;
+      if (errors) 
+        {
+          console.log(errors)
+          throw errors
+        };
     } catch (error) {
-      console.log(errors)
+      console.log()
     }
 
 

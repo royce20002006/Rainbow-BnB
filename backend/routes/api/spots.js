@@ -331,9 +331,9 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
             country, lat, lng, name,
             description, price } = req.body;
 
-            console.log(address)
+            
         const { user } = req;
-        console.log(user)
+        
 
         if (user) {
              
@@ -364,7 +364,8 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
         };
 
     } catch (error) {
-        next(error);
+        console.log(error, 'this is in backen')
+         return next(error);
     };
 });
 
