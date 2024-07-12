@@ -364,7 +364,7 @@ export default function SpotForm() {
 
             <button
               onClick={(e) => submit(e)}
-              disabled={Object.keys(errors).length !== 0 || Object.keys(submitErrors).length !== 0}
+              disabled={Object.keys(errors).length !== 0}
               className='red'
             >Create Spot</button>
           </div>
