@@ -126,10 +126,10 @@ router.get('/', queryParams, async (req, res, next) => {
         page = parseInt(page);
         size = parseInt(size);
         if (!size) {
-            size = 20;
+            size = 21;
         };
-        if (size > 20) {
-            size = 20;
+        if (size > 21) {
+            size = 21;
         };
         if (!page) {
             page = 1;
@@ -326,11 +326,15 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 // create a new spot
 router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
+    
     try {
-        const { data } = req.body;
+        const { address, city, state, country, lat, lng, name, description, price, images } = req.body;
+        // const {images} = req.body;
         const { user } = req;
-
-        console.log(data, 'spot in backend')
+        
+       
+       
+       
         
         
 
@@ -341,29 +345,56 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 ownerId: user.id, address, city,
                 state, country, lat, lng, name, description, price
             });
-            let spotFormatting = {
-                id: newSpot.id,
-                ownerId: user.id,
-                address: newSpot.address,
-                city: newSpot.city,
-                state: newSpot.state,
-                country: newSpot.country,
-                lat: Number(newSpot.lat),
-                lng: Number(newSpot.lng),
-                name: newSpot.name,
-                description: newSpot.description,
-                price: Number(newSpot.price),
-                createdAt: formatDate(newSpot.createdAt),
-                updatedAt: formatDate(newSpot.updatedAt)
-            };
+            if (newSpot) {
+
+                let spotFormatting = {
+                    id: newSpot.id,
+                    ownerId: user.id,
+                    address: newSpot.address,
+                    city: newSpot.city,
+                    state: newSpot.state,
+                    country: newSpot.country,
+                    lat: Number(newSpot.lat),
+                    lng: Number(newSpot.lng),
+                    name: newSpot.name,
+                    description: newSpot.description,
+                    price: Number(newSpot.price),
+                    createdAt: formatDate(newSpot.createdAt),
+                    updatedAt: formatDate(newSpot.updatedAt)
+                };
+
+                const imageFormatting = [];
+                for (let image of images) {
 
 
-            return res.status(201).json(spotFormatting);
+                    const newImage = await SpotImage.create({
+                        url: image.url, preview: image.preview, spotId: parseInt(newSpot.id)
+                    });
+                    imageFormatting.push({
+                        
+                            id: newImage.id,
+                            url: newImage.url,
+                            preview: newImage.preview
+
+                    })
+
+                }
+
+
+
+
+                return res.status(201).json({spotFormatting, imageFormatting});
+            }
+
+
+
+
+
 
         };
 
     } catch (error) {
-        console.log(error, 'this is in backen')
+        
          return next(error);
     };
 });

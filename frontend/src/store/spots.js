@@ -22,9 +22,9 @@ const getSingleSpot = (spot) => ({
     payload: spot
 })
 
-const addSpot = (data) => ({
+const addSpot = (spot) => ({
     type: ADD_SPOT,
-    payload: data
+    payload: spot
 })
 
 
@@ -84,59 +84,36 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
     }
 }
 
-export const addSpotThunk = (data) => async (dispatch) => {
+export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
     try {
-        console.log(data, 'data at top of thunk')
+        console.log(spotToAdd, 'data at top of thunk')
+        console.log(images, 'images thunk');
+
+        const spotAndImages = {
+            ...spotToAdd, images: [...images]
+        }
         const options = {
             method: 'POST',
             header: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(spotAndImages)
         }
+        console.log(options.body, 'options')
         const spot = await csrfFetch('/api/spots', options)
+        // console.log(spot, 'spot')
+        
+        console.log(spot, 'spot go back to thunk')
         if (spot.ok) {
 
 
             const spotData = await spot.json();
-            console.log(spotData, 'spotData')
-            const imageData = [];
-
-
-
-
-            for (let image of data.images) {
-                const options = {
-                    method: 'POST',
-                    header: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(image)
-                }
-
-
-
-                const res = await csrfFetch(`/api/spots/${spotData.id}/images`, options)
-
-                if (res.ok) {
-                    imageData.push(await res.json())
-
-
-
-
-
-                } else {
-                    throw res;
-                }
-
-            }
-            console.log(imageData)
-            const result = { images: imageData, spot: spotData }
-            console.log(result, 'result');
-            await dispatch(addSpot(result));
-            return result;
-        } else {
-            console.log(res, 'res in thunk');
-
-
-            throw spot;
+            
+            console.log(spotData, 'spot data');
+            
+            
+            await dispatch(addSpot(spotData));
+            return spotData;
         }
+    
 
 
 
@@ -144,6 +121,7 @@ export const addSpotThunk = (data) => async (dispatch) => {
 
     } catch (error) {
         console.log(error, 'thunk error');
+        
         return error;
     }
 }
