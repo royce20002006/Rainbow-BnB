@@ -99,7 +99,7 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
         }
         console.log(options.body, 'options')
         const spot = await csrfFetch('/api/spots', options)
-        // console.log(spot, 'spot')
+        
         
         console.log(spot, 'spot go back to thunk')
         if (spot.ok) {
@@ -107,7 +107,7 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
 
             const spotData = await spot.json();
             
-            console.log(spotData, 'spot data');
+            
             
             
             await dispatch(addSpot(spotData.spotFormatting));
