@@ -327,12 +327,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
 // create a new spot
 router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
     try {
-        const { address, city, state,
-            country, lat, lng, name,
-            description, price } = req.body;
-
-            
+        const { data } = req.body;
         const { user } = req;
+
+        console.log(data, 'spot in backend')
+        
         
 
         if (user) {

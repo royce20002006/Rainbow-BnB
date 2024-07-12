@@ -70,7 +70,7 @@ app.use((err, _req, _res, next) => {
         err.title = 'Validation error';
         err.errors = errors;
     }
-    console.log(err, 'this is in errors')
+    
     next(err);
 });
 
