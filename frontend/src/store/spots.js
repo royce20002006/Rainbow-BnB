@@ -110,7 +110,8 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
             console.log(spotData, 'spot data');
             
             
-            await dispatch(addSpot(spotData));
+            await dispatch(addSpot(spotData.spotFormatting));
+            
             return spotData;
         }
     

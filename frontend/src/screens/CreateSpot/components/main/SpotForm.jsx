@@ -134,20 +134,22 @@ export default function SpotForm() {
 
     const newSpot = await dispatch(addSpotThunk(spot, images))
     
-    console.log(newSpot.ok)
-
+    
+    
     if (!newSpot.ok && newSpot.ok !== undefined) {
-      console.log(newSpot, 'newSpot')
+      console.log(newSpot.spotFormatting, 'errorSpot')
       const data = await newSpot.json();
       console.log(data.errors, 'data.errors')
       setSubmitErrors(data.errors)
       console.log(submitErrors, 'submitErrors')
       
+    } else {
+      const newSpotId = newSpot.spotFormatting.id;
+      console.log('created')
+      navigate(`/spots/${newSpotId}`)
     }
     
-    // setErrors(data.errors);
-    // console.log(errors, 'errors')
-    // console.log(data.errors, 'data.errors')
+    
   }
 
     return (

@@ -347,6 +347,26 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
             });
             if (newSpot) {
 
+                
+
+                
+                const imageFormatting = [];
+                for (let image of images) {
+                    
+                    
+                    const newImage = await SpotImage.create({
+                        url: image.url, preview: image.preview, spotId: parseInt(newSpot.id)
+                    });
+                    imageFormatting.push({
+                        
+                        id: newImage.id,
+                        url: newImage.url,
+                        preview: newImage.preview
+                        
+                    })
+                    
+                    
+                }
                 let spotFormatting = {
                     id: newSpot.id,
                     ownerId: user.id,
@@ -360,30 +380,25 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                     description: newSpot.description,
                     price: Number(newSpot.price),
                     createdAt: formatDate(newSpot.createdAt),
-                    updatedAt: formatDate(newSpot.updatedAt)
+                    updatedAt: formatDate(newSpot.updatedAt),
+                    numReviews: 0,
+                    avgStarRating: 0,
+                    SpotImages: imageFormatting,
+                    Owner: {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    }
                 };
 
-                const imageFormatting = [];
-                for (let image of images) {
-
-
-                    const newImage = await SpotImage.create({
-                        url: image.url, preview: image.preview, spotId: parseInt(newSpot.id)
-                    });
-                    imageFormatting.push({
-                        
-                            id: newImage.id,
-                            url: newImage.url,
-                            preview: newImage.preview
-
-                    })
-
-                }
+                
 
 
 
 
-                return res.status(201).json({spotFormatting, imageFormatting});
+
+
+                return res.status(201).json({spotFormatting});
             }
 
 
