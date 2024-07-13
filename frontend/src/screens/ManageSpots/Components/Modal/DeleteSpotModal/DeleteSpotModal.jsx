@@ -33,8 +33,8 @@ export default function DeleteSpotModal({
   return (
     <div className='container'>
       <div className='text'>
-        <h1 className='subheading confirm'>Confirm Delete</h1>
-        <div className='normal question'>Are you sure you want to remove this spot from the listings?</div>
+        <h1 className='heading confirm'>Confirm Delete</h1>
+        <div className='subheading question'>Are you sure you want to remove this spot from the listings?</div>
 
       </div>
         <div className='buttons'>
