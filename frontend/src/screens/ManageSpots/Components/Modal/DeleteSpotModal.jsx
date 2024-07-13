@@ -1,29 +1,31 @@
 import { useModal } from '../../../../context/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import OpenModalButton from '../../../../components/Modal/OpenModalButton/OpenModalButton';
+import { deleteSpotThunk } from '../../../../store/spots';
 
 
 export default function DeleteSpotModal({
-    modalComponent, // component to render inside the modal
-    itemText, // text of the menu item that opens the modal
-    onItemClick, // optional: callback function that will be called once the menu item that opens the modal is clicked
-    onModalClose, // optional: callback function that will be called once the modal is closed
-    
+    spot
     
   }) {
+
     
     
     const dispatch = useDispatch();
+    const spots = useSelector(state => state.spotState.currentUser)
     const {setModalContent, setOnModalClose } = useModal();
+    const {closeModal} = useModal();
 
-    const deleteSpot = (e, spot) => {
+    const deleteSpot = async(e) => {
         e.preventDefault();
         e.stopPropagation();
+        
+        return await dispatch(deleteSpotThunk(spot)).then(closeModal)
         
         // if (onModalClose) setOnModalClose(onModalClose);
         // setModalContent(modalComponent)
         // if(typeof onItemClick === 'function') onItemClick();
-        // console.log('clicked')
+        // console.log('clickedd')
         // setDeleteS(!deleteS)
       }
 
@@ -31,7 +33,7 @@ export default function DeleteSpotModal({
     <div>
         <h1>Confirm Delete</h1>
         <div>Are you sure you want to remove this spot from the listings?</div>
-        <button>Yes (Delete Spot)</button>
+        <button onClick={(e) => deleteSpot(e)}>Yes (Delete Spot)</button>
         <button>No (Keep Spot)</button>
     </div>
   )

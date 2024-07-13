@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useModal } from '../../../context/Modal';
+
 import { useNavigate } from 'react-router-dom'
 import { getCurrentUserSpotsThunk } from '../../../store/spots';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaStar } from 'react-icons/fa';
 import './ManageSpots.css'
-import OpenModalMenuItem from '../../../components/Header/Navigation/OpenModalMenuItem';
+
 import OpenModalButton from '../../../components/Modal/OpenModalButton/OpenModalButton';
 import DeleteSpotModal from './Modal/DeleteSpotModal';
 
@@ -13,22 +13,18 @@ import DeleteSpotModal from './Modal/DeleteSpotModal';
 
 
 
-export default function ManageSpots({
-  modalComponent, // component to render inside the modal
-  itemText, // text of the menu item that opens the modal
-  onItemClick, // optional: callback function that will be called once the menu item that opens the modal is clicked
-  onModalClose // optional: callback function that will be called once the modal is closed
-}) {
+export default function ManageSpots() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const spots = useSelector(state => state.spotState.currentUser)
-    const {setModalContent, setOnModalClose } = useModal();
+    
+    const user = useSelector(state => state.session.user)
   
     
     
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [deleteS, setDeleteS] = useState(false)
+  
 
 
   useEffect(() => {
@@ -42,7 +38,7 @@ export default function ManageSpots({
       getData();
     }
 
-  }, [dispatch, isLoaded,])
+  }, [dispatch, isLoaded, user])
 
   const goToSpot = (e,spot) => {
     
@@ -58,20 +54,13 @@ export default function ManageSpots({
     
   }
 
-  const updateSpot = (e, spot) => {
+  const updateSpot = (e, ) => {
     e.preventDefault();
     e.stopPropagation();
     console.log('update functionality goes here')
   }
-  const deleteSpot = (e, spot) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // if (onModalClose) setOnModalClose(onModalClose);
-    // setModalContent(modalComponent)
-    // if(typeof onItemClick === 'function') onItemClick();
-    // console.log('clicked')
-    // setDeleteS(!deleteS)
-  }
+  
+ 
 
 
 
@@ -106,7 +95,7 @@ export default function ManageSpots({
               <OpenModalButton
               className='red'
                 buttonText="Delete"
-                modalComponent={<DeleteSpotModal SpotToDelete={spot}/>}
+                modalComponent={<DeleteSpotModal spot={spot}/>}
                 preventDefault
                 stopPropagation
                 />
