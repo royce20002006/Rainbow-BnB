@@ -207,7 +207,6 @@ router.get('/', queryParams, async (req, res, next) => {
             for (let spot of spots) {
 
                 
-                sum /= count;
                 // sum is for getting the average star rating
                 let sum = 0;
                 // preview image url will go here
@@ -222,6 +221,7 @@ router.get('/', queryParams, async (req, res, next) => {
                     count++
                     sum += review.stars;
                 };
+                sum /= count;
                 
                 
                 //loop through images to find a preview image and extract the url
@@ -234,7 +234,7 @@ router.get('/', queryParams, async (req, res, next) => {
                 };
 
                 
-
+               
 
                 spotFormatting.push({
                     id: spot.id,
@@ -253,6 +253,7 @@ router.get('/', queryParams, async (req, res, next) => {
                     numReviews: count,
                     avgStarRating: sum,
                     SpotImages: spot.SpotImages,
+                    previewImage: previewImages, 
                     Owner: spot.Owner
     
                 });
