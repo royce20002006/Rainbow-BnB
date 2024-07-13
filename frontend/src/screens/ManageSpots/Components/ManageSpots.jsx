@@ -1,15 +1,29 @@
 import { useEffect, useState } from 'react'
+import { useModal } from '../../../context/Modal';
 import { useNavigate } from 'react-router-dom'
 import { getCurrentUserSpotsThunk } from '../../../store/spots';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaStar } from 'react-icons/fa';
 import './ManageSpots.css'
+import OpenModalMenuItem from '../../../components/Header/Navigation/OpenModalMenuItem';
+import OpenModalButton from '../../../components/Modal/OpenModalButton/OpenModalButton';
+import DeleteSpotModal from './Modal/DeleteSpotModal';
 
 
-export default function ManageSpots() {
+
+
+
+export default function ManageSpots({
+  modalComponent, // component to render inside the modal
+  itemText, // text of the menu item that opens the modal
+  onItemClick, // optional: callback function that will be called once the menu item that opens the modal is clicked
+  onModalClose // optional: callback function that will be called once the modal is closed
+}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const spots = useSelector(state => state.spotState.currentUser)
+    const {setModalContent, setOnModalClose } = useModal();
+  
     
     
 
@@ -52,7 +66,11 @@ export default function ManageSpots() {
   const deleteSpot = (e, spot) => {
     e.preventDefault();
     e.stopPropagation();
-    setDeleteS(!deleteS)
+    // if (onModalClose) setOnModalClose(onModalClose);
+    // setModalContent(modalComponent)
+    // if(typeof onItemClick === 'function') onItemClick();
+    // console.log('clicked')
+    // setDeleteS(!deleteS)
   }
 
 
@@ -61,7 +79,7 @@ export default function ManageSpots() {
   return (
     <div className='headingAndAddSpot'>
         <h1 className='heading h1Manage'>Manage your Spots</h1>
-        <button className='red' onClick={() => navigate('/spots/new')}>Create a new Spot</button>
+        <button className='red' onClick={(e) => goToSpot(e)}>Create a new Spot</button>
         <div className='allSpotsContainer'>
           
         {spots.map((spot, idx) => (
@@ -82,8 +100,18 @@ export default function ManageSpots() {
 
               
               </div>
-              <button onClick={(e, spot) => deleteSpot(e, spot)}
-              className='red'>delete</button>
+              <div onClick={(e) => {
+                e.stopPropagation()
+              }}>
+              <OpenModalButton
+              className='red'
+                buttonText="Delete"
+                modalComponent={<DeleteSpotModal SpotToDelete={spot}/>}
+                preventDefault
+                stopPropagation
+                />
+
+              </div>
             </div>
           
         </div>
