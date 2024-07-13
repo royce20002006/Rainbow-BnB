@@ -126,10 +126,10 @@ router.get('/', queryParams, async (req, res, next) => {
         page = parseInt(page);
         size = parseInt(size);
         if (!size) {
-            size = 20;
+            size = 21;
         };
-        if (size > 20) {
-            size = 20;
+        if (size > 21) {
+            size = 21;
         };
         if (!page) {
             page = 1;
@@ -326,14 +326,17 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 // create a new spot
 router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
+    
     try {
-        const { address, city, state,
-            country, lat, lng, name,
-            description, price } = req.body;
-
-            console.log(address)
+        const { address, city, state, country, lat, lng, name, description, price, images } = req.body;
+        // const {images} = req.body;
         const { user } = req;
-        console.log(user)
+        
+       
+       
+       
+        
+        
 
         if (user) {
              
@@ -342,29 +345,72 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 ownerId: user.id, address, city,
                 state, country, lat, lng, name, description, price
             });
-            let spotFormatting = {
-                id: newSpot.id,
-                ownerId: user.id,
-                address: newSpot.address,
-                city: newSpot.city,
-                state: newSpot.state,
-                country: newSpot.country,
-                lat: Number(newSpot.lat),
-                lng: Number(newSpot.lng),
-                name: newSpot.name,
-                description: newSpot.description,
-                price: Number(newSpot.price),
-                createdAt: formatDate(newSpot.createdAt),
-                updatedAt: formatDate(newSpot.updatedAt)
-            };
+            if (newSpot) {
+
+                
+
+                
+                const imageFormatting = [];
+                for (let image of images) {
+                    
+                    
+                    const newImage = await SpotImage.create({
+                        url: image.url, preview: image.preview, spotId: parseInt(newSpot.id)
+                    });
+                    imageFormatting.push({
+                        
+                        id: newImage.id,
+                        url: newImage.url,
+                        preview: newImage.preview
+                        
+                    })
+                    
+                    
+                }
+                let spotFormatting = {
+                    id: newSpot.id,
+                    ownerId: user.id,
+                    address: newSpot.address,
+                    city: newSpot.city,
+                    state: newSpot.state,
+                    country: newSpot.country,
+                    lat: Number(newSpot.lat),
+                    lng: Number(newSpot.lng),
+                    name: newSpot.name,
+                    description: newSpot.description,
+                    price: Number(newSpot.price),
+                    createdAt: formatDate(newSpot.createdAt),
+                    updatedAt: formatDate(newSpot.updatedAt),
+                    numReviews: 0,
+                    avgStarRating: 0,
+                    SpotImages: imageFormatting,
+                    Owner: {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    }
+                };
+
+                
 
 
-            return res.status(201).json(spotFormatting);
+
+
+
+
+                return res.status(201).json({spotFormatting});
+            }
+
+
+
+
+
 
         };
 
     } catch (error) {
-        next(error);
+        
+         return next(error);
     };
 });
 

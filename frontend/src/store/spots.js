@@ -27,12 +27,7 @@ const addSpot = (spot) => ({
     payload: spot
 })
 
-const addImage = (spotId, image) => ({
-    type: ADD_IMAGE,
-    payload: image,
-    spotId
 
-})
 
 
 
@@ -89,54 +84,49 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
     }
 }
 
-export const addSpotThunk = (spot) => async (dispatch) => {
+export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
     try {
+        console.log(spotToAdd, 'data at top of thunk')
+        console.log(images, 'images thunk');
+
+        const spotAndImages = {
+            ...spotToAdd, images: [...images]
+        }
         const options = {
             method: 'POST',
             header: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(spot)
+            body: JSON.stringify(spotAndImages)
         }
-        const res = await csrfFetch('/api/spots/', options)
-        if (res.ok) {
-            const data = await res.json();
-            dispatch(getSingleSpot(data))
-            return data;
+        console.log(options.body, 'options')
+        const spot = await csrfFetch('/api/spots', options)
+        
+        
+        console.log(spot, 'spot go back to thunk')
+        if (spot.ok) {
 
 
-        } else {
-
-            throw res
+            const spotData = await spot.json();
+            
+            
+            
+            
+            await dispatch(addSpot(spotData.spotFormatting));
+            
+            return spotData;
         }
+    
+
+
+
+
 
     } catch (error) {
+        console.log(error, 'thunk error');
+        
         return error;
     }
 }
 
-export const addImageThunk = (id, image) => async (dispatch) => {
-    try {
-        const options = {
-            method: 'POST',
-            header: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(image)
-        }
-        const res = await csrfFetch(`/api/spots/${id}/images`, options)
-
-        if (res.ok) {
-            const data = await res.json();
-            
-            dispatch(addImage(id, data))
-            return data;
-
-        } else {
-            throw res;
-        }
-
-    } catch (error) {
-        return error
-    }
-
-}
 
 
 //reducer
@@ -167,17 +157,14 @@ function spotsReducer(state = initialState, action) {
 
             return newState;
 
-
-
-        case ADD_IMAGE:
-            newState = { ...state };
-            newState.singleSpot.SpotImages = [...newState?.singleSpot?.SpotImages || []]
-            newState.singleSpot.SpotImages.push(action.image)
-            return newState
-
         case GET_USER_SPOTS:
             newState = { ...state };
             newState.currentUser = action.payload.Spots;
+            return newState;
+
+        case ADD_SPOT:
+            newState = { ...state }
+            newState.addSpot = action.payload;
             return newState;
 
 
