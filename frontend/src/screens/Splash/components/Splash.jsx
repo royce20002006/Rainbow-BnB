@@ -71,7 +71,8 @@ export default function Splash() {
   return (
     <div className='spotSection'>
       {spots.map((spot, idx) => (
-        <div onClick={e => goToSpot(e,spot)}key={`${idx}--${spot.id}`} role='tooltip'>
+        <div className="card" onClick={e => goToSpot(e,spot)}key={`${idx}--${spot.id}`} >
+          <span className="tooltip-text">{spot.name}</span>
             
             <img src={spot.previewImage} />
             <div className="locationAndRating">
