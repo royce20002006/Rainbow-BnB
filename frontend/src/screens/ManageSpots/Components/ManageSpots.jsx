@@ -7,7 +7,7 @@ import { FaStar } from 'react-icons/fa';
 import './ManageSpots.css'
 
 import OpenModalButton from '../../../components/Modal/OpenModalButton/OpenModalButton';
-import DeleteSpotModal from './Modal/DeleteSpotModal';
+import DeleteSpotModal from './Modal/DeleteSpotModal/DeleteSpotModal';
 
 
 
