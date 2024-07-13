@@ -182,7 +182,19 @@ router.get('/', queryParams, async (req, res, next) => {
 
         //get all the spots in the database
         let spots = await Spot.findAll({
-            include: [{ model: Review, attributes: [] }, ],
+            include: [{
+                model: SpotImage,
+                as: 'SpotImages',
+                attributes: ['id', 'url', 'preview']
+            }, {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: Review,
+                attributes: []
+            } ],
             where,
             limit: size,
             offset: (page - 1) * size
@@ -194,6 +206,7 @@ router.get('/', queryParams, async (req, res, next) => {
             // loop through the spots to add them to the array
             for (let spot of spots) {
 
+                
                 // sum is for getting the average star rating
                 let sum = 0;
                 // preview image url will go here
@@ -202,11 +215,15 @@ router.get('/', queryParams, async (req, res, next) => {
                 let reviews = await spot.getReviews();
                 let images = await spot.getSpotImages();
                 //loop through the reviews so we can get the avg str rating
+                let count = 0;
+                
                 for (let review of reviews) {
+                    count++
                     sum += review.stars;
                 };
-                sum /= reviews.length;
-
+                sum /= count;
+                
+                
                 //loop through images to find a preview image and extract the url
                 for (let image of images) {
 
@@ -216,6 +233,8 @@ router.get('/', queryParams, async (req, res, next) => {
                     };
                 };
 
+                
+               
 
                 spotFormatting.push({
                     id: spot.id,
@@ -231,10 +250,12 @@ router.get('/', queryParams, async (req, res, next) => {
                     price: Number(spot.price),
                     createdAt: formatDate(spot.createdAt),
                     updatedAt: formatDate(spot.updatedAt),
-                    avgRating: sum,
-                    previewImage: previewImages
-
-
+                    numReviews: count,
+                    avgStarRating: sum,
+                    SpotImages: spot.SpotImages,
+                    previewImage: previewImages, 
+                    Owner: spot.Owner
+    
                 });
             };
 
@@ -596,15 +617,18 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
         const { user } = req;
         const spotId = req.params.spotId;
+        console.log(spotId)
         if (user) {
 
 
             const spot = await Spot.findByPk(spotId);
             if (spot && spot.ownerId === user.id) {
 
-                await spot.destroy();
-                res.json({ message: 'Successfully deleted' });
-
+                const deletedSpot = await spot.destroy();
+                console.log(deletedSpot, 'deleted spot')
+                
+                
+                res.json(deletedSpot);
 
 
             } else if (spot && spot.ownerId !== user.id) {

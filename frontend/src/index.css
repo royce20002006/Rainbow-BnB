@@ -21,9 +21,23 @@
     background-color: #e9f0fe;
 }
 
+.red {
+    background-color: #FF385c;
+    border-radius: .4rem;
+    box-shadow: 1px 1px 1px black;
+    color: white;
+}
+
 .red button {
     
     background-color: #FF385c;
+    border-radius: .4rem;
+    box-shadow: 1px 1px 1px black;
+    color: white;
+}
+.gray {
+    
+    background-color: gray;
     border-radius: .4rem;
     box-shadow: 1px 1px 1px black;
     color: white;
