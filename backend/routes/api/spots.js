@@ -440,11 +440,10 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     try {
         const { url, preview } = req.body;
         const { spotId } = req.params;
-        console.log(url)
+        
 
         const spot = await Spot.findByPk(spotId);
-        console.log('spot', spot)
-
+        
         const { user } = req;
 
 
@@ -460,7 +459,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
                     url, preview, spotId: parseInt(spotId)
                 });
 
-                console.log('newimage', newImage)
+               
                 const imageFormatting = {
                     id: newImage.id,
                     url: newImage.url,
@@ -617,7 +616,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
         const { user } = req;
         const spotId = req.params.spotId;
-        console.log(spotId)
+       
         if (user) {
 
 
@@ -625,8 +624,6 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
             if (spot && spot.ownerId === user.id) {
 
                 const deletedSpot = await spot.destroy();
-                console.log(deletedSpot, 'deleted spot')
-                
                 
                 res.json(deletedSpot);
 

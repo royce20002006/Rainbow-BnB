@@ -23,11 +23,7 @@ export default function DeleteSpotModal({
         
         return await dispatch(deleteSpotThunk(spot)).then(closeModal)
         
-        // if (onModalClose) setOnModalClose(onModalClose);
-        // setModalContent(modalComponent)
-        // if(typeof onItemClick === 'function') onItemClick();
-        // console.log('clickedd')
-        // setDeleteS(!deleteS)
+       
       }
 
   return (
