@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import * as sessionActions from './store/session';
 // import Navigation from "./components/Navigation/Navigation";
+
 import Header from "./components/Header/Header";
 import Splash from "./screens/Splash/components/Splash";
 import Spot from "./screens/Spot/components/Spot/Spot";
@@ -58,7 +59,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+  
+  <RouterProvider router={router} />
+
+  )
 }
 
 export default App;

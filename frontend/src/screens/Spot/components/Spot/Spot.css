@@ -12,20 +12,22 @@
 
 .description-div {
     width: 60rem;
+    overflow: hidden;
 }
 
 
 .firstImage img{
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     
 }
 
 .allSmallImagesDiv {
     display: flex;
+    overflow: hidden;
     flex-direction: column;
     gap: .3rem;
-    flex-wrap: wrap;
+    
     
 }
 
@@ -33,20 +35,31 @@
     display: flex;
     flex-direction: column;
     gap: .4rem;
-    width: 370px;
-    height:370px;
+    
     flex-wrap: nowrap;
     
     
+    
+    
+}
+
+.smallImageDivRow1 img {
+    width: 246.5px;
+    height:246.5px;
+    
+}
+.smallImageDivRow2 img {
+    width: 246.5px;
+    height:246.5px;
     
 }
 .smallImageDivRow2 {
     display: flex;
     flex-direction: column;
     gap: .4rem;
-    width: 370px;
-    height:370px;
     
+   
+     
     flex-wrap: nowrap;
 }
 

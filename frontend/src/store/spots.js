@@ -94,8 +94,6 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
 
 export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
     try {
-        console.log(spotToAdd, 'data at top of thunk')
-        console.log(images, 'images thunk');
 
         const spotAndImages = {
             ...spotToAdd, images: [...images]
@@ -106,7 +104,6 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
             header: { 'Content-Type': 'application/json' },
             body: JSON.stringify(spotAndImages)
         }
-        console.log(options.body, 'options')
         const spot = await csrfFetch('/api/spots', options)
 
 
@@ -130,7 +127,6 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
 
 
     } catch (error) {
-        console.log(error, 'thunk error');
 
         return error;
     }
@@ -189,13 +185,7 @@ function spotsReducer(state = initialState, action) {
             }
 
             return newState;
-        case GET_SINGLE_SPOT:
-            newState = { ...state }
-
-            newState.singleSpot = action.payload;
-
-
-            return newState;
+        
 
         case GET_USER_SPOTS:
             newState = { ...state };
@@ -204,14 +194,15 @@ function spotsReducer(state = initialState, action) {
 
         case ADD_SPOT:
             newState = { ...state }
-            newState.addSpot = action.payload;
+            newState.allSpots = [...newState.allSpots, action.payload]
+            newState.byId[action.payload.id] = action.payload;
             return newState;
 
         case DELETE_SPOT:
             newState = { ...state }
 
             const filteredSpots = newState.allSpots.filter(spot => {
-                console.log(action.payload.id, 'payload id in all')
+                
                 return spot.id !== action.payload.id
             })
             newState.allSpots = filteredSpots

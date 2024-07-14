@@ -5,13 +5,13 @@ import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
 
 
-export default function Reviews() {
+export default function Reviews({spot}) {
     const { id } = useParams();
 
     const [isLoaded, setIsLoaded] = useState(false);
     const dispatch = useDispatch();
     const reviews = useSelector(state => state.reviewsState.allReviews)
-    const spot = useSelector(state => state.spotState.singleSpot)
+
     const sessionUser = useSelector(state => state.session.user);
     const [isOwner, setIsOwner] = useState(false);
     const [alreadyReviewed, setAlreadyReviewed] = useState(false)
@@ -28,10 +28,7 @@ export default function Reviews() {
                 setIsOwner(false)
             }
             for (let review of reviews) {
-                console.log('review', review.userId)
-                console.log('sessionn', sessionUser.id)
                 if (review.userId === sessionUser.id) {
-                    console.log("reviewed")
                     setAlreadyReviewed(true);
                 }
             }

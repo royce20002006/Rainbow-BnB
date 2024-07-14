@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom"
-import { getSingleSpotThunk } from "../../../../store/spots";
+import { getSingleSpotThunk, getSpotsThunk } from "../../../../store/spots";
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
 
@@ -10,21 +10,39 @@ import Reviews from '../Reviews/Reviews';
 
 
 export default function Spot() {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
-  const dispatch = useDispatch();
+  const spot = useSelector(state => state.spotState.byId[id])
+  console.log(spot)
+  console.log(isLoaded)
   
-  const spot = useSelector(state => state.spotState.singleSpot)
+  // useEffect(() => {
+  //   //grab data
+    
+    
+  //   const getData = async () => {
+  //     await dispatch(getSpotsThunk());
+
+  //     setIsLoaded(true);
+  //   }
+
+  //   if (!isLoaded) {
+  //     getData();
+  //   }
+
+  // }, [dispatch, isLoaded, user])
   
 
   useEffect(() => {
     const getData = async () => {
-      await dispatch(getSingleSpotThunk(id));
+      console.log('helllo from use effect')
+      await dispatch(getSpotsThunk());
       await dispatch(getReviewsThunk(id));
       setIsLoaded(true);
     }
 
-    if (!isLoaded) {
+    if (!isLoaded || spot === undefined) {
       getData();
     }
   }, [dispatch, id, isLoaded])
@@ -85,7 +103,7 @@ export default function Spot() {
         <div>
         </div>
       </div>
-      <Reviews />
+      <Reviews spot={spot}/>
 
 
     </div>
