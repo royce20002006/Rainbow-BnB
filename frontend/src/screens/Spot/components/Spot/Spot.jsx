@@ -70,17 +70,17 @@ export default function Spot() {
 
       </div>
       <div className="ownerAndPriceDiv">
-        <div>
+        <div className="description-div">
           <div className="subheading">Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</div>
           <div className="normal">{spot.description}</div>
         </div>
         <div className="reservationDiv">
           <div className="priceAndReview">
-          <div>${spot.price} night</div>
-          <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating : 'New'} · {spot.numReviews} reviews</div>
+          <div>${spot.price.toFixed(2)} night</div>
+          <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating.toFixed(1) : 'New'}  {spot.numReviews === 0 ? null : spot.numReviews === 1 ?' · ' + spot.numReviews + ' Review' : ' · ' + spot.numReviews + ' Reviews' } </div>
           </div>
 
-          <button className="red" onClick={(e) => reserveSubmit(e)}>Reserve</button>
+          <button className="red reserve" onClick={(e) => reserveSubmit(e)}>Reserve</button>
         </div>
         <div>
         </div>
