@@ -24,12 +24,14 @@ export default function Reviews({spot}) {
 
             if (spot.ownerId === sessionUser.id) {
                 setIsOwner(true);
+                console.log(isOwner, 'owner')
             } else {
                 setIsOwner(false)
             }
             for (let review of reviews) {
                 if (review.userId === sessionUser.id) {
                     setAlreadyReviewed(true);
+                    console.log(alreadyReviewed, 'reviewed')
                 }
             }
         }
@@ -76,7 +78,7 @@ export default function Reviews({spot}) {
                 {
                     !sessionUser || isOwner || alreadyReviewed ? null : <div className="postDiv"><button className="postButton">Post Your Review</button></div>
                 }
-                {reviews.length === 0 && sessionUser ? <p>Be the first to post a review!</p> : null}
+                {!sessionUser || isOwner || alreadyReviewed ? null : reviews.length === 0 && sessionUser ? <p>Be the first to post a review!</p> : null}
 
             </div>
 
