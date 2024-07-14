@@ -17,6 +17,11 @@
     
 }
 
+.error {
+    color: #FF385c;
+    padding-bottom: 1rem;
+}
+
 .colorInput {
     background-color: #e9f0fe;
 }
@@ -24,22 +29,30 @@
 .red {
     background-color: #FF385c;
     border-radius: .4rem;
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 3px 3px 3px black;
     color: white;
+}
+.red:disabled {
+    background-color:   white;
+    border-radius: .4rem;
+    box-shadow: 3px 3px 3px black;
+    color: gray;
+
 }
 
-.red button {
-    
-    background-color: #FF385c;
-    border-radius: .4rem;
-    box-shadow: 1px 1px 1px black;
-    color: white;
+.login-heading {
+    margin: 0;
+    margin-top: .1rem;
+    margin-bottom: 1rem;
+    padding: 0;
 }
+
+
 .gray {
     
     background-color: gray;
     border-radius: .4rem;
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 3px 3px 3px black;
     color: white;
 }
 
