@@ -65,9 +65,9 @@ export default function LoginFormModal() {
 
                 </div>
                 <label htmlFor="errors">
-                    <button className='red loginButton' disabled={credential.length < 4 || password.length < 6} type='submit'>Log In</button>
+                    <button id='button' className='red loginButton' disabled={credential.length < 4 || password.length < 6} type='submit'>Log In</button>
                 </label>
-                <button className='gray loginButton' onClick={(e) => demoLogin(e)}>log in as demo user</button>
+                <button id="button" className='gray loginButton' onClick={(e) => demoLogin(e)}>log in as demo user</button>
             </form>
         </>
     )

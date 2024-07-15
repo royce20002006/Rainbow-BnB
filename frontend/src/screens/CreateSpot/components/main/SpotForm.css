@@ -17,11 +17,16 @@
     gap: 1rem;
 }
 
+.buttonDiv button {
+    height: 2rem;
+}
 .buttonDiv {
     margin-top: 1rem;
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 1rem;
+    width: 10rem;
+    
 }
 
 .priceInput {

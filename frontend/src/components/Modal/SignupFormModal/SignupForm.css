@@ -10,6 +10,12 @@
     padding-right: 3rem;
     display: flex;
     justify-content: flex-start;
+    width: 17rem;
+    
+}
+.signupButton {
+    width: 20rem;
+    height: 3rem;
 }
 
 #modal-content {

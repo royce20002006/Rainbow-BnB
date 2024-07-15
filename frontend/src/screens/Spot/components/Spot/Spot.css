@@ -19,6 +19,8 @@
 .firstImage img{
     width: 500px;
     height: 500px;
+    border-top-left-radius: 2%;
+    border-bottom-left-radius: 2%;
     
 }
 
@@ -43,6 +45,14 @@
     
 }
 
+.top{
+    border-top-right-radius: 5%;
+
+}
+.bottom{
+    border-bottom-right-radius: 5%;
+}
+
 .smallImageDivRow1 img {
     width: 246.5px;
     height:246.5px;
@@ -51,6 +61,7 @@
 .smallImageDivRow2 img {
     width: 246.5px;
     height:246.5px;
+    
     
 }
 .smallImageDivRow2 {

@@ -34,8 +34,8 @@ export default function DeleteSpotModal({
 
       </div>
         <div className='buttons'>
-        <button className='big red normal' onClick={(e) => deleteSpot(e)}>Yes (Delete Spot)</button>
-        <button className='big gray normal' onClick={closeModal}>No (Keep Spot)</button>
+        <button id='button' className='big red normal' onClick={(e) => deleteSpot(e)}>Yes (Delete Spot)</button>
+        <button id='button' className='big gray normal' onClick={closeModal}>No (Keep Spot)</button>
 
         </div>
     </div>

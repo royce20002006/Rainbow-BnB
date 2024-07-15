@@ -8,7 +8,8 @@
     display: flex;
     gap: .5rem;
     font-size: 14pt;
-    padding: 5px
+    padding: 5px;
+    border-radius:  45%;
 }
 
 .cursor {
