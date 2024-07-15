@@ -35,7 +35,7 @@ export default function Reviews({spot}) {
                 }
             }
         }
-    }, [reviews, spot, sessionUser])
+    }, [reviews, spot, sessionUser, alreadyReviewed, isOwner])
 
 
 
@@ -78,7 +78,7 @@ export default function Reviews({spot}) {
                 {
                     !sessionUser || isOwner || alreadyReviewed ? null : <div className="postDiv"><button id='button' className="postButton">Post Your Review</button></div>
                 }
-                {!sessionUser || isOwner || alreadyReviewed ? null : reviews.length === 0 && sessionUser ? <p>Be the first to post a review!</p> : null}
+                {!sessionUser || isOwner || alreadyReviewed ? null : reviews.length === 0 && sessionUser ? <p className="normal first-to-post">Be the first to post a review!</p> : null}
 
             </div>
 

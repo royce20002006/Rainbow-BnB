@@ -7,21 +7,16 @@ import LoginFormModal from '../../Modal/LoginFormModal/LoginFormModal';
 import SignupFormModal from '../../Modal/SignupFormModal/SignupFormModal';
 import { GiHamburgerMenu } from "react-icons/gi";
 import { NavLink, useNavigate } from 'react-router-dom';
-import { getCurrentUserSpotsThunk } from '../../../store/spots';
 
-function ProfileButton({ user }) {
+
+function ProfileButton({ user, isLoaded }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
   const navigate = useNavigate();
-  const [isLoaded, setIsLoaded] = useState(false)
-  
-  const spots = useSelector(state => state.spotState.currentUser)
+  const spots = useSelector(state => state.spotState.allSpots)
   
   
-
-  
-
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
@@ -71,7 +66,7 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             </div>
             <div className='manageSpots cursor'>
-            <li> { spots.length ? <div onClick={() => navigate('/spots/manage')}>Manage Spots</div> : <NavLink to={'/spots/new'} >Create a New Spot</NavLink> }</li>
+            <li> { isLoaded && spots.filter(spot => spot.ownerId === user.id).length ? <div onClick={() => navigate('/spots/manage')}>Manage Spots</div> : <NavLink to={'/spots/new'} >Create a New Spot</NavLink> }</li>
             <li>Manage Reviews</li>
             </div>
             <li className='logout'>

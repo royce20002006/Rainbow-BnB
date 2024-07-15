@@ -54,7 +54,7 @@ export default function Spot() {
     }
     
 
-  }, [dispatch, user])
+  }, [dispatch,isLoaded,user])
   
 
   useEffect(() => {

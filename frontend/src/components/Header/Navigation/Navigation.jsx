@@ -12,7 +12,7 @@ function Navigation({ isLoaded }) {
       {isLoaded && (
         
         <div>
-          <ProfileButton user={sessionUser} />
+          <ProfileButton isLoaded={isLoaded} user={sessionUser} />
         </div>
       )}
     </div>

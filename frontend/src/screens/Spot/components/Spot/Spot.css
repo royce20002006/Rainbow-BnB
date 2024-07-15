@@ -145,6 +145,10 @@
     height: 2rem;
 }
 
+.first-to-post {
+    margin-top: 0;
+}
+
 .postButton:active {
     background-color: rgb(162, 171, 171);
     box-shadow: 1px 1px 1px black;

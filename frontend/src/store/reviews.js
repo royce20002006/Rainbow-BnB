@@ -46,7 +46,7 @@ function ReviewsReducer(state = initialState, action) {
         case GET_ALL_REVIEWS:
             newState = { ...state }
             
-            newState.allReviews= action.payload.Reviews;
+            newState.allReviews= action.payload.Reviews.reverse();
 
             for(let review of action.payload.Reviews) {
                 newState.byId[review.id] = review;
