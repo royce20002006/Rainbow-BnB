@@ -79,8 +79,9 @@ export default function Spot() {
         </div>
 
         <div className="smallImageDivRow2">
-        <img   src={isLoaded && spot.SpotImages[3] ? spot.SpotImages[3].url : null} />
-        <img   src={isLoaded && spot.SpotImages[4] ? spot.SpotImages[4].url : null} />
+          
+        <img className="top"  src={isLoaded && spot.SpotImages[3] ? spot.SpotImages[3].url : null} />
+        <img  className="bottom" src={isLoaded && spot.SpotImages[4] ? spot.SpotImages[4].url : null} />
         </div>
        
 
@@ -98,7 +99,7 @@ export default function Spot() {
           <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating.toFixed(1) : 'New'}  {spot.numReviews === 0 ? null : spot.numReviews === 1 ?' · ' + spot.numReviews + ' Review' : ' · ' + spot.numReviews + ' Reviews' } </div>
           </div>
 
-          <button className="red reserve" onClick={(e) => reserveSubmit(e)}>Reserve</button>
+          <button id="button" className="red reserve" onClick={(e) => reserveSubmit(e)}>Reserve</button>
         </div>
         <div>
         </div>

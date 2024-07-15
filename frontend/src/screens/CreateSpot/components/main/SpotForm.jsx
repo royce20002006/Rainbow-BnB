@@ -362,6 +362,7 @@ export default function SpotForm() {
               onClick={(e) => submit(e)}
               disabled={Object.keys(errors).length !== 0}
               className='red'
+              id='button'
             >Create Spot</button>
           </div>
 
