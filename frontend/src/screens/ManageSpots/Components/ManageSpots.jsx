@@ -68,7 +68,7 @@ export default function ManageSpots() {
   return (
     <div className='headingAndAddSpot'>
         <h1 className='heading h1Manage'>Manage your Spots</h1>
-        <button  id='button' className='red create-spot-button' onClick={(e) => goToSpot(e)}>Create a new Spot</button>
+        <button  id='button' className='red create-spot-button' onClick={(e) => navigate('/spots/new')}>Create a new Spot</button>
         <div className='allSpotsContainer'>
           
         {spots.map((spot, idx) => (
