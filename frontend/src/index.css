@@ -33,8 +33,13 @@
 .red {
     background-color: #FF385c;
     border-radius: .4rem;
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 2px 2px 5px black;
     color: white;
+}
+
+.red:active {
+    background-color: #fa8484;
+    box-shadow: 1px 1px 1px black;
 }
 
 
@@ -49,8 +54,13 @@
     
     background-color: gray;
     border-radius: .4rem;
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 2px 2px 5px black;
     color: white;
+}
+
+.gray:active {
+    background-color: rgba(128, 128, 128, 0.584);
+    box-shadow: 1px 1px 1px black;
 }
 
 .not-found {

@@ -14,8 +14,12 @@ function ProfileButton({ user }) {
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
   const navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = useState(false)
   
   const spots = useSelector(state => state.spotState.currentUser)
+  
+  
+
   
 
   const toggleMenu = (e) => {
@@ -48,6 +52,7 @@ function ProfileButton({ user }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    navigate('/')
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -66,7 +71,7 @@ function ProfileButton({ user }) {
             <li>{user.email}</li>
             </div>
             <div className='manageSpots cursor'>
-            <li> { spots ? <div onClick={() => navigate('/spots/manage')}>Manage Spots</div> : <NavLink to={'/spots/new'} >Create a New Spot</NavLink> }</li>
+            <li> { spots.length ? <div onClick={() => navigate('/spots/manage')}>Manage Spots</div> : <NavLink to={'/spots/new'} >Create a New Spot</NavLink> }</li>
             <li>Manage Reviews</li>
             </div>
             <li className='logout'>

@@ -24,8 +24,8 @@ export default function Splash() {
 
     
     const getData = async () => {
-      await dispatch(getCurrentUserSpotsThunk());
       
+      await dispatch(getCurrentUserSpotsThunk());
 
       setIsLoaded(true);
     }
@@ -36,7 +36,7 @@ export default function Splash() {
     }
     
 
-  }, [dispatch, user])
+  }, [dispatch, user, spots])
 
   useEffect(() => {
     //grab data
@@ -44,6 +44,7 @@ export default function Splash() {
     
     const getData = async () => {
       await dispatch(getSpotsThunk());
+      
 
       setIsLoaded(true);
     }

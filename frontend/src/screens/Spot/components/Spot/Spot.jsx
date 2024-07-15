@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom"
-import { getSingleSpotThunk, getSpotsThunk } from "../../../../store/spots";
+import {  getCurrentUserSpotsThunk, getSpotsThunk } from "../../../../store/spots";
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
 
@@ -13,6 +13,7 @@ export default function Spot() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
+  const user = useSelector(state => state.session.user);
   const spot = useSelector(state => state.spotState.byId[id])
   console.log(spot)
   console.log(isLoaded)
@@ -32,6 +33,28 @@ export default function Spot() {
   //   }
 
   // }, [dispatch, isLoaded, user])
+
+  useEffect(() => {
+    //grab data
+
+
+    
+
+    
+    const getData = async () => {
+      
+      await dispatch(getCurrentUserSpotsThunk());
+
+      setIsLoaded(true);
+    }
+
+    if (user) {
+
+      getData();
+    }
+    
+
+  }, [dispatch, user])
   
 
   useEffect(() => {
@@ -45,7 +68,7 @@ export default function Spot() {
     if (!isLoaded || spot === undefined) {
       getData();
     }
-  }, [dispatch, id, isLoaded])
+  }, [dispatch, id, isLoaded, spot])
 
   if (!isLoaded || spot === undefined) {
 

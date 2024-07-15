@@ -16,6 +16,7 @@
 }
 
 
+
 .firstImage img{
     width: 500px;
     height: 500px;
@@ -108,10 +109,10 @@
 }
 
 .reservationDiv button {
-    background-color: #FF385c;
-    border-radius: .4rem;
-    box-shadow: 1px 1px 1px black;
-    color: white;
+    /* background-color: #FF385c;
+    border-radius: .4rem; */
+    /* box-shadow: 1px 1px 1px black; */
+    /* color: white; */
     height: 2rem;
 }
 
@@ -139,8 +140,14 @@
 .postButton {
     background-color: darkslategrey;
     border-radius: .4rem;
-    box-shadow: 1px 1px 1px black;
+    box-shadow: 2px 2px 5px black;
     color: white;
+    height: 2rem;
+}
+
+.postButton:active {
+    background-color: rgb(162, 171, 171);
+    box-shadow: 1px 1px 1px black;
 }
 
 .reviewUser {

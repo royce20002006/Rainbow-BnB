@@ -57,7 +57,7 @@ export default function ManageSpots() {
   const updateSpot = (e, ) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('update functionality goes here')
+    alert('update functionality goes here')
   }
   
  
@@ -68,7 +68,7 @@ export default function ManageSpots() {
   return (
     <div className='headingAndAddSpot'>
         <h1 className='heading h1Manage'>Manage your Spots</h1>
-        <button  id='button' className='red' onClick={(e) => goToSpot(e)}>Create a new Spot</button>
+        <button  id='button' className='red create-spot-button' onClick={(e) => goToSpot(e)}>Create a new Spot</button>
         <div className='allSpotsContainer'>
           
         {spots.map((spot, idx) => (
@@ -84,7 +84,7 @@ export default function ManageSpots() {
 
             <span className="spotPrice spotInfo">${spot.price}</span><span> night </span>
             <div className='imageButtons'>
-              <button onClick={(e, spot) => updateSpot(e, spot)} className='red'>update</button>
+              <button onClick={(e, spot) => updateSpot(e, spot)}  id='button' className='red manage-button'>update</button>
               <div>
 
               
@@ -93,7 +93,7 @@ export default function ManageSpots() {
                 e.stopPropagation()
               }}>
               <OpenModalButton
-              className='red'
+              className='red manage-button'
                 buttonText="Delete"
                 modalComponent={<DeleteSpotModal spot={spot}/>}
                 preventDefault
