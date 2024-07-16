@@ -31,7 +31,7 @@ const validateNewSpot = [
     check('address')
         .exists({ checkFalsy: true })
         .isLength({ min: 5 })
-        .withMessage('Street address is required'),
+        .withMessage('Address is required'),
     check('city')
         .exists({ checkFalsy: true })
         .isLength({ min: 3 })
@@ -47,23 +47,24 @@ const validateNewSpot = [
     check('lat')
         .exists({ checkFalsy: true })
         .isFloat({ min: -90.0000000, max: 90.0000000 })
-        .withMessage('Latitude is not valid'),
+        .withMessage('Latitude is required'),
     check('lng')
         .exists({ checkFalsy: true })
         .isFloat({ min: -180.0000000, max: 180.0000000 })
-        .withMessage('Longitude is not valid'),
+        .withMessage('Longitude is required'),
     check('name')
         .exists({ checkFalsy: true })
         .isLength({ min:3, max: 50 })
-        .withMessage('Name must be less than 50 characters'),
+        .withMessage('Name is required'),
     check('description')
         .exists({ checkFalsy: true })
         .isLength({ min: 5, max: 255 })
-        .withMessage('Description is required'),
+        .withMessage('Description need a minimum of 30 characters'),
     check('price')
         .exists({ checkFalsy: true })
         .isFloat({ min: 0 })
-        .withMessage('Price per day is required'),
+        .withMessage('Price is required'),
+    
     handleValidationErrors
 ];
 // validate review and if not create error through the validator
@@ -560,31 +561,80 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
         const spotId = req.params.spotId;
         if (user) {
 
+            
+            const spot = await Spot.findByPk(spotId, {
 
-            const spot = await Spot.findByPk(spotId)
+                include: [{
+                    model: SpotImage,
+                    as: 'SpotImages',
+                    attributes: ['id', 'url', 'preview']
+                }, {
+                    model: User,
+                    as: 'Owner',
+                    attributes: ['id', 'firstName', 'lastName']
+                },
+                {
+                    model: Review,
+                    attributes: []
+                }]
+            });
+
             if (spot && spot.ownerId === user.id) {
 
-
+                let sum = 0;
                 const updatedSpot = await spot.update({
                     ownerId: user.id, address, city,
                     state, country, lat, lng, name, description, price
                 });
                 await spot.save();
 
+
+                let previewImages = '';
+                // find the reviews
+                let reviews = await spot.getReviews();
+                let images = await spot.getSpotImages();
+                //loop through the reviews so we can get the avg str rating
+                let count = 0;
+                
+                for (let review of reviews) {
+                    count++
+                    sum += review.stars;
+                };
+                sum /= count;
+                
+                
+                //loop through images to find a preview image and extract the url
+                for (let image of images) {
+
+                    if (image.preview === true) {
+                        previewImages += image.url;
+
+                    };
+                };
+
                 const spotFormatting = {
-                    id: spot.id,
-                    ownerId: spot.ownerId,
-                    address: spot.address,
-                    city: spot.city,
-                    state: spot.state,
-                    country: spot.country,
-                    lat: Number(spot.lat),
-                    lng: Number(spot.lng),
-                    name: spot.name,
-                    description: spot.description,
-                    price: Number(spot.price),
-                    createdAt: formatDate(spot.createdAt),
-                    updatedAt: formatDate(spot.updatedAt)
+                    id: updatedSpot.id,
+                    ownerId: user.id,
+                    address: updatedSpot.address,
+                    city: updatedSpot.city,
+                    state: updatedSpot.state,
+                    country: updatedSpot.country,
+                    lat: Number(updatedSpot.lat),
+                    lng: Number(updatedSpot.lng),
+                    name: updatedSpot.name,
+                    description: updatedSpot.description,
+                    price: Number(updatedSpot.price),
+                    createdAt: formatDate(updatedSpot.createdAt),
+                    updatedAt: formatDate(updatedSpot.updatedAt),
+                    numReviews: count,
+                    avgStarRating: sum,
+                    SpotImages: updatedSpot.SpotImages,
+                    previewImage: previewImages,
+                    Owner: {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    }
 
                 };
 

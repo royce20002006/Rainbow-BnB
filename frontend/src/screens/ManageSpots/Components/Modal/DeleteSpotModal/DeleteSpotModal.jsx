@@ -1,6 +1,6 @@
 import { useModal } from '../../../../../context/Modal';
-import { useDispatch, useSelector } from 'react-redux';
-import OpenModalButton from '../../../../../components/Modal/OpenModalButton/OpenModalButton';
+import { useDispatch } from 'react-redux';
+
 import { deleteSpotThunk } from '../../../../../store/spots';
 import './DeleteSpotModal.css'
 
@@ -13,8 +13,8 @@ export default function DeleteSpotModal({
     
     
     const dispatch = useDispatch();
-    const spots = useSelector(state => state.spotState.currentUser)
-    const {setModalContent, setOnModalClose } = useModal();
+    
+    
     const {closeModal} = useModal();
 
     const deleteSpot = async(e) => {

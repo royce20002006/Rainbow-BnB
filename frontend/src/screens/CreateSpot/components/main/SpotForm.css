@@ -126,7 +126,7 @@
 }
 
 .longInput {
-    
+    resize: none;
     width: 100%;
 }
 .lat {

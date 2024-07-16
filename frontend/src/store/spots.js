@@ -1,10 +1,11 @@
 import { csrfFetch } from './csrf';
 
 const GET_ALL_SPOTS = 'spots/getAllSpots';
-const GET_USER_SPOTS = 'spots/getUserSpots'
+const GET_USER_SPOTS = 'spots/getUserSpots';
 const GET_SINGLE_SPOT = 'spots/spot';
-const ADD_SPOT = 'spots/add'
-const DELETE_SPOT = 'spots/delete'
+const ADD_SPOT = 'spots/add';
+const DELETE_SPOT = 'spots/delete';
+const UPDATE_SPOT = 'spots/update';
 
 
 
@@ -31,6 +32,11 @@ const addSpot = (spot) => ({
 const deleteSpot = (deletedSpot) => ({
     type: DELETE_SPOT,
     payload: deletedSpot
+})
+
+const updateSpot = (updatedSpot) => ({
+    type: UPDATE_SPOT,
+    payload: updatedSpot
 })
 
 
@@ -132,6 +138,49 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
     }
 }
 
+export const updateSpotThunk = (spotToAdd, images, id) => async (dispatch) => {
+    try {
+        
+
+        const spotAndImages = {
+            ...spotToAdd, images: [...images]
+        }
+
+        const options = {
+            method: 'PUT',
+            header: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(spotAndImages)
+        }
+
+        
+        const spot = await csrfFetch(`/api/spots/${id}`, options)
+
+
+        
+        if (spot.ok) {
+
+
+            const spotData = await spot.json();
+
+            console.log(spotData, 'spotdata in thunk')
+
+
+            await dispatch(updateSpot(spotData));
+
+            return spotData;
+        }
+
+
+
+
+
+
+    } catch (error) {
+
+        return error;
+    }
+}
+
 export const deleteSpotThunk = (spot) => async (dispatch) => {
     try {
         
@@ -178,7 +227,7 @@ function spotsReducer(state = initialState, action) {
         case GET_ALL_SPOTS:
             newState = { ...state }
 
-            newState.allSpots = action.payload.Spots;
+            newState.allSpots = action.payload.Spots.reverse();
 
             for (let spot of action.payload.Spots) {
                 newState.byId[spot.id] = spot;
@@ -187,18 +236,19 @@ function spotsReducer(state = initialState, action) {
             return newState;
         
 
-        case GET_USER_SPOTS:
+        case GET_USER_SPOTS:{
             newState = { ...state };
-            newState.currentUser = action.payload.Spots;
+            newState.currentUser = action.payload.Spots.reverse();
             return newState;
-
-        case ADD_SPOT:
+        }
+        case ADD_SPOT: {
             newState = { ...state }
-            newState.allSpots = [...newState.allSpots, action.payload]
+            newState.allSpots = [action.payload, ...newState.allSpots]
             newState.byId[action.payload.id] = action.payload;
             return newState;
+        }
 
-        case DELETE_SPOT:
+        case DELETE_SPOT: {
             newState = { ...state }
 
             const filteredSpots = newState.allSpots.filter(spot => {
@@ -217,7 +267,26 @@ function spotsReducer(state = initialState, action) {
             })
             newState.currentUser = filteredUserSpots;
             return newState
+        }
+        case UPDATE_SPOT: {
+            newState = { ...state }
+            console.log(action.payload, 'reducer')
+            const spotId = action.payload.id;
 
+            const newAllSpots =[];
+            for(let i = 0; i < newState.allSpots.length; i++){
+                let currSpot = newState.allSpots[i];
+                if(currSpot.id === spotId){
+                    newAllSpots.push(action.payload);
+                } else{
+                    newAllSpots.push(currSpot)
+                }
+            }
+
+            newState.allSpots = newAllSpots;
+            newState.byId = {...newState.byId, [spotId]: action.payload};
+             return newState;
+        }
 
 
         default:

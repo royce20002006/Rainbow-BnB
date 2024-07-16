@@ -24,8 +24,8 @@ export default function Splash() {
 
     
     const getData = async () => {
-      await dispatch(getCurrentUserSpotsThunk());
       
+      await dispatch(getCurrentUserSpotsThunk());
 
       setIsLoaded(true);
     }
@@ -36,7 +36,7 @@ export default function Splash() {
     }
     
 
-  }, [dispatch, user])
+  }, [dispatch, user, spots])
 
   useEffect(() => {
     //grab data
@@ -44,6 +44,7 @@ export default function Splash() {
     
     const getData = async () => {
       await dispatch(getSpotsThunk());
+      
 
       setIsLoaded(true);
     }
@@ -69,8 +70,11 @@ export default function Splash() {
   }
 
   return (
+    <div className="grid-container">
+
     <div className='spotSection'>
       {spots.map((spot, idx) => (
+        
         <div className="card" onClick={e => goToSpot(e,spot)}key={`${idx}--${spot.id}`} >
           <span className="tooltip-text">{spot.name}</span>
             
@@ -86,6 +90,7 @@ export default function Splash() {
           
         </div>
       ))}
+    </div>
     </div>
   )
 }

@@ -14,6 +14,6 @@ export default function OpenModalButton({
         if(typeof onButtonClick === 'function') onButtonClick();
     };
   return (
-    <button id='button' className='red' onClick={onClick}>{buttonText}</button>
+    <button id='button' className='red manage-button' onClick={onClick}>{buttonText}</button>
   )
 }
