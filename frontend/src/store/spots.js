@@ -118,7 +118,7 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
 
 
             const spotData = await spot.json();
-
+            
 
 
 
@@ -191,17 +191,17 @@ export const deleteSpotThunk = (spot) => async (dispatch) => {
             body: JSON.stringify(spot)
         }
         
-
+        
         const deletedSpot = await csrfFetch(`/api/spots/${spot.id}`, options)
 
-        
+    
         
         if (deletedSpot.ok) {
             
 
             const spotData = await deletedSpot.json();
 
-            console.log(spotData, 'deleted data')
+           
             await dispatch(deleteSpot(spotData));
 
             return spotData;
@@ -255,6 +255,7 @@ function spotsReducer(state = initialState, action) {
                 
                 return spot.id !== action.payload.id
             })
+            console.log(filteredSpots, 'reducer for delete')
             newState.allSpots = filteredSpots
             
             const newById = { ...newState.byId };
