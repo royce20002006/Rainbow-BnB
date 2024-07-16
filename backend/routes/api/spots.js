@@ -359,36 +359,29 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
        
         
         
-
         if (user) {
-             
-
+            
+            
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,
                 state, country, lat, lng, name, description, price
             });
             if (newSpot) {
-
                 
-
                 
-                const imageFormatting = [];
                 for (let image of images) {
-                    
-                    
-                    const newImage = await SpotImage.create({
-                        url: image.url, preview: image.preview, spotId: parseInt(newSpot.id)
-                    });
-                    imageFormatting.push({
-                        
-                        id: newImage.id,
-                        url: newImage.url,
-                        preview: newImage.preview
-                        
-                    })
-                    
-                    
+                    image.spotId = newSpot.id
+                    console.log(image, 'image')
                 }
+                
+                
+               
+                
+                    
+                    
+                    const newImages = await SpotImage.bulkCreate()        
+                    
+                
                 let spotFormatting = {
                     id: newSpot.id,
                     ownerId: user.id,
@@ -405,7 +398,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                     updatedAt: formatDate(newSpot.updatedAt),
                     numReviews: 0,
                     avgStarRating: 0,
-                    SpotImages: imageFormatting,
+                    SpotImages: newImages,
                     Owner: {
                         id: user.id,
                         firstName: user.firstName,
@@ -674,8 +667,8 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
             if (spot && spot.ownerId === user.id) {
 
                 const deletedSpot = await spot.destroy();
-                
-                res.json(deletedSpot);
+               
+                return res.json(spot);
 
 
             } else if (spot && spot.ownerId !== user.id) {
