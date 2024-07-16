@@ -70,7 +70,7 @@ function ProfileButton({ user, isLoaded }) {
             <li>Manage Reviews</li>
             </div>
             <li className='logout'>
-              <button id='button' className='button' onClick={logout}>Log Out</button>
+              <button id='button' className='button red' onClick={logout}>Log Out</button>
             </li>
           </div>
 
