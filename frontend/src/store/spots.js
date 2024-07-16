@@ -138,19 +138,22 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
     }
 }
 
-export const updateSpotThunk = (spotToAdd, images) => async (dispatch) => {
+export const updateSpotThunk = (spotToAdd, images, id) => async (dispatch) => {
     try {
+        
 
         const spotAndImages = {
             ...spotToAdd, images: [...images]
         }
 
         const options = {
-            method: 'POST',
+            method: 'PUT',
             header: { 'Content-Type': 'application/json' },
             body: JSON.stringify(spotAndImages)
         }
-        const spot = await csrfFetch('/api/spots', options)
+
+        
+        const spot = await csrfFetch(`/api/spots/${id}`, options)
 
 
         
@@ -159,10 +162,10 @@ export const updateSpotThunk = (spotToAdd, images) => async (dispatch) => {
 
             const spotData = await spot.json();
 
+            console.log(spotData, 'spotdata in thunk')
 
 
-
-            await dispatch(addSpot(spotData.spotFormatting));
+            await dispatch(updateSpot(spotData));
 
             return spotData;
         }
@@ -263,7 +266,24 @@ function spotsReducer(state = initialState, action) {
             })
             newState.currentUser = filteredUserSpots;
             return newState
+        case UPDATE_SPOT:
+            newState = { ...state }
+            console.log(action.payload, 'reducer')
+            const spotId = action.payload.id;
 
+            const newAllSpots =[];
+            for(let i = 0; i < newState.allSpots.length; i++){
+                let currSpot = newState.allSpots[i];
+                if(currSpot.id === spotId){
+                    newAllSpots.push(action.payload);
+                } else{
+                    newAllSpots.push(currSpot)
+                }
+            }
+
+            newState.allSpots = newAllSpots;
+            newState.byId = {...newState.byId, [spotId]: action.payload};
+             return newState;
 
 
         default:
