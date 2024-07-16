@@ -236,18 +236,19 @@ function spotsReducer(state = initialState, action) {
             return newState;
         
 
-        case GET_USER_SPOTS:
+        case GET_USER_SPOTS:{
             newState = { ...state };
             newState.currentUser = action.payload.Spots.reverse();
             return newState;
-
-        case ADD_SPOT:
+        }
+        case ADD_SPOT: {
             newState = { ...state }
             newState.allSpots = [action.payload, ...newState.allSpots]
             newState.byId[action.payload.id] = action.payload;
             return newState;
+        }
 
-        case DELETE_SPOT:
+        case DELETE_SPOT: {
             newState = { ...state }
 
             const filteredSpots = newState.allSpots.filter(spot => {
@@ -266,7 +267,8 @@ function spotsReducer(state = initialState, action) {
             })
             newState.currentUser = filteredUserSpots;
             return newState
-        case UPDATE_SPOT:
+        }
+        case UPDATE_SPOT: {
             newState = { ...state }
             console.log(action.payload, 'reducer')
             const spotId = action.payload.id;
@@ -284,6 +286,7 @@ function spotsReducer(state = initialState, action) {
             newState.allSpots = newAllSpots;
             newState.byId = {...newState.byId, [spotId]: action.payload};
              return newState;
+        }
 
 
         default:
