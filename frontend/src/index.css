@@ -1,6 +1,11 @@
 /* TODO: Add sitewide styles */
 
-
+.button {
+    margin-top: .5rem;
+    padding: .5rem;
+    height :2rem;
+    color: white;
+}
 
 .heading {
     font-size: 24pt;
@@ -17,13 +22,47 @@
     
 }
 
+#button {
+    border: none;
+}
+
 .colorInput {
     background-color: #e9f0fe;
 }
 
-.red button {
+.red {
     background-color: #FF385c;
+    border-radius: .4rem;
+    box-shadow: 2px 2px 5px black;
+    color: white;
+}
+
+.red:active {
+    background-color: #fa8484;
+    box-shadow: 1px 1px 1px black;
+}
+
+
+.red:disabled {
+    
+    background-color: gray;
     border-radius: .4rem;
     box-shadow: 1px 1px 1px black;
     color: white;
+}
+.gray{
+    
+    background-color: gray;
+    border-radius: .4rem;
+    box-shadow: 2px 2px 5px black;
+    color: white;
+}
+
+.gray:active {
+    background-color: rgba(128, 128, 128, 0.584);
+    box-shadow: 1px 1px 1px black;
+}
+
+.not-found {
+    text-align: center;
 }

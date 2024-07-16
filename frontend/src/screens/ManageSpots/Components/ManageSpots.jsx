@@ -1,18 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 import { getCurrentUserSpotsThunk } from '../../../store/spots';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaStar } from 'react-icons/fa';
 import './ManageSpots.css'
 
+import OpenModalButton from '../../../components/Modal/OpenModalButton/OpenModalButton';
+import DeleteSpotModal from './Modal/DeleteSpotModal/DeleteSpotModal';
+
+
+
+
+
 export default function ManageSpots() {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const spots = useSelector(state => state.spotState.currentUser)
-    
-    
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const spots = useSelector(state => state.spotState.currentUser)
+
+  const user = useSelector(state => state.session.user)
+
+
+
 
   const [isLoaded, setIsLoaded] = useState(false);
+
 
 
   useEffect(() => {
@@ -26,44 +38,45 @@ export default function ManageSpots() {
       getData();
     }
 
-  }, [dispatch, isLoaded,])
+  }, [dispatch, isLoaded, user])
 
-  const goToSpot = (e,spot) => {
-    
+  const goToSpot = (e, spot) => {
+
     e.preventDefault();
     e.stopPropagation();
     navigate(`/spots/${spot.id}`)
   }
 
   if (!isLoaded) {
-    
-      return <h1>Loading</h1>
-    
-    
+
+    return <h1>Loading</h1>
+
+
   }
 
   const updateSpot = (e, spot) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('update functionality goes here')
+    console.log(spot.id);
+    navigate(`/spots/${spot.id}/update`)
   }
-  const deleteSpot = (e, spot) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('delete functionality goes here')
-  }
+
+
 
 
 
 
   return (
     <div className='headingAndAddSpot'>
-        <h1 className='heading h1Manage'>Manage your Spots</h1>
-        <button className='red' onClick={() => navigate('/spots/new')}>Create a new Spot</button>
-        <div className='allSpotsContainer'>
+      <h1 className='heading h1Manage'>Manage your Spots</h1>
+      <button id='button' className='red create-spot-button' onClick={() => navigate('/spots/new')}>Create a new Spot</button>
+      <div className='center-grid'>
+
+      <div className='allSpotsContainer'>
+
         {spots.map((spot, idx) => (
-        <div onClick={e => goToSpot(e,spot)} key={`${idx}--${spot.id}`} role='tooltip'>
-            
+          <div className='card' onClick={e => goToSpot(e, spot)} key={`${idx}--${spot.id}`} role='tooltip'>
+
             <img src={spot.previewImage} />
             <div className="locationAndRating">
               <span className="spotLocation spotInfo">{spot.city}, {spot.state} </span>
@@ -73,16 +86,30 @@ export default function ManageSpots() {
             </div>
 
             <span className="spotPrice spotInfo">${spot.price}</span><span> night </span>
-
             <div className='imageButtons'>
-              <button onClick={(e, spot) => updateSpot(e, spot)} className='red'>update</button>
-              <button onClick={(e, spot) => deleteSpot(e, spot)}
-              className='red'>delete</button>
+              <button onClick={(e) => updateSpot(e, spot)} id='button' className='red manage-button'>update</button>
+              <div>
+
+
+              </div>
+              <div onClick={(e) => {
+                e.stopPropagation()
+              }}>
+                <OpenModalButton
+                  className='red manage-button'
+                  buttonText="Delete"
+                  modalComponent={<DeleteSpotModal spot={spot} />}
+                  preventDefault
+                  stopPropagation
+                />
+
+              </div>
             </div>
-          
-        </div>
-      ))}
-        </div>
+
+          </div>
+        ))}
+      </div>
+      </div>
 
 
 

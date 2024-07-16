@@ -1,15 +1,23 @@
 .spotSection {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    
     margin: 0 1.5rem;
-    gap: 2rem;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    flex-basis: 21%;
-    flex-wrap: wrap;
+    column-gap: 2rem;
+    row-gap: 5rem;
+    
+    
+    
     padding: 20px 5px;
+    
+}
+
+
+
+.card {
     cursor: pointer;
+    width: 30rem;
+    
 }
 
 .spotInfo {
@@ -18,9 +26,10 @@
 }
 
 .spotSection img {
-    width: 14rem;
-    height: 14rem;
+    width: 30rem;
+    height: 30rem;
     border-radius: 3%;
+    object-fit: cover;
 }
 
 .locationAndRating {
@@ -45,5 +54,42 @@
 .spotPrice {
     font-weight: bold;
 }
+
+.tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    z-index: 2;
+    width: 100px;
+    color: white;
+    font-size: 13px;
+    background-color: #192733;
+    border-radius: 10px;
+    padding: 10px 15px 10px 10px;
+    margin-left: 170px;
+  }
+  
+  .tooltip-text::before {
+    content: "";
+    position: absolute;
+    transform: rotate(45deg);
+    background-color: #192733;
+    padding: 5px;
+    z-index: 1;
+    top: 1.9rem;
+  }
+  
+  .card:hover .tooltip-text {
+    visibility: visible;
+  }
+  
+  #top {
+    top: -40px;
+    left: -50%;
+  }
+  
+  #top::before {
+    top: 80%;
+    left: 45%;
+  }
 
 

@@ -24,8 +24,8 @@ export default function Splash() {
 
     
     const getData = async () => {
-      await dispatch(getCurrentUserSpotsThunk());
       
+      await dispatch(getCurrentUserSpotsThunk());
 
       setIsLoaded(true);
     }
@@ -36,7 +36,7 @@ export default function Splash() {
     }
     
 
-  }, [dispatch, user])
+  }, [dispatch, user, spots])
 
   useEffect(() => {
     //grab data
@@ -44,6 +44,7 @@ export default function Splash() {
     
     const getData = async () => {
       await dispatch(getSpotsThunk());
+      
 
       setIsLoaded(true);
     }
@@ -69,22 +70,27 @@ export default function Splash() {
   }
 
   return (
+    <div className="grid-container">
+
     <div className='spotSection'>
       {spots.map((spot, idx) => (
-        <div onClick={e => goToSpot(e,spot)}key={`${idx}--${spot.id}`} role='tooltip'>
+        
+        <div className="card" onClick={e => goToSpot(e,spot)}key={`${idx}--${spot.id}`} >
+          <span className="tooltip-text">{spot.name}</span>
             
             <img src={spot.previewImage} />
             <div className="locationAndRating">
               <span className="spotLocation spotInfo">{spot.city}, {spot.state} </span>
-              <span className="rating"><FaStar className="star" /> {spot.avgRating ? spot.avgRating : 'New'
+              <span className="rating"><FaStar className="star" /> {spot.avgStarRating ? spot.avgStarRating.toFixed(1) : 'New'
               }</span>
 
             </div>
 
-            <span className="spotPrice spotInfo">${spot.price}</span><span> night </span>
+            <span className="spotPrice spotInfo">${spot.price.toFixed(2)}</span><span> night </span>
           
         </div>
       ))}
+    </div>
     </div>
   )
 }

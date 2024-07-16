@@ -31,7 +31,7 @@ const validateNewSpot = [
     check('address')
         .exists({ checkFalsy: true })
         .isLength({ min: 5 })
-        .withMessage('Street address is required'),
+        .withMessage('Address is required'),
     check('city')
         .exists({ checkFalsy: true })
         .isLength({ min: 3 })
@@ -47,23 +47,24 @@ const validateNewSpot = [
     check('lat')
         .exists({ checkFalsy: true })
         .isFloat({ min: -90.0000000, max: 90.0000000 })
-        .withMessage('Latitude is not valid'),
+        .withMessage('Latitude is required'),
     check('lng')
         .exists({ checkFalsy: true })
         .isFloat({ min: -180.0000000, max: 180.0000000 })
-        .withMessage('Longitude is not valid'),
+        .withMessage('Longitude is required'),
     check('name')
         .exists({ checkFalsy: true })
         .isLength({ min:3, max: 50 })
-        .withMessage('Name must be less than 50 characters'),
+        .withMessage('Name is required'),
     check('description')
         .exists({ checkFalsy: true })
         .isLength({ min: 5, max: 255 })
-        .withMessage('Description is required'),
+        .withMessage('Description need a minimum of 30 characters'),
     check('price')
         .exists({ checkFalsy: true })
         .isFloat({ min: 0 })
-        .withMessage('Price per day is required'),
+        .withMessage('Price is required'),
+    
     handleValidationErrors
 ];
 // validate review and if not create error through the validator
@@ -126,10 +127,10 @@ router.get('/', queryParams, async (req, res, next) => {
         page = parseInt(page);
         size = parseInt(size);
         if (!size) {
-            size = 20;
+            size = 21;
         };
-        if (size > 20) {
-            size = 20;
+        if (size > 21) {
+            size = 21;
         };
         if (!page) {
             page = 1;
@@ -182,7 +183,19 @@ router.get('/', queryParams, async (req, res, next) => {
 
         //get all the spots in the database
         let spots = await Spot.findAll({
-            include: [{ model: Review, attributes: [] }, ],
+            include: [{
+                model: SpotImage,
+                as: 'SpotImages',
+                attributes: ['id', 'url', 'preview']
+            }, {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: Review,
+                attributes: []
+            } ],
             where,
             limit: size,
             offset: (page - 1) * size
@@ -194,6 +207,7 @@ router.get('/', queryParams, async (req, res, next) => {
             // loop through the spots to add them to the array
             for (let spot of spots) {
 
+                
                 // sum is for getting the average star rating
                 let sum = 0;
                 // preview image url will go here
@@ -202,11 +216,15 @@ router.get('/', queryParams, async (req, res, next) => {
                 let reviews = await spot.getReviews();
                 let images = await spot.getSpotImages();
                 //loop through the reviews so we can get the avg str rating
+                let count = 0;
+                
                 for (let review of reviews) {
+                    count++
                     sum += review.stars;
                 };
-                sum /= reviews.length;
-
+                sum /= count;
+                
+                
                 //loop through images to find a preview image and extract the url
                 for (let image of images) {
 
@@ -216,6 +234,8 @@ router.get('/', queryParams, async (req, res, next) => {
                     };
                 };
 
+                
+               
 
                 spotFormatting.push({
                     id: spot.id,
@@ -231,10 +251,12 @@ router.get('/', queryParams, async (req, res, next) => {
                     price: Number(spot.price),
                     createdAt: formatDate(spot.createdAt),
                     updatedAt: formatDate(spot.updatedAt),
-                    avgRating: sum,
-                    previewImage: previewImages
-
-
+                    numReviews: count,
+                    avgStarRating: sum,
+                    SpotImages: spot.SpotImages,
+                    previewImage: previewImages, 
+                    Owner: spot.Owner
+    
                 });
             };
 
@@ -326,14 +348,17 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 // create a new spot
 router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
+    
     try {
-        const { address, city, state,
-            country, lat, lng, name,
-            description, price } = req.body;
-
-            console.log(address)
+        const { address, city, state, country, lat, lng, name, description, price, images } = req.body;
+        // const {images} = req.body;
         const { user } = req;
-        console.log(user)
+        
+       
+       
+       
+        
+        
 
         if (user) {
              
@@ -342,29 +367,72 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 ownerId: user.id, address, city,
                 state, country, lat, lng, name, description, price
             });
-            let spotFormatting = {
-                id: newSpot.id,
-                ownerId: user.id,
-                address: newSpot.address,
-                city: newSpot.city,
-                state: newSpot.state,
-                country: newSpot.country,
-                lat: Number(newSpot.lat),
-                lng: Number(newSpot.lng),
-                name: newSpot.name,
-                description: newSpot.description,
-                price: Number(newSpot.price),
-                createdAt: formatDate(newSpot.createdAt),
-                updatedAt: formatDate(newSpot.updatedAt)
-            };
+            if (newSpot) {
+
+                
+
+                
+                const imageFormatting = [];
+                for (let image of images) {
+                    
+                    
+                    const newImage = await SpotImage.create({
+                        url: image.url, preview: image.preview, spotId: parseInt(newSpot.id)
+                    });
+                    imageFormatting.push({
+                        
+                        id: newImage.id,
+                        url: newImage.url,
+                        preview: newImage.preview
+                        
+                    })
+                    
+                    
+                }
+                let spotFormatting = {
+                    id: newSpot.id,
+                    ownerId: user.id,
+                    address: newSpot.address,
+                    city: newSpot.city,
+                    state: newSpot.state,
+                    country: newSpot.country,
+                    lat: Number(newSpot.lat),
+                    lng: Number(newSpot.lng),
+                    name: newSpot.name,
+                    description: newSpot.description,
+                    price: Number(newSpot.price),
+                    createdAt: formatDate(newSpot.createdAt),
+                    updatedAt: formatDate(newSpot.updatedAt),
+                    numReviews: 0,
+                    avgStarRating: 0,
+                    SpotImages: imageFormatting,
+                    Owner: {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    }
+                };
+
+                
 
 
-            return res.status(201).json(spotFormatting);
+
+
+
+
+                return res.status(201).json({spotFormatting});
+            }
+
+
+
+
+
 
         };
 
     } catch (error) {
-        next(error);
+        
+         return next(error);
     };
 });
 
@@ -373,11 +441,10 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     try {
         const { url, preview } = req.body;
         const { spotId } = req.params;
-        console.log(url)
+        
 
         const spot = await Spot.findByPk(spotId);
-        console.log('spot', spot)
-
+        
         const { user } = req;
 
 
@@ -393,7 +460,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
                     url, preview, spotId: parseInt(spotId)
                 });
 
-                console.log('newimage', newImage)
+               
                 const imageFormatting = {
                     id: newImage.id,
                     url: newImage.url,
@@ -494,31 +561,80 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
         const spotId = req.params.spotId;
         if (user) {
 
+            
+            const spot = await Spot.findByPk(spotId, {
 
-            const spot = await Spot.findByPk(spotId)
+                include: [{
+                    model: SpotImage,
+                    as: 'SpotImages',
+                    attributes: ['id', 'url', 'preview']
+                }, {
+                    model: User,
+                    as: 'Owner',
+                    attributes: ['id', 'firstName', 'lastName']
+                },
+                {
+                    model: Review,
+                    attributes: []
+                }]
+            });
+
             if (spot && spot.ownerId === user.id) {
 
-
+                let sum = 0;
                 const updatedSpot = await spot.update({
                     ownerId: user.id, address, city,
                     state, country, lat, lng, name, description, price
                 });
                 await spot.save();
 
+
+                let previewImages = '';
+                // find the reviews
+                let reviews = await spot.getReviews();
+                let images = await spot.getSpotImages();
+                //loop through the reviews so we can get the avg str rating
+                let count = 0;
+                
+                for (let review of reviews) {
+                    count++
+                    sum += review.stars;
+                };
+                sum /= count;
+                
+                
+                //loop through images to find a preview image and extract the url
+                for (let image of images) {
+
+                    if (image.preview === true) {
+                        previewImages += image.url;
+
+                    };
+                };
+
                 const spotFormatting = {
-                    id: spot.id,
-                    ownerId: spot.ownerId,
-                    address: spot.address,
-                    city: spot.city,
-                    state: spot.state,
-                    country: spot.country,
-                    lat: Number(spot.lat),
-                    lng: Number(spot.lng),
-                    name: spot.name,
-                    description: spot.description,
-                    price: Number(spot.price),
-                    createdAt: formatDate(spot.createdAt),
-                    updatedAt: formatDate(spot.updatedAt)
+                    id: updatedSpot.id,
+                    ownerId: user.id,
+                    address: updatedSpot.address,
+                    city: updatedSpot.city,
+                    state: updatedSpot.state,
+                    country: updatedSpot.country,
+                    lat: Number(updatedSpot.lat),
+                    lng: Number(updatedSpot.lng),
+                    name: updatedSpot.name,
+                    description: updatedSpot.description,
+                    price: Number(updatedSpot.price),
+                    createdAt: formatDate(updatedSpot.createdAt),
+                    updatedAt: formatDate(updatedSpot.updatedAt),
+                    numReviews: count,
+                    avgStarRating: sum,
+                    SpotImages: updatedSpot.SpotImages,
+                    previewImage: previewImages,
+                    Owner: {
+                        id: user.id,
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    }
 
                 };
 
@@ -550,15 +666,16 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
         const { user } = req;
         const spotId = req.params.spotId;
+       
         if (user) {
 
 
             const spot = await Spot.findByPk(spotId);
             if (spot && spot.ownerId === user.id) {
 
-                await spot.destroy();
-                res.json({ message: 'Successfully deleted' });
-
+                const deletedSpot = await spot.destroy();
+                
+                res.json(deletedSpot);
 
 
             } else if (spot && spot.ownerId !== user.id) {

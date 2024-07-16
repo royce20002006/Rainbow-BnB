@@ -65,10 +65,12 @@ app.use((err, _req, _res, next) => {
         let errors = {};
         for (let error of err.errors) {
             errors[error.path] = error.message;
+
         }
         err.title = 'Validation error';
         err.errors = errors;
     }
+    
     next(err);
 });
 
@@ -82,7 +84,7 @@ app.use((err, _req, res, _next) => {
             errors: err.errors
         })
     } else {
-        res.json({
+        return res.json({
             title: isProduction ? null : err.title || 'Server Error',
             message: err.message,
             errors: err.errors,
