@@ -54,10 +54,11 @@ export default function ManageSpots() {
 
   }
 
-  const updateSpot = (e) => {
+  const updateSpot = (e, spot) => {
     e.preventDefault();
     e.stopPropagation();
-    alert('update functionality goes here')
+    console.log(spot.id);
+    navigate(`/spots/${spot.id}/update`)
   }
 
 
@@ -86,7 +87,7 @@ export default function ManageSpots() {
 
             <span className="spotPrice spotInfo">${spot.price}</span><span> night </span>
             <div className='imageButtons'>
-              <button onClick={(e, spot) => updateSpot(e, spot)} id='button' className='red manage-button'>update</button>
+              <button onClick={(e) => updateSpot(e, spot)} id='button' className='red manage-button'>update</button>
               <div>
 
 

@@ -1,10 +1,11 @@
 import { csrfFetch } from './csrf';
 
 const GET_ALL_SPOTS = 'spots/getAllSpots';
-const GET_USER_SPOTS = 'spots/getUserSpots'
+const GET_USER_SPOTS = 'spots/getUserSpots';
 const GET_SINGLE_SPOT = 'spots/spot';
-const ADD_SPOT = 'spots/add'
-const DELETE_SPOT = 'spots/delete'
+const ADD_SPOT = 'spots/add';
+const DELETE_SPOT = 'spots/delete';
+const UPDATE_SPOT = 'spots/update';
 
 
 
@@ -31,6 +32,11 @@ const addSpot = (spot) => ({
 const deleteSpot = (deletedSpot) => ({
     type: DELETE_SPOT,
     payload: deletedSpot
+})
+
+const updateSpot = (updatedSpot) => ({
+    type: UPDATE_SPOT,
+    payload: updatedSpot
 })
 
 
@@ -93,6 +99,46 @@ export const getCurrentUserSpotsThunk = () => async (dispatch) => {
 }
 
 export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
+    try {
+
+        const spotAndImages = {
+            ...spotToAdd, images: [...images]
+        }
+
+        const options = {
+            method: 'POST',
+            header: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(spotAndImages)
+        }
+        const spot = await csrfFetch('/api/spots', options)
+
+
+        
+        if (spot.ok) {
+
+
+            const spotData = await spot.json();
+
+
+
+
+            await dispatch(addSpot(spotData.spotFormatting));
+
+            return spotData;
+        }
+
+
+
+
+
+
+    } catch (error) {
+
+        return error;
+    }
+}
+
+export const updateSpotThunk = (spotToAdd, images) => async (dispatch) => {
     try {
 
         const spotAndImages = {
