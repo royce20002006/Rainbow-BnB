@@ -178,7 +178,7 @@ function spotsReducer(state = initialState, action) {
         case GET_ALL_SPOTS:
             newState = { ...state }
 
-            newState.allSpots = action.payload.Spots;
+            newState.allSpots = action.payload.Spots.reverse();
 
             for (let spot of action.payload.Spots) {
                 newState.byId[spot.id] = spot;
@@ -189,12 +189,12 @@ function spotsReducer(state = initialState, action) {
 
         case GET_USER_SPOTS:
             newState = { ...state };
-            newState.currentUser = action.payload.Spots;
+            newState.currentUser = action.payload.Spots.reverse();
             return newState;
 
         case ADD_SPOT:
             newState = { ...state }
-            newState.allSpots = [...newState.allSpots, action.payload]
+            newState.allSpots = [action.payload, ...newState.allSpots]
             newState.byId[action.payload.id] = action.payload;
             return newState;
 

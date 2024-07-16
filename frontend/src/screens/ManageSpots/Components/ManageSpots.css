@@ -1,18 +1,23 @@
 .allSpotsContainer{
-    display: flex;
-    flex-direction: row;
-    margin: 0 1.5rem;
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr 1fr;
+    /* margin: 0 1.5rem; */
     gap: 2rem;
-    justify-content: center;
+    
    
-    flex-basis: 21%;
-    flex-wrap: wrap;
-    padding: 20px 5px;
-    cursor: pointer;
+    /* padding: 20px 5px; */
+    
+}
+
+.center-grid {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
 }
 
 .manage-button {
     height: 2rem;
+    
 }
 
 .spotInfo {
@@ -26,7 +31,7 @@
 }
 .h1Manage {
     margin: 0;
-    margin-left: 4rem;
+    margin-left: 16rem;
     padding-top: 20px;
     margin-bottom: .5rem;;
 }
@@ -36,6 +41,14 @@
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+}
+.create-spot-button {
+    margin-left: 16rem;
+}
+
+.card {
+    width: 30rem;
+    height: 30rem;
 }
 
 .allSpotsContainer img {
