@@ -1,20 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../../Modal/LoginFormModal/LoginFormModal';
 import SignupFormModal from '../../Modal/SignupFormModal/SignupFormModal';
 import { GiHamburgerMenu } from "react-icons/gi";
-import { NavLink, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 
-function ProfileButton({ user, isLoaded }) {
+function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
   const navigate = useNavigate();
-  const spots = useSelector(state => state.spotState.allSpots)
+  
   
   
   const toggleMenu = (e) => {
@@ -66,7 +66,7 @@ function ProfileButton({ user, isLoaded }) {
             <li>{user.email}</li>
             </div>
             <div className='manageSpots cursor'>
-            <li> { isLoaded && spots.filter(spot => spot.ownerId === user.id).length ? <div onClick={() => navigate('/spots/manage')}>Manage Spots</div> : <NavLink to={'/spots/new'} >Create a New Spot</NavLink> }</li>
+            <li> <div onClick={() => navigate('/spots/manage')}>Manage Spots</div></li>
             <li>Manage Reviews</li>
             </div>
             <li className='logout'>
