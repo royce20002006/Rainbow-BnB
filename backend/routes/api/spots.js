@@ -54,7 +54,7 @@ const validateNewSpot = [
         .withMessage('Longitude is required'),
     check('name')
         .exists({ checkFalsy: true })
-        .isLength({ min:3, max: 50 })
+        .isLength({ min: 3, max: 50 })
         .withMessage('Name is required'),
     check('description')
         .exists({ checkFalsy: true })
@@ -64,7 +64,7 @@ const validateNewSpot = [
         .exists({ checkFalsy: true })
         .isFloat({ min: 0 })
         .withMessage('Price is required'),
-    
+
     handleValidationErrors
 ];
 // validate review and if not create error through the validator
@@ -179,6 +179,8 @@ router.get('/', queryParams, async (req, res, next) => {
             where.lng = { [Op.lte]: maxLng };
         };
 
+        
+
 
 
         //get all the spots in the database
@@ -195,19 +197,29 @@ router.get('/', queryParams, async (req, res, next) => {
             {
                 model: Review,
                 attributes: []
-            } ],
+            }],
             where,
+            order: [
+                ['id', 'DESC']
+                ],
             limit: size,
             offset: (page - 1) * size
+
+            
         });
+
+        console.log(spots)
+
+       
         // if any spots exist in the database
         if (spots) {
             //use a array so you can format spots to look pretty in the response
             let spotFormatting = [];
             // loop through the spots to add them to the array
             for (let spot of spots) {
-
                 
+                console.log(spot.id, 'spotid in order')
+
                 // sum is for getting the average star rating
                 let sum = 0;
                 // preview image url will go here
@@ -217,14 +229,14 @@ router.get('/', queryParams, async (req, res, next) => {
                 let images = await spot.getSpotImages();
                 //loop through the reviews so we can get the avg str rating
                 let count = 0;
-                
+
                 for (let review of reviews) {
                     count++
                     sum += review.stars;
                 };
                 sum /= count;
-                
-                
+
+
                 //loop through images to find a preview image and extract the url
                 for (let image of images) {
 
@@ -234,8 +246,8 @@ router.get('/', queryParams, async (req, res, next) => {
                     };
                 };
 
-                
-               
+
+
 
                 spotFormatting.push({
                     id: spot.id,
@@ -254,11 +266,12 @@ router.get('/', queryParams, async (req, res, next) => {
                     numReviews: count,
                     avgStarRating: sum,
                     SpotImages: spot.SpotImages,
-                    previewImage: previewImages, 
+                    previewImage: previewImages,
                     Owner: spot.Owner
-    
+
                 });
             };
+            
 
             return res.json({
                 Spots: spotFormatting,
@@ -266,7 +279,7 @@ router.get('/', queryParams, async (req, res, next) => {
                 size
             });
         };
-
+        
 
 
 
@@ -280,7 +293,7 @@ router.get('/', queryParams, async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
-        
+
         if (user) {
             const spots = await Spot.findAll({
                 where: {
@@ -291,8 +304,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
             if (spots) {
                 let spotFormatting = [];
 
-                for (let spot of spots) {
-
+                for (i = spots.length - 1; i >= 0; i--) {
+                    let spot = spots[i]
 
                     let sum = 0;
                     let previewImages = '';
@@ -334,6 +347,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     });
                 };
 
+                
+
                 return res.json({
                     Spots: spotFormatting
                 });
@@ -348,20 +363,19 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 // create a new spot
 router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
-    
+
     try {
         const { address, city, state, country, lat, lng, name, description, price, images } = req.body;
         // const {images} = req.body;
         const { user } = req;
-        
-       
-       
-       
-        
-        
+
+
+
+
+
 
         if (user) {
-             
+
 
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,
@@ -369,26 +383,20 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
             });
             if (newSpot) {
 
-                
 
-                
-                const imageFormatting = [];
                 for (let image of images) {
-                    
-                    
-                    const newImage = await SpotImage.create({
-                        url: image.url, preview: image.preview, spotId: parseInt(newSpot.id)
-                    });
-                    imageFormatting.push({
-                        
-                        id: newImage.id,
-                        url: newImage.url,
-                        preview: newImage.preview
-                        
-                    })
-                    
-                    
+                    image.spotId = newSpot.id
+                    console.log(image, 'image')
                 }
+
+
+
+
+
+
+                const newImages = await SpotImage.bulkCreate(images)
+
+
                 let spotFormatting = {
                     id: newSpot.id,
                     ownerId: user.id,
@@ -405,7 +413,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                     updatedAt: formatDate(newSpot.updatedAt),
                     numReviews: 0,
                     avgStarRating: 0,
-                    SpotImages: imageFormatting,
+                    SpotImages: newImages,
                     Owner: {
                         id: user.id,
                         firstName: user.firstName,
@@ -413,14 +421,14 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                     }
                 };
 
-                
 
 
 
 
 
 
-                return res.status(201).json({spotFormatting});
+
+                return res.status(201).json({ spotFormatting });
             }
 
 
@@ -431,8 +439,8 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
         };
 
     } catch (error) {
-        
-         return next(error);
+
+        return next(error);
     };
 });
 
@@ -441,10 +449,10 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     try {
         const { url, preview } = req.body;
         const { spotId } = req.params;
-        
+
 
         const spot = await Spot.findByPk(spotId);
-        
+
         const { user } = req;
 
 
@@ -460,7 +468,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
                     url, preview, spotId: parseInt(spotId)
                 });
 
-               
+
                 const imageFormatting = {
                     id: newImage.id,
                     url: newImage.url,
@@ -561,7 +569,7 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
         const spotId = req.params.spotId;
         if (user) {
 
-            
+
             const spot = await Spot.findByPk(spotId, {
 
                 include: [{
@@ -595,14 +603,14 @@ router.put('/:spotId', requireAuth, validateNewSpot, async (req, res, next) => {
                 let images = await spot.getSpotImages();
                 //loop through the reviews so we can get the avg str rating
                 let count = 0;
-                
+
                 for (let review of reviews) {
                     count++
                     sum += review.stars;
                 };
                 sum /= count;
-                
-                
+
+
                 //loop through images to find a preview image and extract the url
                 for (let image of images) {
 
@@ -666,7 +674,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
         const { user } = req;
         const spotId = req.params.spotId;
-       
+
         if (user) {
 
 
@@ -674,8 +682,8 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
             if (spot && spot.ownerId === user.id) {
 
                 const deletedSpot = await spot.destroy();
-                
-                res.json(deletedSpot);
+
+                return res.json(spot);
 
 
             } else if (spot && spot.ownerId !== user.id) {
@@ -880,7 +888,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
         const { startDate, endDate } = req.body;
         let formattedStartDate = new Date(startDate);
         let formattedEndDate = new Date(endDate)
-        
+
         const currentDate = new Date()
         if (currentDate > formattedStartDate || currentDate > formattedEndDate) {
             const err = new Error("Cannot create a booking for a past date");
