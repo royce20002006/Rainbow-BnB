@@ -1,95 +1,94 @@
 .spotSection {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-    
-    margin: 0 1.5rem;
-    column-gap: 2rem;
-    row-gap: 5rem;
-    
-    
-    
-    padding: 20px 5px;
-    
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+
+  margin: 0 1.5rem;
+  column-gap: 2rem;
+  row-gap: 5rem;
+
+
+
+
+  padding: 20px 5px;
+
 }
 
 
 
 .card {
-    cursor: pointer;
-    width: 30rem;
-    
+  cursor: pointer;
+  width: 30rem;
+
 }
 
 .spotInfo {
-    font-size: 14pt;
-   
+  font-size: 14pt;
+
 }
 
 .spotSection img {
-    width: 30rem;
-    height: 30rem;
-    border-radius: 3%;
-    object-fit: cover;
+  width: 30rem;
+  height: 30rem;
+  border-radius: 3%;
+  object-fit: cover;
 }
 
 .locationAndRating {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
 }
 
 .rating {
-    font-size: 14pt;
-    
+  font-size: 14pt;
+
 }
 
 .star {
-    font-size: 12pt;
-    position: relative;
-    top: .1rem;
+  font-size: 12pt;
+  position: relative;
+  top: .1rem;
 }
 
 .spotPrice {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .tooltip-text {
-    visibility: hidden;
-    position: absolute;
-    z-index: 2;
-    width: 100px;
-    color: white;
-    font-size: 13px;
-    background-color: #192733;
-    border-radius: 10px;
-    padding: 10px 15px 10px 10px;
-    margin-left: 170px;
-  }
-  
-  .tooltip-text::before {
-    content: "";
-    position: absolute;
-    transform: rotate(45deg);
-    background-color: #192733;
-    padding: 5px;
-    z-index: 1;
-    top: 1.9rem;
-  }
-  
-  .card:hover .tooltip-text {
-    visibility: visible;
-  }
-  
-  #top {
-    top: -40px;
-    left: -50%;
-  }
-  
-  #top::before {
-    top: 80%;
-    left: 45%;
-  }
+  visibility: hidden;
+  position: absolute;
+  z-index: 2;
+  width: 100px;
+  color: white;
+  font-size: 13px;
+  background-color: #192733;
+  border-radius: 10px;
+  padding: 10px 15px 10px 10px;
+  margin-left: 170px;
+}
 
+.tooltip-text::before {
+  content: "";
+  position: absolute;
+  transform: rotate(45deg);
+  background-color: #192733;
+  padding: 5px;
+  z-index: 1;
+  top: 1.9rem;
+}
 
+.card:hover .tooltip-text {
+  visibility: visible;
+}
+
+#top {
+  top: -40px;
+  left: -50%;
+}
+
+#top::before {
+  top: 80%;
+  left: 45%;
+}

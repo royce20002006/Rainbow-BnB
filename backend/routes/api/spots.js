@@ -199,11 +199,16 @@ router.get('/', queryParams, async (req, res, next) => {
                 attributes: []
             }],
             where,
+            order: [
+                ['id', 'DESC']
+                ],
             limit: size,
             offset: (page - 1) * size
 
             
         });
+
+        console.log(spots)
 
        
         // if any spots exist in the database
@@ -211,8 +216,8 @@ router.get('/', queryParams, async (req, res, next) => {
             //use a array so you can format spots to look pretty in the response
             let spotFormatting = [];
             // loop through the spots to add them to the array
-            for (let i = spots.length - 1; i >= 0; i--) {
-                let spot = spots[i]
+            for (let spot of spots) {
+                
                 console.log(spot.id, 'spotid in order')
 
                 // sum is for getting the average star rating
@@ -274,7 +279,7 @@ router.get('/', queryParams, async (req, res, next) => {
                 size
             });
         };
-
+        
 
 
 
