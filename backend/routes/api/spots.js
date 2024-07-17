@@ -179,6 +179,8 @@ router.get('/', queryParams, async (req, res, next) => {
             where.lng = { [Op.lte]: maxLng };
         };
 
+        
+
 
 
         //get all the spots in the database
@@ -199,7 +201,11 @@ router.get('/', queryParams, async (req, res, next) => {
             where,
             limit: size,
             offset: (page - 1) * size
+
+            
         });
+
+       
         // if any spots exist in the database
         if (spots) {
             //use a array so you can format spots to look pretty in the response
