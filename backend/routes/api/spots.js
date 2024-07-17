@@ -211,7 +211,7 @@ router.get('/', queryParams, async (req, res, next) => {
             //use a array so you can format spots to look pretty in the response
             let spotFormatting = [];
             // loop through the spots to add them to the array
-            for (let i = 0; i < spots.length; i++) {
+            for (let i = spots.length - 1; i >= 0; i--) {
                 let spot = spots[i]
                 console.log(spot.id, 'spotid in order')
 
@@ -299,8 +299,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
             if (spots) {
                 let spotFormatting = [];
 
-                for (let spot of spots) {
-
+                for (i = spots.length - 1; i >= 0; i--) {
+                    let spot = spots[i]
 
                     let sum = 0;
                     let previewImages = '';
@@ -341,6 +341,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
                     });
                 };
+
+                
 
                 return res.json({
                     Spots: spotFormatting

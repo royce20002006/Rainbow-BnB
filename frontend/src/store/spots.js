@@ -2,7 +2,7 @@ import { csrfFetch } from './csrf';
 
 const GET_ALL_SPOTS = 'spots/getAllSpots';
 const GET_USER_SPOTS = 'spots/getUserSpots';
-const GET_SINGLE_SPOT = 'spots/spot';
+
 const ADD_SPOT = 'spots/add';
 const DELETE_SPOT = 'spots/delete';
 const UPDATE_SPOT = 'spots/update';
@@ -19,10 +19,7 @@ const getUserSpots = (spots) => ({
     payload: spots
 })
 
-const getSingleSpot = (spot) => ({
-    type: GET_SINGLE_SPOT,
-    payload: spot
-})
+
 
 const addSpot = (spot) => ({
     type: ADD_SPOT,
@@ -65,23 +62,7 @@ export const getSpotsThunk = () => async (dispatch) => {
         return error;
     }
 }
-export const getSingleSpotThunk = (id) => async (dispatch) => {
-    try {
-        const res = await csrfFetch(`/api/spots/${id}`);
-        if (res.ok) {
-            const data = await res.json();
-            dispatch(getSingleSpot(data))
-            return data;
 
-
-        } else {
-            throw res
-        }
-
-    } catch (error) {
-        return error;
-    }
-}
 export const getCurrentUserSpotsThunk = () => async (dispatch) => {
     try {
         const res = await csrfFetch(`/api/spots/current`);
@@ -227,7 +208,7 @@ function spotsReducer(state = initialState, action) {
     switch (action.type) {
         case GET_ALL_SPOTS: {
             newState = { ...state }
-            newState.allSpots = action.payload.Spots.reverse();
+            newState.allSpots = action.payload.Spots;
             
 
 
@@ -240,7 +221,7 @@ function spotsReducer(state = initialState, action) {
 
         case GET_USER_SPOTS: {
             newState = { ...state };
-            newState.currentUser = action.payload.Spots.reverse();
+            newState.currentUser = action.payload.Spots;
             return newState;
         }
         case ADD_SPOT: {
