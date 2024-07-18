@@ -13,10 +13,10 @@ export default function Spot() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
-  const user = useSelector(state => state.session.user);
+  const sessionUser = useSelector(state => state.session.user);
+  const reviews = useSelector(state => state.reviewsState.allReviews)
   const spot = useSelector(state => state.spotState.byId[id])
-  console.log(spot)
-  console.log(isLoaded)
+
   
   // useEffect(() => {
   //   //grab data
@@ -34,27 +34,7 @@ export default function Spot() {
 
   // }, [dispatch, isLoaded, user])
 
-  useEffect(() => {
-    //grab data
-
-
-    
-
-    
-    const getData = async () => {
-      
-      await dispatch(getCurrentUserSpotsThunk());
-
-      setIsLoaded(true);
-    }
-
-    if (user) {
-
-      getData();
-    }
-    
-
-  }, [dispatch,isLoaded,user])
+  
   
 
   useEffect(() => {

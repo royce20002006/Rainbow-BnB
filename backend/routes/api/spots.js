@@ -265,7 +265,7 @@ router.get('/', queryParams, async (req, res, next) => {
                     updatedAt: formatDate(spot.updatedAt),
                     numReviews: count,
                     avgStarRating: sum,
-                    SpotImages: spot.SpotImages,
+                    SpotImages: spot.SpotImages.reverse(),
                     previewImage: previewImages,
                     Owner: spot.Owner
 
@@ -777,7 +777,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
         const { user } = req;
         const spot = await Spot.findByPk(spotId);
         if (spot) {
-
+            
             if (user) {
                 if (spot.ownerId === user.id) {
                     const err = new Error('You cannot leave a review on your own spot');
