@@ -57,7 +57,7 @@ export default function ManageSpots() {
   const updateSpot = (e, spot) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(spot.id);
+  
     navigate(`/spots/${spot.id}/update`)
   }
 

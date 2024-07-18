@@ -208,7 +208,7 @@ router.get('/', queryParams, async (req, res, next) => {
             
         });
 
-        console.log(spots)
+    
 
        
         // if any spots exist in the database
@@ -218,7 +218,7 @@ router.get('/', queryParams, async (req, res, next) => {
             // loop through the spots to add them to the array
             for (let spot of spots) {
                 
-                console.log(spot.id, 'spotid in order')
+            
 
                 // sum is for getting the average star rating
                 let sum = 0;
@@ -390,7 +390,7 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
 
                 for (let image of images) {
                     image.spotId = newSpot.id
-                    console.log(image, 'image')
+                    
                 }
 
 
@@ -761,7 +761,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
                 };
                 
-                console.log(reviewFormatting)
+               
 
                 return res.json({ Reviews: reviewFormatting });
             };
@@ -809,7 +809,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
             const newReview = await Review.create({ userId: user.id, spotId: parseInt(spotId), review, stars });
 
            
-            console.log(user, 'user')
+        
             const newReviewFormat = {
                 id: newReview.id,
                 userId: newReview.userId,

@@ -15,7 +15,7 @@ export default function DeleteReviewModal({
   }) {
     const dispatch = useDispatch();
     const {closeModal} = useModal();
-    const [errors, setErrors] = useState('')
+    const [ setErrors] = useState('')
 
     
     

@@ -1,5 +1,5 @@
 import { csrfFetch } from './csrf';
-import { getSpotsThunk } from './spots';
+
 
 const GET_ALL_REVIEWS = 'reviews/getReviews';
 const CREATE_REVIEW = 'reviews/new';
@@ -46,7 +46,7 @@ export const getReviewsThunk = (id) => async (dispatch) => {
 }
 export const deleteReviewThunk = (review) => async (dispatch) => {
     try {
-        console.log(review, 'reviewthunk')
+       
         const options = {
             method: 'DELETE',
             header: { 'Content-Type': 'application/json' },
@@ -75,18 +75,10 @@ export const createReviewThunk = (id, review) => async (dispatch) => {
             body: JSON.stringify(review)
         }
         const res = await csrfFetch(`/api/spots/${id}/reviews`, options)
-        console.log(res.ok)
+     
         if (res.ok) {
-
-
             const reviewData = await res.json();
-
-            console.log(reviewData, 'review in thunk')
-
-
-
             await dispatch(createReview(reviewData));
-
             return reviewData;
         }
 
@@ -109,7 +101,7 @@ function ReviewsReducer(state = initialState, action) {
     switch (action.type) {
         case GET_ALL_REVIEWS: {
             newState = { ...state }
-            console.log(action.payload.Reviews, 'review reducer')
+            
             newState.allReviews = action.payload.Reviews;
 
             for (let review of action.payload.Reviews) {
