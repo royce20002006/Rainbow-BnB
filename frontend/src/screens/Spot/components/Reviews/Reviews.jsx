@@ -30,7 +30,7 @@ export default function Reviews({spot}) {
         if (!isLoaded) {
             getData();
         }
-    }, [dispatch, id, isLoaded])
+    }, [dispatch, id, isLoaded, reviews])
 
     useEffect(() => {
         if (sessionUser)  {
@@ -67,11 +67,7 @@ export default function Reviews({spot}) {
         return month[date]
     }
 
-    const createPost = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-    }
+    
 
 
 
