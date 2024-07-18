@@ -1,20 +1,16 @@
 .allSpotsContainer{
    display: grid;
-   grid-template-columns: 1fr 1fr 1fr 1fr;
-    /* margin: 0 1.5rem; */
+   grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    margin: 0 1.5rem;
     column-gap: 2rem;
     row-gap: 8rem;
-    
    
-    /* padding: 20px 5px; */
+   
+    padding: 20px 5px;
     
 }
 
-.center-grid {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-}
+
 
 .manage-button {
     height: 2rem;
@@ -32,7 +28,7 @@
 }
 .h1Manage {
     margin: 0;
-    margin-left: 16rem;
+    margin-left: 1.5rem;
     padding-top: 20px;
     margin-bottom: .5rem;;
 }
@@ -44,7 +40,7 @@
     gap: 1rem;
 }
 .create-spot-button {
-    margin-left: 16rem;
+    margin-left: 1.5rem;
 }
 
 .card {
