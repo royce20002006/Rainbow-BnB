@@ -226,7 +226,9 @@ router.get('/', queryParams, async (req, res, next) => {
                 let previewImages = '';
                 // find the reviews
                 let reviews = await spot.getReviews();
-                let images = await spot.getSpotImages();
+                let images = await spot.getSpotImages({
+                    order: [['id', 'DESC']]
+                });
                 //loop through the reviews so we can get the avg str rating
                 let count = 0;
 
@@ -265,7 +267,7 @@ router.get('/', queryParams, async (req, res, next) => {
                     updatedAt: formatDate(spot.updatedAt),
                     numReviews: count,
                     avgStarRating: sum,
-                    SpotImages: spot.SpotImages.reverse(),
+                    SpotImages: spot.SpotImages,
                     previewImage: previewImages,
                     Owner: spot.Owner
 
