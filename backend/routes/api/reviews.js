@@ -123,6 +123,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
             throw err;
         };
         const deletedReview = await review.destroy();
+        
         return res.json(review);
 
 

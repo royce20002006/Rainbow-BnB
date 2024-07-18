@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 import '../../../Spot/Spot.css'
 import { createReviewThunk } from '../../../../../../store/reviews';
+import { getSpotsThunk } from '../../../../../../store/spots';
 
 
 
@@ -11,7 +12,7 @@ export default function CreateReviewModal({id}) {
   const dispatch = useDispatch();
   const {closeModal} = useModal();
     const [submitErrors, setSubmitErrors] = useState('')
-    const [description, setDescription] = useState('')
+    const [description, setDescription] = useState(``)
     const [rating, setRating] = useState(null);
     const [hoverVal, setHoverVal] = useState(null);
     
@@ -52,6 +53,7 @@ export default function CreateReviewModal({id}) {
             
             setSubmitErrors(data.message)
         } else {
+            await dispatch(getSpotsThunk())
           closeModal();
         }
 
