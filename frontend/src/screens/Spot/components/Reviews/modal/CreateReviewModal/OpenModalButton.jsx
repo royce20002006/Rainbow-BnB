@@ -1,4 +1,4 @@
-import { useModal } from '../../../context/Modal';
+import { useModal } from "../../../../../../context/Modal";
 
 function OpenModalButton({
   modalComponent, // component to render inside the modal
@@ -14,7 +14,7 @@ function OpenModalButton({
     if (typeof onButtonClick === "function") onButtonClick();
   };
 
-  return <button  className='red manage-button'  onClick={onClick}>{buttonText}</button>;
+  return <button  className='postButton'  onClick={onClick}>{buttonText}</button>;
 }
 
 export default OpenModalButton;

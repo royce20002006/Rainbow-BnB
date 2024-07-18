@@ -122,7 +122,7 @@ function SignupFormModal() {
 
         <button 
         disabled={email.length <= 0 || username.length < 4  || firstName.length <= 0 || lastName.length <=0 || password.length < 6 || confirmPassword.length < 6 || password !== confirmPassword}
-        className='red signupButton' id='button' type="submit">Sign Up</button>
+        className='red signupButton'  type="submit">Sign Up</button>
       </form>
     </>
   );

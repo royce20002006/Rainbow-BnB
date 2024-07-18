@@ -36,6 +36,12 @@ module.exports = {
 
         },
         {
+          url: 'https://farm2.staticflickr.com/1568/26605717921_3feb7c642c_h.jpg',
+          spotId: 2,
+          preview: false
+
+        },
+        {
           url: 'https://a.cdn-hotels.com/gdcs/production12/d1130/83f1c8c6-e12d-4e69-8433-c5bbc90b5ad6.jpg',
           spotId: 1,
           preview: true
@@ -155,12 +161,7 @@ module.exports = {
           preview: false
 
         },
-        {
-          url: 'https://farm2.staticflickr.com/1568/26605717921_3feb7c642c_h.jpg',
-          spotId: 2,
-          preview: false
-
-        },
+        
       ], { validate: true })
     } catch (error) {
 
