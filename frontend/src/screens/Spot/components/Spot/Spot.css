@@ -138,11 +138,17 @@
     padding-bottom: 1rem;
 }
 
+.container {
+    width: 50rem;
+    padding: .5rem;
+    margin-bottom: 1rem;
+}
+
 .reserve {
     width: 15rem;
 }
 .postButton {
-    background-color: darkslategrey;
+    background-color: rgb(42, 58, 58);
     border-radius: .4rem;
     box-shadow: 2px 2px 5px black;
     color: white;
@@ -154,7 +160,7 @@
 }
 
 .postButton:active {
-    background-color: rgb(162, 171, 171);
+    background-color: rgb(75, 93, 93);
     box-shadow: 1px 1px 1px black;
 }
 

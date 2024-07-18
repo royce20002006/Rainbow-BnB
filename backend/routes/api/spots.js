@@ -226,7 +226,11 @@ router.get('/', queryParams, async (req, res, next) => {
                 let previewImages = '';
                 // find the reviews
                 let reviews = await spot.getReviews();
-                let images = await spot.getSpotImages();
+                let images = await spot.getSpotImages({
+                    order: [['id', 'ASC']]
+                });
+
+                
                 //loop through the reviews so we can get the avg str rating
                 let count = 0;
 
@@ -265,7 +269,7 @@ router.get('/', queryParams, async (req, res, next) => {
                     updatedAt: formatDate(spot.updatedAt),
                     numReviews: count,
                     avgStarRating: sum,
-                    SpotImages: spot.SpotImages,
+                    SpotImages: images,
                     previewImage: previewImages,
                     Owner: spot.Owner
 
@@ -718,6 +722,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                 where: {
                     spotId: spot.id
                 },
+                order: [['id', 'desc']]
 
             });
 
@@ -755,6 +760,8 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
 
                 };
+                
+                console.log(reviewFormatting)
 
                 return res.json({ Reviews: reviewFormatting });
             };
@@ -775,9 +782,15 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
         const spotId = req.params.spotId;
         const { review, stars } = req.body;
         const { user } = req;
-        const spot = await Spot.findByPk(spotId);
+        const spot = await Spot.findByPk(spotId, {
+            include: {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
+            }
+        });
         if (spot) {
-
+            
             if (user) {
                 if (spot.ownerId === user.id) {
                     const err = new Error('You cannot leave a review on your own spot');
@@ -794,6 +807,9 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
                 };
             };
             const newReview = await Review.create({ userId: user.id, spotId: parseInt(spotId), review, stars });
+
+           
+            console.log(user, 'user')
             const newReviewFormat = {
                 id: newReview.id,
                 userId: newReview.userId,
@@ -801,7 +817,8 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
                 review: newReview.review,
                 stars: newReview.stars,
                 createdAt: formatDate(newReview.createdAt),
-                updatedAt: formatDate(newReview.updatedAt)
+                updatedAt: formatDate(newReview.updatedAt),
+                User: user
             };
             return res.status(201).json(newReviewFormat);
         } else {
