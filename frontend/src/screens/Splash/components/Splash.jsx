@@ -62,7 +62,7 @@ export default function Splash() {
         
         <div className="card" onClick={e => goToSpot(e,spot)}key={`${idx}--${spot.id}`} >
           <span className="tooltip-text">{spot.name}</span>
-            
+            <div className="flex-container">
             <img src={spot.previewImage} />
             <div className="locationAndRating">
               <span className="spotLocation spotInfo">{spot.city}, {spot.state} </span>
@@ -72,6 +72,8 @@ export default function Splash() {
             </div>
 
             <span className="spotPrice spotInfo">${spot.price.toFixed(2)}</span><span> night </span>
+
+            </div>
           
         </div>
       ))}
