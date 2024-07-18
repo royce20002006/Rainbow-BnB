@@ -144,7 +144,7 @@ export const updateSpotThunk = (spotToAdd, images, id) => async (dispatch) => {
 
             const spotData = await spot.json();
 
-            console.log(spotData, 'spotdata in thunk')
+            
 
 
             await dispatch(updateSpot(spotData));

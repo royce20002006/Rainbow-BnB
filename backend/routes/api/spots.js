@@ -775,7 +775,13 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
         const spotId = req.params.spotId;
         const { review, stars } = req.body;
         const { user } = req;
-        const spot = await Spot.findByPk(spotId);
+        const spot = await Spot.findByPk(spotId, {
+            include: {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
+            }
+        });
         if (spot) {
             
             if (user) {
@@ -794,6 +800,9 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
                 };
             };
             const newReview = await Review.create({ userId: user.id, spotId: parseInt(spotId), review, stars });
+
+           
+            console.log(user, 'user')
             const newReviewFormat = {
                 id: newReview.id,
                 userId: newReview.userId,
@@ -801,7 +810,8 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
                 review: newReview.review,
                 stars: newReview.stars,
                 createdAt: formatDate(newReview.createdAt),
-                updatedAt: formatDate(newReview.updatedAt)
+                updatedAt: formatDate(newReview.updatedAt),
+                User: user
             };
             return res.status(201).json(newReviewFormat);
         } else {

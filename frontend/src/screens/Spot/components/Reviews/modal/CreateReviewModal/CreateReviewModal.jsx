@@ -8,7 +8,9 @@ import { createReviewThunk } from '../../../../../../store/reviews';
 
 
 export default function CreateReviewModal({id}) {
-    const [submitErrors, setSubmitErrors] = useState({})
+  const dispatch = useDispatch();
+  const {closeModal} = useModal();
+    const [submitErrors, setSubmitErrors] = useState('')
     const [description, setDescription] = useState('')
     const [rating, setRating] = useState(null);
     const [hoverVal, setHoverVal] = useState(null);
@@ -26,10 +28,8 @@ export default function CreateReviewModal({id}) {
     };
     
     
-    const dispatch = useDispatch();
     
     
-    const {closeModal} = useModal();
     const colors = {
         orange: "#F2C265",
         grey: "a9a9a9"
@@ -46,12 +46,17 @@ export default function CreateReviewModal({id}) {
         })
         
         const newReview = await dispatch(createReviewThunk(id, reviewAndRating))
-        console.log(newReview, 'newReview')
-        console.log(newReview.ok, 'newReview.ok')
+        
         if (!newReview.ok && newReview.ok !== undefined) {
             const data = await newReview.json();
-            setSubmitErrors(data.errors)
-        } 
+            
+            setSubmitErrors(data.message)
+        } else {
+          closeModal();
+        }
+
+        
+
         
        
       }
@@ -60,7 +65,7 @@ export default function CreateReviewModal({id}) {
     <div className='container'>
       <div className='text'>
         <h1 className='heading confirm'>How was your stay?</h1>
-        <div className='errors'>{submitErrors.message && submitErrors.message}</div>
+        <div className='error'>{submitErrors && submitErrors}</div>
         <div><textarea  placeholder='Leave your review here...' className='colorInput longInput' name="description" 
         value={description} onChange={(e) => setDescription(e.target.value)}
         id="description"></textarea></div>

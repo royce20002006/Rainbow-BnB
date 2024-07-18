@@ -45,13 +45,14 @@ export const createReviewThunk = (id, review) => async (dispatch) => {
             body: JSON.stringify(review)
         }
         const res = await csrfFetch(`/api/spots/${id}/reviews`, options)
-
+        console.log(res.ok)
         if (res.ok) {
-
-
-            const reviewData = await spot.json();
-
-            console.log(reviewData, 'thunk')
+            
+            
+            const reviewData = await res.json();
+            
+            console.log(reviewData, 'review in thunk')
+            
 
 
             await dispatch(createReview(reviewData));
@@ -90,7 +91,7 @@ function ReviewsReducer(state = initialState, action) {
         case CREATE_REVIEW: {
             newState = { ...state }
             newState.allReviews = [action.payload, ...newState.allReviews]
-            newState.byId = [action.payload.id] = action.payload;
+            newState.byId[action.payload.id] = action.payload;
             return newState;
         }
         
