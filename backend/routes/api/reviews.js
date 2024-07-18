@@ -33,10 +33,12 @@ router.get('/current', requireAuth, async (req, res, next) => {
         const { user } = req;
         if (user) {
             const reviews = await Review.findAll({
+                order: [['id', 'desc']],
                 where: {
                     userId: user.id
                 },
-                include: [{ model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'] }]
+                include: [{ model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'] }],
+                
             });
 
             let reviewFormatting = [];
@@ -121,9 +123,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
             throw err;
         };
         const deletedReview = await review.destroy();
-        res.json({
-            message: 'Successfully deleted'
-        });
+        return res.json(review);
 
 
 

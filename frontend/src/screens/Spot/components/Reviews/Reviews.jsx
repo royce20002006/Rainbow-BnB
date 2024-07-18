@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom"
 import { FaStar } from "react-icons/fa";
-import { getReviewsThunk } from "../../../../store/reviews";
+import { deleteReviewThunk, getReviewsThunk } from "../../../../store/reviews";
 import OpenModalButton from "./modal/CreateReviewModal/OpenModalButton.jsx";
 import CreateReviewModal from "./modal/CreateReviewModal/CreateReviewModal.jsx";
 import '../Spot/Spot.css'
+
 
 export default function Reviews({spot}) {
     const { id } = useParams();
@@ -30,7 +31,7 @@ export default function Reviews({spot}) {
         if (!isLoaded) {
             getData();
         }
-    }, [dispatch, id, isLoaded, reviews])
+    }, [dispatch, id, isLoaded])
 
     useEffect(() => {
         if (sessionUser)  {
@@ -51,7 +52,13 @@ export default function Reviews({spot}) {
     }, [reviews, spot, sessionUser, alreadyReviewed, isOwner])
 
 
-
+    const deleteReview = async (e, review) => {
+        e.preventDefault()
+        e.stopPropagation()
+        console.log('button clicked')
+        return await dispatch(deleteReviewThunk(review))
+        
+    }
 
 
     if (!isLoaded || reviews === undefined) {
@@ -107,6 +114,14 @@ export default function Reviews({spot}) {
 
                         </div>
                         <p className="normal reviewText">{review.review}</p>
+                        <div className="update-delete">{review.userId === sessionUser.id ? <button 
+                        onClick={() => alert('upcoming feature!!!')}
+                        className="postButton">Update</button> : null}
+                            {review.userId === sessionUser.id ? <button 
+                            onClick={(e) => deleteReview(e, review)}
+                            className="postButton">Delete</button> : null}
+                            
+                            </div>
                     </div>
 
 
