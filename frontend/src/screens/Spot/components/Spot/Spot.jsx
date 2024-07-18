@@ -1,45 +1,31 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom"
-import {  getCurrentUserSpotsThunk, getSpotsThunk } from "../../../../store/spots";
+
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
 
 import './Spot.css'
 import Reviews from '../Reviews/Reviews';
+import { getSpotsThunk } from "../../../../store/spots";
 
 
 export default function Spot() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
-  const sessionUser = useSelector(state => state.session.user);
-  const reviews = useSelector(state => state.reviewsState.allReviews)
+
   const spot = useSelector(state => state.spotState.byId[id])
 
   
-  // useEffect(() => {
-  //   //grab data
-    
-    
-  //   const getData = async () => {
-  //     await dispatch(getSpotsThunk());
 
-  //     setIsLoaded(true);
-  //   }
-
-  //   if (!isLoaded) {
-  //     getData();
-  //   }
-
-  // }, [dispatch, isLoaded, user])
 
   
   
 
   useEffect(() => {
     const getData = async () => {
-      console.log('helllo from use effect')
+     
       await dispatch(getSpotsThunk());
       await dispatch(getReviewsThunk(id));
       setIsLoaded(true);

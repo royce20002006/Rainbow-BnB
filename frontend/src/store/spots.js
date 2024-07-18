@@ -50,7 +50,7 @@ export const getSpotsThunk = () => async (dispatch) => {
         const res = await csrfFetch('/api/spots');
         if (res.ok) {
             const data = await res.json();
-            console.log(data, 'data');
+           
             dispatch(getAllSpots(data))
             return data;
 
@@ -238,7 +238,7 @@ function spotsReducer(state = initialState, action) {
 
                 return spot.id !== action.payload.id
             })
-            console.log(filteredSpots, 'reducer for delete')
+            
             newState.allSpots = filteredSpots
 
             const newById = { ...newState.byId };
@@ -246,7 +246,7 @@ function spotsReducer(state = initialState, action) {
             newState.byId = newById;
 
             const filteredUserSpots = newState.currentUser.filter(spot => {
-                console.log(action.payload.id, 'new payload id in user')
+                
                 return spot.id !== action.payload.id
             })
             newState.currentUser = filteredUserSpots;
@@ -254,7 +254,7 @@ function spotsReducer(state = initialState, action) {
         }
         case UPDATE_SPOT: {
             newState = { ...state }
-            console.log(action.payload, 'reducer')
+            
             const spotId = action.payload.id;
 
             const newAllSpots = [];

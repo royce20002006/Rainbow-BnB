@@ -33,9 +33,9 @@ export default function LoginFormModal() {
             .catch(
                 async (res) => {
                     const data = await res.json();
-                    console.log(data)
+                   
                     if (data?.message) setErrors({message: data.message});
-                    console.log(errors)
+                   
                 }
             );
     };

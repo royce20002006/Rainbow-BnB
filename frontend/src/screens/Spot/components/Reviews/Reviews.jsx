@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom"
 import { FaStar } from "react-icons/fa";
-import { deleteReviewThunk, getReviewsThunk } from "../../../../store/reviews";
+import {  getReviewsThunk } from "../../../../store/reviews";
 import OpenModalButton from "./modal/CreateReviewModal/OpenModalButton.jsx";
 import CreateReviewModal from "./modal/CreateReviewModal/CreateReviewModal.jsx";
 import '../Spot/Spot.css'
@@ -47,11 +47,11 @@ export default function Reviews({ spot }) {
             for (let review of reviews) {
                 if (review.userId === sessionUser.id) {
                     setAlreadyReviewed(true);
-                    console.log(alreadyReviewed, 'reviewed')
+                    
                 }
             }
         }
-    }, [spot, sessionUser, alreadyReviewed, isOwner])
+    }, [spot, reviews, sessionUser, alreadyReviewed, isOwner])
 
 
     
