@@ -111,7 +111,7 @@ export default function Reviews({ spot }) {
                         </div>
                         <p className="normal reviewText">{review.review}</p>
                         <div className="delete-review">
-                            {review.userId === sessionUser.id ?
+                            {sessionUser && review.userId === sessionUser.id ?
                                 <OpenModalButton
                                     className='red manage-button delete-review-button'
                                     buttonText="Delete"
