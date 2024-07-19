@@ -5,12 +5,13 @@ import './SpotForm.css'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { addSpotThunk, getSpotsThunk, updateSpotThunk } from '../../../../store/spots';
-import { useNavigate, useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 
 export default function SpotForm() {
   const { id } = useParams();
   
   const spot = useSelector(state => state.spotState.byId[id])
+  const [value, setValue] = useState(true)
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,8 +39,10 @@ export default function SpotForm() {
 
   const updateForm = (val, key) => {
     return setSpotForm((prev) => {
+      setValue(false)
       const newPrev = { ...prev };
       newPrev[key] = val;
+      
       return newPrev;
     })
   }
@@ -94,6 +97,7 @@ export default function SpotForm() {
         updateForm(`${spot.SpotImages[2].url}`, 'imageTwo');
         updateForm(`${spot.SpotImages[3].url}`, 'imageThree');
         updateForm(`${spot.SpotImages[4].url}`, 'imageFour')
+        setValue(true)
 
       }
       
@@ -206,7 +210,7 @@ export default function SpotForm() {
   }, [spotForm.country, spotForm.address, spotForm.state, spotForm.city, spotForm.lat, spotForm.lng, spotForm.description, spotForm.name, spotForm.price, spotForm.previewImage, spotForm.imageOne, spotForm.imageTwo, spotForm.imageThree, spotForm.imageFour, buttonClicked])
 
 
-
+ 
 
 
 
@@ -351,7 +355,7 @@ export default function SpotForm() {
               <input
                 className='lat colorInput'
                 type="text"
-                placeholder='Latitude'
+                placeholder='Latitude must be between -90 and 90'
                 value={spotForm.lat}
                 onChange={e => updateForm(e.target.value, 'lat')}
               />
@@ -485,13 +489,17 @@ export default function SpotForm() {
         </div>
 
         <div className='buttonDiv'>
-
+          
           <button
+          
+          onFocus={() => setButtonClicked(true)}
             onClick={(e) => submit(e)}
-            disabled={Object.keys(errors).length !== 0}
+            disabled={value}
             className='red'
             
           >{id ? 'Update your Spot' :'Create Spot'}</button>
+
+         
         </div>
 
 

@@ -29,6 +29,11 @@
     
 }
 
+.onclick-event {
+    display: flex;
+    justify-content: center;
+}
+
 .priceInput {
     display: flex;
     gap: .3rem;
