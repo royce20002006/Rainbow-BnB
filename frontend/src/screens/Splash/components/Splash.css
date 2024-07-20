@@ -1,25 +1,26 @@
 .spotSection {
+  padding: 20px 5px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(max(30rem, 100%/5), 5rem));
-  width: 100%;
   margin: 0 1.5rem;
+  width: 95%;
   column-gap: 2rem;
   row-gap: 5rem;
-  margin-left: 10%;
-  margin-right: 55%;
-
-
-
-  padding: 20px 5px;
-
-}
-
-.grid-container {
- 
-
   margin-left: auto;
   margin-right: auto;
+
+
+
+
 }
+
+.grid-container{
+  width: 100%;
+
+}
+
+
+
 
 
 
@@ -40,6 +41,7 @@
   height: 30rem;
   border-radius: 3%;
   object-fit: cover;
+ 
 }
 
 .locationAndRating {
