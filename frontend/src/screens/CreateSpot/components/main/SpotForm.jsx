@@ -97,7 +97,7 @@ export default function SpotForm() {
         updateForm(`${spot.SpotImages[2].url}`, 'imageTwo');
         updateForm(`${spot.SpotImages[3].url}`, 'imageThree');
         updateForm(`${spot.SpotImages[4].url}`, 'imageFour')
-        setValue(true)
+        
 
       }
       
@@ -215,7 +215,7 @@ export default function SpotForm() {
 
 
   const submit = async (e) => {
-    setButtonClicked(!buttonClicked)
+    setButtonClicked(true)
     e.preventDefault();
     e.stopPropagation();
 
@@ -230,7 +230,7 @@ export default function SpotForm() {
     { url: spotForm.imageThree || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
     { url: spotForm.imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
     ]
-    const spot = { country: spotForm.country, address: spotForm.address, state: spotForm.state, city: spotForm.city, lat: spotForm.lat, lng: spotForm.lng, description: spotForm.description, name: spotForm.name, price: spotForm.price, previewImage: spotForm.previewImage, imageOne: spotForm.imageOne, imageTwo: spotForm.imageTwo, imageThree: spotForm.imageThree, imageFour: spotForm.imageFour }
+    const spot = { country: spotForm.country, address: spotForm.address, state: spotForm.state, city: spotForm.city, lat: spotForm.lat, lng: spotForm.lng, description: spotForm.description, name: spotForm.name, price: spotForm.price, previewImage: spotForm.previewImage, imageOne: spotForm.imageOne, imageTwo: spotForm.imageTwo, imageThree: spotForm.imageThree, imageFour: spotForm.imageFour, buttonClicked }
 
 
 
