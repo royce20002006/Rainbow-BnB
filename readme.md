@@ -16,7 +16,7 @@ rainbow bnb minimized data retrievel from the server by loading all spots at onc
 
 ## splash page
 
-![splashPage](../images/Screenshot%202024-07-19%20at%201.28.30%20AM.png)
+![splashPage](./images/Screenshot%202024-07-19%20at%201.28.30%20AM.png)
 
 On entering the website users are greeted with a splash page that shows all spots.  They are able to see a picture of the spot along with the city and state in which the spots are at. They also are able to see the price per night of the spot and they are able to see the average star rating of that spot. They do not need to log in to see these pages. 
 
@@ -44,19 +44,19 @@ Here is a short description of each of the features
 
 ## Spot Details
 
-![spotDetail](../images/Screenshot%202024-07-19%20at%201.59.31%20AM.png)
+![spotDetail](./images/Screenshot%202024-07-19%20at%201.59.31%20AM.png)
 
 A user clicks a spot tile on the splash page to get to the spot detail page. with seamless integration and state management with redux all items for the spot detail have already been loaded in and the page is very responsive. on this page you can see the name of the spot on the top more images then you can see who it is owned by and a description of the spot. This page also houses the reviews of the spot. which has to be fetched from the server. if you have not created a review you will be able to do so by the button for post your review. If you already have posted a review then under your review you will be able to delete the review with a button under your review which when clicked will open a modal and let you confirm delete. you will not have to refresh the page once you add or delete a review because of redux under the hood which will dynamically update your page.
 
 ## create a new spot
 
-![spotForm](../images/Screenshot%202024-07-19%20at%202.07.16%20AM.png)
+![spotForm](./images/Screenshot%202024-07-19%20at%202.07.16%20AM.png)
 
 When logged in a button shows to create a new spot. when you click that link you are brought to a new component where you will fill out this form to fill out which will then do a fetch to the backend and create the spot. If successfull you will be taken to the spot detail page with that newly created spot. However, if you have any errors they will show up in the designated spot to let you know what is amiss.
 
 ## Manage Spots
 
-![manageSpots](../images/Screenshot%202024-07-20%20at%202.59.49%20AM.png)
+![manageSpots](./images/Screenshot%202024-07-20%20at%202.59.49%20AM.png)
 
 Lastly there is a page for managing spots. This sends a request to getting spots by current user. On this page you have a button for creating a new spot. Then I mapped through the current user spots to create a card just like the splash page except i added update and delete buttons to the cards. the delete button opens up a pop-up modal just like the login and sign-up which will then confirm if you would like to delete. if you click no then the modal will just close. however if you click yes then it will run a delete fetch request and it will delete the spot without needing to reload the page. If you click the update button it will take you to the spot form component which was the same form component which is just dynamically updated to show update instead of create and it is filled in with the spot details. You can update anything but the images. they will not change. I did not fix that functionality. 
 
