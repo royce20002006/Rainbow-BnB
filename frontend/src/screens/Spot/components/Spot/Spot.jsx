@@ -14,7 +14,7 @@ export default function Spot() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
-  console.log(id)
+
   const spot = useSelector(state => state.spotState.byId[id])
 
   
