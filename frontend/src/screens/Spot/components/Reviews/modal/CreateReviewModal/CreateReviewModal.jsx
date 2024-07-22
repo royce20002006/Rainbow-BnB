@@ -85,7 +85,7 @@ export default function CreateReviewModal({id}) {
        onMouseLeave={() => handleMouseLeaveStar}
        />
         ))}
-        <label className='normal' htmlFor="stars">Stars</label>
+        <label className='normal stars' htmlFor="stars">Stars</label>
       </div>
 
         <div className='buttons'>

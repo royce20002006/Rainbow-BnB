@@ -15,6 +15,13 @@
     overflow: hidden;
 }
 
+.stars {
+    
+    position: absolute;
+    top: 11.6rem;
+    
+   
+}
 
 
 .firstImage img{
@@ -111,6 +118,7 @@
     
 
 }
+
 
 .reservationDiv button {
     /* background-color: #FF385c;
