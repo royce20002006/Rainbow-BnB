@@ -8,13 +8,17 @@ import { addSpotThunk, getSpotsThunk, updateSpotThunk } from '../../../../store/
 import {  useNavigate, useParams } from 'react-router-dom';
 
 export default function SpotForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   
   const spot = useSelector(state => state.spotState.byId[id])
   const [value, setValue] = useState(true)
+  const [errors, setErrors] = useState({});
+  const [submitErrors, setSubmitErrors] = useState({})
+  const [buttonClicked, setButtonClicked] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false);
   
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [spotForm, setSpotForm] = useState({
     country: '',
     address: '',
@@ -48,10 +52,6 @@ export default function SpotForm() {
   }
 
 
-  const [errors, setErrors] = useState({});
-  const [submitErrors, setSubmitErrors] = useState({})
-  const [buttonClicked, setButtonClicked] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false);
 
 
 
