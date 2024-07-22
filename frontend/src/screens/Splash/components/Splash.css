@@ -44,6 +44,10 @@
  
 }
 
+.card img:hover {
+opacity: .5;
+
+}
 .locationAndRating {
   display: flex;
   flex-direction: row;
@@ -92,6 +96,7 @@
 
 .card:hover .tooltip-text {
   visibility: visible;
+  
 }
 
 #top {
