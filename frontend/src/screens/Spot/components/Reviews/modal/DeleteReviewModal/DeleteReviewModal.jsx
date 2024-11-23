@@ -47,12 +47,12 @@ export default function DeleteReviewModal({
     <div className='container'>
       <div className='text'>
         <h1 className='subheading confirm'>Confirm Delete</h1>
-        <div className='normal question'>Are you sure you want to delet this review?</div>
+        <div className='normal question'>Are you sure you want to delete this review?</div>
 
       </div>
         <div className='buttons'>
-        <button  className='big red normal' onClick={(e) => deleteReview(e)}>Yes (Delete Review)</button>
-        <button  className='big gray normal' onClick={closeModal}>No (Keep Review)</button>
+        <button  className='big red normal' onClick={(e) => deleteReview(e)}>Yes</button>
+        <button  className='big gray normal' onClick={closeModal}>No</button>
 
         </div>
     </div>
