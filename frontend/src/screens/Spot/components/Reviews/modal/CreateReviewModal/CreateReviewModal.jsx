@@ -89,7 +89,7 @@ export default function CreateReviewModal({id}) {
       </div>
 
         <div className='buttons'>
-        <button  disabled={!rating || description.length < 10 } className='big red normal' onClick={(e) => postReview(e)}>Submit Your Review</button>
+        <button  disabled={!rating || description.length < 10 } className='big red normal' onClick={(e) => postReview(e)}>Submit Review</button>
        
 
         </div>
