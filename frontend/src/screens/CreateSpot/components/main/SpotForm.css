@@ -46,7 +46,7 @@
 }
 
 .error {
-    color: #FF385c;
+    color: #fd2d53;
 }
 .location {
     display: flex;
@@ -103,7 +103,7 @@
 }
 
 .red {
-    background-color: #FF385c;
+    background-color: #fa2d52;
     border-radius: .4rem;
     box-shadow: 1px 1px 1px black;
     color: white;

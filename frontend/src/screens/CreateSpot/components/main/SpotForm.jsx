@@ -62,22 +62,7 @@ export default function SpotForm() {
     const getData = async () => {
 
       await dispatch(getSpotsThunk());
-      // ssetSpotForm({
-        //   country: spot.country,
-        //   address: spot.address,
-        //   city: spot.city,
-        //   state: spot.state,
-        //   lat: spot.lat,
-        //   lng: spot.lng,
-        //   description: spot.description,
-        //   name: spot.name,
-        //   price: spot.price,
-        //   previewImage: spot.previewImage,
-        //   imageOne: spot.SpotImages[1],
-        //   imageTwo: spot.SpotImages[2],
-        //   imageThree: spot.SpotImages[3],
-        //   imageFour: spot.SpotImages[4]
-        // })
+      
         
         setIsLoaded(true);
       }
@@ -284,8 +269,8 @@ export default function SpotForm() {
     <div className="form">
       <div className="location">
         <h1 className="heading">{id ? 'Update your Spot' : 'Create a new Spot'}</h1>
-        <h2 className="subheading">Where&apos;s your place Located?</h2>
-        <p className="normal onlyShows">Guests will only get your exact address once they booked a reservation.</p>
+        <h2 className="subheading">Where is the location?</h2>
+        <p className="normal onlyShows">Guests will only get the exact address once they have booked a reservation.</p>
 
         <div className='sectionOne'>
           <div className='country labelTop'>
@@ -380,7 +365,7 @@ export default function SpotForm() {
 
         </div>
         <div className='section2 onlyShows'>
-          <h2 className='subheading bottom'>Describe your place to guests</h2>
+          <h2 className='subheading bottom'>Describe your place</h2>
           <p className='normal onlyShows'>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
           <textarea
             className='colorInput longInput'
@@ -393,7 +378,7 @@ export default function SpotForm() {
           <div className='error'>{buttonClicked && errors.description && errors.description || buttonClicked && submitErrors.description && submitErrors.description}</div>
         </div>
         <div className='section2'>
-          <h2 className='subheading bottom'>Create a title for your spot</h2>
+          <h2 className='subheading bottom'>Create a title for the spot</h2>
           <p className='normal onlyShows'>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
           <input
             className='colorInput longInput'
@@ -405,7 +390,7 @@ export default function SpotForm() {
           <div className='error'>{buttonClicked && errors.name && errors.name || buttonClicked && submitErrors.name && submitErrors.name}</div>
         </div>
         <div className='section2'>
-          <h2 className='subheading bottom'>Set a base price for your spot</h2>
+          <h2 className='subheading bottom'>Set a base price for the spot</h2>
           <p className='normal onlyShows'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
 
           <div className='priceInput'>
@@ -421,8 +406,8 @@ export default function SpotForm() {
           <div className='error'>{buttonClicked && errors.price && errors.price || buttonClicked && submitErrors.price && submitErrors.price}</div>
         </div>
         <div className='section2'>
-          <h2 className='subheading bottom'>Liven up your spot with photos</h2>
-          <p className='normal onlyShows'>Submit a link to at least one photo to publish your spot..</p>
+          <h2 className='subheading bottom'>Liven up the spot with photos</h2>
+          <p className='normal onlyShows'>Submit a link to at least one photo to publish the spot..</p>
 
           <div className='imageInputs'>
             <div>
