@@ -50,7 +50,6 @@ export const getSpotsThunk = () => async (dispatch) => {
         const res = await csrfFetch('/api/spots');
         if (res.ok) {
             const data = await res.json();
-           
             dispatch(getAllSpots(data))
             return data;
 
@@ -97,33 +96,18 @@ export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
 
 
         if (spot.ok) {
-
-
             const spotData = await spot.json();
-
-
-
-
             await dispatch(addSpot(spotData.spotFormatting));
-
             return spotData;
         }
 
-
-
-
-
-
     } catch (error) {
-
         return error;
     }
 }
 
 export const updateSpotThunk = (spotToAdd, images, id) => async (dispatch) => {
     try {
-
-
         const spotAndImages = {
             ...spotToAdd, images: [...images]
         }
@@ -136,56 +120,27 @@ export const updateSpotThunk = (spotToAdd, images, id) => async (dispatch) => {
 
 
         const spot = await csrfFetch(`/api/spots/${id}`, options)
-
-
-
         if (spot.ok) {
-
-
             const spotData = await spot.json();
-
-            
-
-
             await dispatch(updateSpot(spotData));
-
             return spotData;
         }
-
-
-
-
-
-
     } catch (error) {
-
         return error;
     }
 }
 
 export const deleteSpotThunk = (spot) => async (dispatch) => {
     try {
-
-
         const options = {
             method: 'DELETE',
             header: { 'Content-Type': 'application/json' },
             body: JSON.stringify(spot)
         }
-
-
         const deletedSpot = await csrfFetch(`/api/spots/${spot.id}`, options)
-
-
-
         if (deletedSpot.ok) {
-
-
             const spotData = await deletedSpot.json();
-
-
             await dispatch(deleteSpot(spotData));
-
             return spotData;
         }
 
@@ -209,8 +164,6 @@ function spotsReducer(state = initialState, action) {
         case GET_ALL_SPOTS: {
             newState = { ...state }
             newState.allSpots = action.payload.Spots;
-            
-
 
             for (let spot of action.payload.Spots) {
                 newState.byId[spot.id] = spot;
@@ -233,9 +186,7 @@ function spotsReducer(state = initialState, action) {
 
         case DELETE_SPOT: {
             newState = { ...state }
-
             const filteredSpots = newState.allSpots.filter(spot => {
-
                 return spot.id !== action.payload.id
             })
             

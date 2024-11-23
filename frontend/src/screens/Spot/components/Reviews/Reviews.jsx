@@ -86,7 +86,7 @@ export default function Reviews({ spot }) {
                     !sessionUser || isOwner || alreadyReviewed ? null : <div className="postDiv"><OpenModalButton
                         id=''
                         className=''
-                        buttonText="Post Your Review"
+                        buttonText="Post A Review"
                         modalComponent={<CreateReviewModal id={id} />}
                         preventDefault
                         stopPropagation
