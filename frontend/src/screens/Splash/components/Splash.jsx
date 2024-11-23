@@ -17,16 +17,7 @@ export default function Splash() {
   
 
   useEffect(() => {
-    //grab data
 
-
-    
-
-    
-    
-
-    
-    
     const getData = async () => {
       await dispatch(getSpotsThunk());
       
