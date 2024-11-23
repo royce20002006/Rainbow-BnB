@@ -7,7 +7,7 @@ export default function Logo() {
   return (
     <div className='mainDiv'>
         <NavLink className='rainbowLogo' to='/'><LuRainbow /></NavLink>
-        <NavLink to='/'>RainbowBnb</NavLink>
+        <NavLink to='/'>RainbowBnB</NavLink>
     </div>
   )
 }
