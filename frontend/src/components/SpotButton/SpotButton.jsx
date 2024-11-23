@@ -6,7 +6,7 @@ export default function SpotButton() {
   return (
     <>
     {sessionUser ? (<div>
-        Create a spot
+        Create a New Spot
     </div>) : null}
     </>
   )
