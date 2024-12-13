@@ -9,6 +9,7 @@ import Splash from "./screens/Splash/components/Splash";
 import Spot from "./screens/Spot/components/Spot/Spot";
 import SpotForm from "./screens/CreateSpot/components/main/SpotForm";
 import ManageSpots from "./screens/ManageSpots/Components/ManageSpots";
+import BookingForm from "./screens/CreateBookings/Components/BookingForm";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: '/spots/manage',
         element: <ManageSpots />
+      },
+      {
+        path: '/spots/:id/bookings/new',
+        element: <BookingForm />
       },
       {
         path: '*',

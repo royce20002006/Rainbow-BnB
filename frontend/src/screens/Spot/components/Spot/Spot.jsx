@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
@@ -14,7 +14,7 @@ export default function Spot() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const Navigate = useNavigate();
   const spot = useSelector(state => state.spotState.byId[id])
 
   
@@ -45,7 +45,7 @@ export default function Spot() {
   const reserveSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    alert('Feature coming soon')
+    Navigate(`/spots/${id}/bookings/new`)
   }
 
 
