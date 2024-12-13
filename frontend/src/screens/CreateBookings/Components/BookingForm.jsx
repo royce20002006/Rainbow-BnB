@@ -269,14 +269,12 @@ export default function BookingForm() {
   return (
     <div className="form">
       <div className="location">
-        <h1 className="heading">{id ? 'Update your Spot' : 'Create a new Spot'}</h1>
-        <h2 className="subheading">Where is the location?</h2>
-        <p className="normal onlyShows">Guests will only get the exact address once they have booked a reservation.</p>
-
+        <h1 className="heading">Reserve this Spot</h1>
+      
         <div className='sectionOne'>
           <div className='country labelTop'>
             <div className='labelAndError'>
-              <label htmlFor="country">Country</label>
+              <label htmlFor="country">Start Date</label>
               <div className='error'>{buttonClicked && errors.country && errors.country || buttonClicked && submitErrors.country && submitErrors.country}</div>
             </div>
             <input
@@ -289,7 +287,7 @@ export default function BookingForm() {
           </div>
           <div className='streetAddress labelTop'>
             <div className='labelAndError'>
-              <label htmlFor="street">Street Address</label>
+              <label htmlFor="street">End Date</label>
               <div className='error'>{buttonClicked && errors.address && errors.address || buttonClicked && submitErrors.address && submitErrors.address}</div>
             </div>
             <input
@@ -300,179 +298,18 @@ export default function BookingForm() {
               onChange={e => updateForm(e.target.value, 'address')}
             />
           </div>
-          <div className='cityState'>
-            <div className='city'>
-              <div className='labelAndError'>
-                <label className='cityLabel' htmlFor="city">City</label>
-                <div className='error'>{buttonClicked && errors.city && errors.city || buttonClicked && submitErrors.city && submitErrors.city}</div>
-
-              </div>
-              <input
-                className='cityInput colorInput'
-                type="text"
-                placeholder='City'
-                value={spotForm.city}
-                onChange={e => updateForm(e.target.value, 'city')}
-              />
-            </div>
-            <div className='normal comma'>,</div>
-            <div className='state'>
-              <div className='labelAndError'>
-                <label className='stateLabel' htmlFor="state">State</label>
-                <div className='error'>{buttonClicked && errors.state && errors.state || buttonClicked && submitErrors.state && submitErrors.state}</div>
-
-              </div>
-              <input
-                className='stateInput colorInput'
-                type="text"
-                placeholder='State'
-                value={spotForm.state}
-                onChange={e => updateForm(e.target.value, 'state')}
-              />
-            </div>
-          </div>
-          <div className='cityState'>
-            <div className='city'>
-              <div className='labelAndError'>
-                <label className='cityLabel' htmlFor="latitude">Latitude</label>
-                <div className='error'>{buttonClicked && errors.lat && errors.lat || buttonClicked && submitErrors.lat && submitErrors.lat}</div>
-
-              </div>
-              <input
-                className='lat colorInput'
-                type="text"
-                placeholder='Latitude must be between -90 and 90'
-                value={spotForm.lat}
-                onChange={e => updateForm(e.target.value, 'lat')}
-              />
-            </div>
-            <div className='normal comma'>,</div>
-            <div className='state'>
-              <div className='labelAndError'>
-                <label className='stateLabel' htmlFor="longitude">Longitude</label>
-                <div className='error'>{buttonClicked && errors.lng && errors.lng || buttonClicked && submitErrors.lng && submitErrors.lng}</div>
-
-              </div>
-
-              <input
-                className='lng colorInput'
-                type="text"
-                placeholder='Longitude'
-                value={spotForm.lng}
-                onChange={e => updateForm(e.target.value, 'lng')}
-              />
-            </div>
-          </div>
+          
+            
+           
+            
+          
+          
 
         </div>
-        <div className='section2 onlyShows'>
-          <h2 className='subheading bottom'>Describe your place</h2>
-          <p className='normal onlyShows'>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
-          <textarea
-            className='colorInput longInput'
-            placeholder='Please write at least 30 characters'
-            name="description"
-            id="description"
-            value={spotForm.description}
-            onChange={e => updateForm(e.target.value, 'description')}
-          ></textarea>
-          <div className='error'>{buttonClicked && errors.description && errors.description || buttonClicked && submitErrors.description && submitErrors.description}</div>
-        </div>
-        <div className='section2'>
-          <h2 className='subheading bottom'>Create a title for the spot</h2>
-          <p className='normal onlyShows'>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
-          <input
-            className='colorInput longInput'
-            type="text"
-            placeholder='Name of your spot'
-            value={spotForm.name}
-            onChange={e => updateForm(e.target.value, 'name')}
-          />
-          <div className='error'>{buttonClicked && errors.name && errors.name || buttonClicked && submitErrors.name && submitErrors.name}</div>
-        </div>
-        <div className='section2'>
-          <h2 className='subheading bottom'>Set a base price for the spot</h2>
-          <p className='normal onlyShows'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
-
-          <div className='priceInput'>
-            <div className='normal'>$</div>
-            <input
-              className='colorInput longInput'
-              type="text"
-              placeholder='Price per night (USD)'
-              value={spotForm.price}
-              onChange={e => updateForm(e.target.value, 'price')}
-            />
-          </div>
-          <div className='error'>{buttonClicked && errors.price && errors.price || buttonClicked && submitErrors.price && submitErrors.price}</div>
-        </div>
-        <div className='section2'>
-          <h2 className='subheading bottom'>Liven up the spot with photos</h2>
-          <p className='normal onlyShows'>Submit a link to at least one photo to publish the spot..</p>
-
-          <div className='imageInputs'>
-            <div>
-              <input
-                className='colorInput longInput'
-                type="url"
-
-                placeholder='Preview Image URL'
-                value={spotForm.previewImage}
-                onChange={id ? null : e => updateForm(e.target.value, 'previewImage')}
-              />
-              <div className='error'>{buttonClicked && errors.preview && errors.preview || buttonClicked && errors.image && errors.image || buttonClicked && submitErrors.preview && submitErrors.preview || buttonClicked && submitErrors.image && submitErrors.image}</div>
-
-            </div>
-            <div>
-              <input
-                className='colorInput longInput'
-                type="url"
-
-                placeholder='Image URL'
-                value={spotForm.imageOne}
-                onChange={id ? null : e => updateForm(e.target.value, 'imageOne')}
-              />
-              <div className='error'>{buttonClicked && errors.imageOne && errors.imageOne || buttonClicked && submitErrors.imageOne && submitErrors.imageOne}</div>
-
-            </div>
-            <div>
-              <input
-                className='colorInput longInput'
-                type="url"
-
-                placeholder='Image URL'
-                value={spotForm.imageTwo}
-                onChange={id ? null : e => updateForm(e.target.value, 'imageTwo')}
-              />
-              <div className='error'>{buttonClicked && errors.imageTwo && errors.imageTwo || buttonClicked && submitErrors.imageTwo && submitErrors.imageTwo}</div>
-
-            </div>
-            <div>
-              <input
-                className='colorInput longInput'
-                type="url"
-
-                placeholder='Image URL'
-                value={spotForm.imageThree}
-                onChange={id ? null : e => updateForm(e.target.value, 'imageThree')}
-              />
-              <div className='error'>{buttonClicked && errors.imageThree && errors.imageThree || buttonClicked && submitErrors.imageThree && submitErrors.imageThree}</div>
-
-            </div>
-            <div>
-              <input
-                className='colorInput longInput'
-                type="url"
-
-                placeholder='Image URL'
-                value={spotForm.imageFour}
-                onChange={id ? null : e => updateForm(e.target.value, 'imageFour')}
-              />
-              <div className='error'>{buttonClicked && errors.imageFour && errors.imageFour || buttonClicked && submitErrors.imageFour && submitErrors.imageFour}</div>
-            </div>
-          </div>
-
-        </div>
+        
+        
+        
+        
 
         <div className='buttonDiv'>
           
