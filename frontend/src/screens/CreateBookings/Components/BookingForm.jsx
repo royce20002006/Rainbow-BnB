@@ -92,51 +92,51 @@ export default function BookingForm() {
     e.preventDefault();
     e.stopPropagation();
 
+    alert('working on feature')
 
-
-    if (!id) {
+  //   if (!id) {
 
     
     
-    const booking = { startDate: bookingForm.startDate, endDate: bookingForm.endDate, buttonClicked }
+  //   const booking = { startDate: bookingForm.startDate, endDate: bookingForm.endDate, buttonClicked }
 
 
 
 
-    const newBooking = await dispatch(addSpotThunk(booking))
+  //   const newBooking = await dispatch(addSpotThunk(booking))
 
 
 
-    if (!newBooking.ok && newBooking.ok !== undefined) {
-      const data = await newBooking.json();
-      setSubmitErrors(data.errors)
+  //   if (!newBooking.ok && newBooking.ok !== undefined) {
+  //     const data = await newBooking.json();
+  //     setSubmitErrors(data.errors)
 
-    } else {
-      const newBookingId = newBooking.bookingFormatting.id;
+  //   } else {
+  //     const newBookingId = newBooking.bookingFormatting.id;
       
-    }
-  } else {
+  //   }
+  // } else {
 
     
-    const booking = { startDate: bookingForm.startDate, endDate: bookingForm.endDate }
+  //   const booking = { startDate: bookingForm.startDate, endDate: bookingForm.endDate }
 
 
 
 
-    const updatedBooking = await dispatch(updateSpotThunk(booking, id))
+  //   const updatedBooking = await dispatch(updateSpotThunk(booking, id))
 
 
 
-    if (!updatedBooking.ok && updatedBooking.ok !== undefined) {
-      const data = await updatedBooking.json();
-      setSubmitErrors(data.errors)
+  //   if (!updatedBooking.ok && updatedBooking.ok !== undefined) {
+  //     const data = await updatedBooking.json();
+  //     setSubmitErrors(data.errors)
 
-    } else {
-      const updatedBookingId = updatedBooking.id;
-      // navigate(`/spots/${updatedSpotId}`)
-    }
+  //   } else {
+  //     const updatedBookingId = updatedBooking.id;
+  //     // navigate(`/spots/${updatedSpotId}`)
+  //   }
 
-  }
+  // }
 
 
 
