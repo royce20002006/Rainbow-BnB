@@ -80,7 +80,7 @@ export default function BookingForm() {
    
     setErrors(error)
 
-  }, [spotForm.country, spotForm.address, spotForm.state, spotForm.city, spotForm.lat, spotForm.lng, spotForm.description, spotForm.name, spotForm.price, spotForm.previewImage, spotForm.imageOne, spotForm.imageTwo, spotForm.imageThree, spotForm.imageFour, ])
+  }, [bookingForm.startDate, bookingForm.endDate ])
 
 
  
@@ -165,14 +165,14 @@ export default function BookingForm() {
           <div className='streetAddress labelTop'>
             <div className='labelAndError'>
               <label htmlFor="endDate">End Date</label>
-              <div className='error'>{buttonClicked && errors.address && errors.address || buttonClicked && submitErrors.address && submitErrors.address}</div>
+              <div className='error'>{buttonClicked && errors.endDate && errors.endDate || buttonClicked && submitErrors.endDate && submitErrors.endDate}</div>
             </div>
             <input
               className='longInput colorInput'
-              type="text"
-              placeholder='Street Address'
-              value={spotForm.address}
-              onChange={e => updateForm(e.target.value, 'address')}
+              type="date"
+              placeholder='End Date'
+              value={bookingForm.endDate}
+              onChange={e => updateForm(e.target.value, 'endDate')}
             />
           </div>
           
@@ -197,7 +197,7 @@ export default function BookingForm() {
             disabled={value}
             className='red'
             
-          >{id ? 'Update your Spot' :'Create Spot'}</button>
+          >{id ? 'Update Booking' :'Create Booking'}</button>
 
          
         </div>
