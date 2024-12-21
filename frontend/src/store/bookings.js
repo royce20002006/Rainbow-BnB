@@ -79,7 +79,7 @@ const addBooking = (booking) => ({
 //     }
 // }
 
-export const addBookingThunk = (booking) => async (dispatch) => {
+export const addBookingThunk = (booking, id) => async (dispatch) => {
     try {
 
         
@@ -89,14 +89,14 @@ export const addBookingThunk = (booking) => async (dispatch) => {
             header: { 'Content-Type': 'application/json' },
             body: JSON.stringify(booking)
         }
-        const booking = await csrfFetch('/api/spots', options)
+        const newBooking = await csrfFetch(`/api/spots/${id}/bookings`, options)
 
 
 
-        if (spot.ok) {
-            const spotData = await spot.json();
-            await dispatch(addSpot(spotData.spotFormatting));
-            return spotData;
+        if (newBooking.ok) {
+            const bookingData = await spot.json();
+            await dispatch(addBooking(bookingData));
+            return bookingData;
         }
 
     } catch (error) {
@@ -156,7 +156,7 @@ const initialState = {
     
 };
 
-function spotsReducer(state = initialState, action) {
+function bookingsReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
         // case GET_ALL_SPOTS: {
@@ -175,12 +175,12 @@ function spotsReducer(state = initialState, action) {
         //     newState.currentUser = action.payload.Spots;
         //     return newState;
         // }
-        // case ADD_SPOT: {
-        //     newState = { ...state }
-        //     newState.allSpots = [ ...newState.allSpots, action.payload]
-        //     newState.byId[action.payload.id] = action.payload;
-        //     return newState;
-        // }
+        case ADD_BOOKING: {
+            newState = { ...state }
+            newState.allBookings = [ ...newState.allBookings, action.payload]
+            newState.byId[action.payload.id] = action.payload;
+            return newState;
+        }
 
         // case DELETE_SPOT: {
         //     newState = { ...state }
