@@ -5,6 +5,7 @@ import './BookingForm.css'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { addSpotThunk, getSpotsThunk, updateSpotThunk } from '../../../store/spots'
+import { addBookingThunk } from '../../../store/bookings';
 import {  useNavigate, useParams } from 'react-router-dom';
 
 
@@ -91,30 +92,30 @@ export default function BookingForm() {
     setButtonClicked(true)
     e.preventDefault();
     e.stopPropagation();
+    
 
-    alert('working on feature')
 
   //   if (!id) {
 
     
     
-  //   const booking = { startDate: bookingForm.startDate, endDate: bookingForm.endDate, buttonClicked }
+    const booking = { startDate: bookingForm.startDate, endDate: bookingForm.endDate}
 
 
 
 
-  //   const newBooking = await dispatch(addSpotThunk(booking))
+    const newBooking = await dispatch(addSpotThunk(booking, id))
 
 
 
-  //   if (!newBooking.ok && newBooking.ok !== undefined) {
-  //     const data = await newBooking.json();
-  //     setSubmitErrors(data.errors)
+    if (!newBooking.ok && newBooking.ok !== undefined) {
+      const data = await newBooking.json();
+      setSubmitErrors(data.errors)
 
-  //   } else {
-  //     const newBookingId = newBooking.bookingFormatting.id;
+    } else {
+      const newBookingId = newBooking.bookingFormatting.id;
       
-  //   }
+    }
   // } else {
 
     
