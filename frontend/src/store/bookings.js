@@ -79,19 +79,17 @@ const addBooking = (booking) => ({
 //     }
 // }
 
-export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
+export const addBookingThunk = (booking) => async (dispatch) => {
     try {
 
-        const spotAndImages = {
-            ...spotToAdd, images: [...images]
-        }
+        
 
         const options = {
             method: 'POST',
             header: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(spotAndImages)
+            body: JSON.stringify(booking)
         }
-        const spot = await csrfFetch('/api/spots', options)
+        const booking = await csrfFetch('/api/spots', options)
 
 
 
