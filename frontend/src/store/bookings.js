@@ -3,7 +3,7 @@ import { csrfFetch } from './csrf';
 // const GET_ALL_SPOTS = 'spots/getAllSpots';
 // const GET_USER_SPOTS = 'spots/getUserSpots';
 
-// const ADD_SPOT = 'spots/add';
+const ADD_BOOKING = 'bookings/add';
 // const DELETE_SPOT = 'spots/delete';
 // const UPDATE_SPOT = 'spots/update';
 
@@ -21,10 +21,10 @@ import { csrfFetch } from './csrf';
 
 
 
-// const addSpot = (spot) => ({
-//     type: ADD_SPOT,
-//     payload: spot
-// })
+const addBooking = (booking) => ({
+    type: ADD_BOOKING,
+    payload: booking
+})
 
 // const deleteSpot = (deletedSpot) => ({
 //     type: DELETE_SPOT,
@@ -79,32 +79,32 @@ import { csrfFetch } from './csrf';
 //     }
 // }
 
-// export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
-//     try {
+export const addSpotThunk = (spotToAdd, images) => async (dispatch) => {
+    try {
 
-//         const spotAndImages = {
-//             ...spotToAdd, images: [...images]
-//         }
+        const spotAndImages = {
+            ...spotToAdd, images: [...images]
+        }
 
-//         const options = {
-//             method: 'POST',
-//             header: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify(spotAndImages)
-//         }
-//         const spot = await csrfFetch('/api/spots', options)
+        const options = {
+            method: 'POST',
+            header: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(spotAndImages)
+        }
+        const spot = await csrfFetch('/api/spots', options)
 
 
 
-//         if (spot.ok) {
-//             const spotData = await spot.json();
-//             await dispatch(addSpot(spotData.spotFormatting));
-//             return spotData;
-//         }
+        if (spot.ok) {
+            const spotData = await spot.json();
+            await dispatch(addSpot(spotData.spotFormatting));
+            return spotData;
+        }
 
-//     } catch (error) {
-//         return error;
-//     }
-// }
+    } catch (error) {
+        return error;
+    }
+}
 
 // export const updateSpotThunk = (spotToAdd, images, id) => async (dispatch) => {
 //     try {
