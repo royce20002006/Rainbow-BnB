@@ -104,7 +104,7 @@ export default function BookingForm() {
 
 
 
-    const newBooking = await dispatch(addSpotThunk(booking, id))
+    const newBooking = await dispatch(addBookingThunk(booking, id))
 
 
 
