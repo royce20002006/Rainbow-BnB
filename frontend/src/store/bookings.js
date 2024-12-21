@@ -156,7 +156,7 @@ const initialState = {
     
 };
 
-function spotsReducer(state = initialState, action) {
+function bookingsReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
         // case GET_ALL_SPOTS: {
