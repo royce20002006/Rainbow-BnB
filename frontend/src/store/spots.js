@@ -204,7 +204,7 @@ function spotsReducer(state = initialState, action) {
             return newState
         }
         case UPDATE_SPOT: {
-            newState = { ...state }
+            newState = { ...state } 
             
             const spotId = action.payload.id;
 
