@@ -1,6 +1,6 @@
 import { csrfFetch } from './csrf';
 
-// const GET_ALL_SPOTS = 'spots/getAllSpots';
+const GET_ALL_BOOKINGS = 'bookings/getAllBookings';
 // const GET_USER_SPOTS = 'spots/getUserSpots';
 
 const ADD_BOOKING = 'bookings/add';
