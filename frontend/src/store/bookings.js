@@ -45,22 +45,22 @@ const addBooking = (booking) => ({
 
 
 // thunk
-// export const getSpotsThunk = () => async (dispatch) => {
-//     try {
-//         const res = await csrfFetch('/api/spots');
-//         if (res.ok) {
-//             const data = await res.json();
-//             dispatch(getAllSpots(data))
-//             return data;
+export const getSpotsThunk = (spotId) => async (dispatch) => {
+    try {
+        const res = await csrfFetch(`/api/spots/${spotId}/bookings`);
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(getAllBookings(data))
+            return data;
 
-//         } else {
-//             throw res
-//         }
+        } else {
+            throw res
+        }
 
-//     } catch (error) {
-//         return error;
-//     }
-// }
+    } catch (error) {
+        return error;
+    }
+}
 
 // export const getCurrentUserSpotsThunk = () => async (dispatch) => {
 //     try {
