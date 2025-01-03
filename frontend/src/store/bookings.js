@@ -159,16 +159,16 @@ const initialState = {
 function bookingsReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
-        // case GET_ALL_SPOTS: {
-        //     newState = { ...state }
-        //     newState.allSpots = action.payload.Spots;
+        case GET_ALL_SPOTS: {
+            newState = { ...state }
+            newState.allBookings = action.payload.Bookings;
 
-        //     for (let spot of action.payload.Spots) {
-        //         newState.byId[spot.id] = spot;
-        //     }
+            for (let booking of action.payload.Bookings) {
+                newState.byId[booking.id] = booking;
+            }
 
-        //     return newState;
-        // }
+            return newState;
+        }
 
         // case GET_USER_SPOTS: {
         //     newState = { ...state };
