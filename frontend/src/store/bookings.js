@@ -10,10 +10,10 @@ const ADD_BOOKING = 'bookings/add';
 
 
 // action creator
-// const getAllSpots = (spots) => ({
-//     type: GET_ALL_SPOTS,
-//     payload: spots
-// })
+const getAllBBookings = (bookings) => ({
+    type: GET_ALL_BOOKINGS,
+    payload: bookings
+})
 // const getUserSpots = (spots) => ({
 //     type: GET_USER_SPOTS,
 //     payload: spots
