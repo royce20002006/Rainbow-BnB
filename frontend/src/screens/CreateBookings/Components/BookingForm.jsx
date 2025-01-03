@@ -112,9 +112,6 @@ export default function BookingForm() {
       const data = await newBooking.json();
       setSubmitErrors(data.errors)
 
-    } else {
-      const newBookingId = newBooking.bookingFormatting.id;
-      
     }
   // } else {
 
