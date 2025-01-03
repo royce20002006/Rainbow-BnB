@@ -45,7 +45,7 @@ const addBooking = (booking) => ({
 
 
 // thunk
-export const getSpotsThunk = (spotId) => async (dispatch) => {
+export const getBookingsThunk = (spotId) => async (dispatch) => {
     try {
         const res = await csrfFetch(`/api/spots/${spotId}/bookings`);
         if (res.ok) {
@@ -159,7 +159,7 @@ const initialState = {
 function bookingsReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
-        case GET_ALL_SPOTS: {
+        case GET_ALL_BOOKINGS: {
             newState = { ...state }
             newState.allBookings = action.payload.Bookings;
 
