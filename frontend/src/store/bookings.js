@@ -10,7 +10,7 @@ const ADD_BOOKING = 'bookings/add';
 
 
 // action creator
-const getAllBBookings = (bookings) => ({
+const getAllBookings = (bookings) => ({
     type: GET_ALL_BOOKINGS,
     payload: bookings
 })
@@ -48,8 +48,10 @@ const addBooking = (booking) => ({
 export const getBookingsThunk = (spotId) => async (dispatch) => {
     try {
         const res = await csrfFetch(`/api/spots/${spotId}/bookings`);
+        console.log(res, 'res in thunk')
         if (res.ok) {
             const data = await res.json();
+            console.log(data, 'data in thunk')
             dispatch(getAllBookings(data))
             return data;
 
