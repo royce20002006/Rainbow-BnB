@@ -8,6 +8,7 @@ import { getReviewsThunk } from "../../../../store/reviews";
 import './Spot.css'
 import Reviews from '../Reviews/Reviews';
 import { getSpotsThunk } from "../../../../store/spots";
+import { getBookingsThunk } from "../../../../store/bookings";
 
 
 export default function Spot() {
@@ -16,6 +17,7 @@ export default function Spot() {
   const [isLoaded, setIsLoaded] = useState(false);
   const Navigate = useNavigate();
   const spot = useSelector(state => state.spotState.byId[id])
+  const bookings = useSelector(state => state.bookingsState.allBookings)
 
   
 
@@ -25,9 +27,10 @@ export default function Spot() {
 
   useEffect(() => {
     const getData = async () => {
-     
+      
       await dispatch(getSpotsThunk());
       await dispatch(getReviewsThunk(id));
+      await dispatch(getBookingsThunk(id))
       setIsLoaded(true);
     }
 
