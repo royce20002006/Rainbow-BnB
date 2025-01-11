@@ -1,7 +1,7 @@
 import { csrfFetch } from './csrf';
 
 const GET_ALL_BOOKINGS = 'bookings/getAllBookings';
-// const GET_USER_SPOTS = 'spots/getUserSpots';
+const GET_USER_BOOKINGS = 'spots/getUserBookings';
 
 const ADD_BOOKING = 'bookings/add';
 // const DELETE_SPOT = 'spots/delete';
@@ -154,6 +154,7 @@ export const addBookingThunk = (booking, id) => async (dispatch) => {
 //reducer
 const initialState = {
     allBookings: [],
+    currentUser:[],
     byId: {},
     
 };
