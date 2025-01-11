@@ -173,11 +173,11 @@ function bookingsReducer(state = initialState, action) {
             return newState;
         }
 
-        // case GET_USER_SPOTS: {
-        //     newState = { ...state };
-        //     newState.currentUser = action.payload.Spots;
-        //     return newState;
-        // }
+        case GET_USER_BOOKINGS: {
+            newState = { ...state };
+            newState.currentUser = action.payload.Bookings;
+            return newState;
+        }
         case ADD_BOOKING: {
             newState = { ...state }
             newState.allBookings = [ ...newState.allBookings, action.payload]
