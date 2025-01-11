@@ -1,10 +1,10 @@
 import { csrfFetch } from './csrf';
 
 const GET_ALL_BOOKINGS = 'bookings/getAllBookings';
-const GET_USER_BOOKINGS = 'spots/getUserBookings';
+const GET_USER_BOOKINGS = 'bookings/getUserBookings';
 
 const ADD_BOOKING = 'bookings/add';
-// const DELETE_SPOT = 'spots/delete';
+const DELETE_BOOKING = 'bookings/delete';
 // const UPDATE_SPOT = 'spots/update';
 
 
@@ -26,10 +26,10 @@ const addBooking = (booking) => ({
     payload: booking
 })
 
-// const deleteSpot = (deletedSpot) => ({
-//     type: DELETE_SPOT,
-//     payload: deletedSpot
-// })
+const deleteBooking = (deletedBooking) => ({
+    type: DELETE_BOOKING,
+    payload: deletedBooking
+})
 
 // const updateSpot = (updatedSpot) => ({
 //     type: UPDATE_SPOT,
