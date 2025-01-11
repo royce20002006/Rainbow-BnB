@@ -14,10 +14,10 @@ const getAllBookings = (bookings) => ({
     type: GET_ALL_BOOKINGS,
     payload: bookings
 })
-// const getUserBookinga = (spots) => ({
-//     type: GET_USER_SPOTS,
-//     payload: spots
-// })
+const getUserBookings = (bookings) => ({
+    type: GET_USER_BOOKINGS,
+    payload: bookings
+})
 
 
 
