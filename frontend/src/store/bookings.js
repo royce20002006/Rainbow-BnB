@@ -14,7 +14,7 @@ const getAllBookings = (bookings) => ({
     type: GET_ALL_BOOKINGS,
     payload: bookings
 })
-// const getUserSpots = (spots) => ({
+// const getUserBookinga = (spots) => ({
 //     type: GET_USER_SPOTS,
 //     payload: spots
 // })
@@ -64,22 +64,22 @@ export const getBookingsThunk = (spotId) => async (dispatch) => {
     }
 }
 
-// export const getCurrentUserSpotsThunk = () => async (dispatch) => {
-//     try {
-//         const res = await csrfFetch(`/api/spots/current`);
-//         if (res.ok) {
-//             const data = await res.json();
-//             dispatch(getUserSpots(data))
-//             return data;
+export const getCurrentUserBookingsThunk = () => async (dispatch) => {
+    try {
+        const res = await csrfFetch(`/api/bbookings/current`);
+        if (res.ok) {
+            const data = await res.json();
+            dispatch(getUserBookinga(data))
+            return data;
 
-//         } else {
-//             throw res
-//         }
+        } else {
+            throw res
+        }
 
-//     } catch (error) {
-//         return error;
-//     }
-// }
+    } catch (error) {
+        return error;
+    }
+}
 
 export const addBookingThunk = (booking, id) => async (dispatch) => {
     try {
