@@ -130,24 +130,24 @@ export const addBookingThunk = (booking, id) => async (dispatch) => {
 //     }
 // }
 
-// export const deleteSpotThunk = (spot) => async (dispatch) => {
-//     try {
-//         const options = {
-//             method: 'DELETE',
-//             header: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify(spot)
-//         }
-//         const deletedSpot = await csrfFetch(`/api/spots/${spot.id}`, options)
-//         if (deletedSpot.ok) {
-//             const spotData = await deletedSpot.json();
-//             await dispatch(deleteSpot(spotData));
-//             return spotData;
-//         }
+export const deleteBookingThunk = (booking) => async (dispatch) => {
+    try {
+        const options = {
+            method: 'DELETE',
+            header: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(booking)
+        }
+        const deletedBooking = await csrfFetch(`/api/bookings/${booking.id}`, options)
+        if (deletedBooking.ok) {
+            const bookingData = await deletedBooking.json();
+            await dispatch(deleteBooking(bookingData));
+            return bookingData;
+        }
 
-//     } catch (error) {
-//         return error;
-//     }
-// }
+    } catch (error) {
+        return error;
+    }
+}
 
 
 
@@ -185,25 +185,25 @@ function bookingsReducer(state = initialState, action) {
             return newState;
         }
 
-        // case DELETE_SPOT: {
-        //     newState = { ...state }
-        //     const filteredSpots = newState.allSpots.filter(spot => {
-        //         return spot.id !== action.payload.id
-        //     })
+        case DELETE_SPOT: {
+            newState = { ...state }
+            const filteredBookings = newState.allBookings.filter(bookings => {
+                return booking.id !== action.payload.id
+            })
             
-        //     newState.allSpots = filteredSpots
+            newState.allBookings = filteredBookings
 
-        //     const newById = { ...newState.byId };
-        //     delete newById[action.payload.id];
-        //     newState.byId = newById;
+            const newById = { ...newState.byId };
+            delete newById[action.payload.id];
+            newState.byId = newById;
 
-        //     const filteredUserSpots = newState.currentUser.filter(spot => {
+            const filteredUserBookings = newState.currentUser.filter(booking => {
                 
-        //         return spot.id !== action.payload.id
-        //     })
-        //     newState.currentUser = filteredUserSpots;
-        //     return newState
-        // }
+                return booking.id !== action.payload.id
+            })
+            newState.currentUser = filteredUserBookings;
+            return newState
+        }
         // case UPDATE_SPOT: {
         //     newState = { ...state }
             
