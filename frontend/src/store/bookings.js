@@ -5,7 +5,7 @@ const GET_USER_BOOKINGS = 'bookings/getUserBookings';
 
 const ADD_BOOKING = 'bookings/add';
 const DELETE_BOOKING = 'bookings/delete';
-// const UPDATE_SPOT = 'spots/update';
+const UPDATE_BOOKING = 'bookings/update';
 
 
 
@@ -185,10 +185,10 @@ function bookingsReducer(state = initialState, action) {
             return newState;
         }
 
-        case DELETE_SPOT: {
+        case DELETE_BOOKING: {
             newState = { ...state }
             const filteredBookings = newState.allBookings.filter(bookings => {
-                return booking.id !== action.payload.id
+                return bookings.id !== action.payload.id
             })
             
             newState.allBookings = filteredBookings
