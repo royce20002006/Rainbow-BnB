@@ -202,25 +202,25 @@ function bookingsReducer(state = initialState, action) {
             newState.currentUser = filteredUserBookings;
             return newState
         }
-        // case UPDATE_SPOT: {
-        //     newState = { ...state }
+        case UPDATE_SPOT: {
+            newState = { ...state }
             
-        //     const spotId = action.payload.id;
+            const bookingId = action.payload.id;
 
-        //     const newAllSpots = [];
-        //     for (let i = 0; i < newState.allSpots.length; i++) {
-        //         let currSpot = newState.allSpots[i];
-        //         if (currSpot.id === spotId) {
-        //             newAllSpots.push(action.payload);
-        //         } else {
-        //             newAllSpots.push(currSpot)
-        //         }
-        //     }
+            const newAllBookings = [];
+            for (let i = 0; i < newState.allBookings.length; i++) {
+                let currBooking = newState.allBookings[i];
+                if (currBooking.id === bookingId) {
+                    newAllBookings.push(action.payload);
+                } else {
+                    newAllBookings.push(currBooking)
+                }
+            }
 
-        //     newState.allSpots = newAllSpots;
-        //     newState.byId = { ...newState.byId, [spotId]: action.payload };
-        //     return newState;
-        // }
+            newState.allBookings = newAllBookings;
+            newState.byId = { ...newState.byId, [bookingId]: action.payload };
+            return newState;
+        }
 
 
         default:
