@@ -185,7 +185,7 @@ function bookingsReducer(state = initialState, action) {
             return newState;
         }
 
-        case DELETE_SPOT: {
+        case DELETE_BOOKING: {
             newState = { ...state }
             const filteredBookings = newState.allBookings.filter(bookings => {
                 return booking.id !== action.payload.id
