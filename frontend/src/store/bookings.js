@@ -31,10 +31,10 @@ const deleteBooking = (deletedBooking) => ({
     payload: deletedBooking
 })
 
-// const updateSpot = (updatedSpot) => ({
-//     type: UPDATE_SPOT,
-//     payload: updatedSpot
-// })
+const updateBooking = (updatedBooking) => ({
+    type: UPDATE_BOOKING,
+    payload: updatedBooking
+})
 
 
 
