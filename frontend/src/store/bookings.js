@@ -106,29 +106,27 @@ export const addBookingThunk = (booking, id) => async (dispatch) => {
     }
 }
 
-// export const updateSpotThunk = (spotToAdd, images, id) => async (dispatch) => {
-//     try {
-//         const spotAndImages = {
-//             ...spotToAdd, images: [...images]
-//         }
+export const updateBookingThunk = (booking, id) => async (dispatch) => {
+    try {
+       
 
-//         const options = {
-//             method: 'PUT',
-//             header: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify(spotAndImages)
-//         }
+        const options = {
+            method: 'PUT',
+            header: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(booking)
+        }
 
 
-//         const spot = await csrfFetch(`/api/spots/${id}`, options)
-//         if (spot.ok) {
-//             const spotData = await spot.json();
-//             await dispatch(updateSpot(spotData));
-//             return spotData;
-//         }
-//     } catch (error) {
-//         return error;
-//     }
-// }
+        const booking = await csrfFetch(`/api/bookings/${id}`, options)
+        if (booking.ok) {
+            const bookingData = await booking.json();
+            await dispatch(updateBooking(bookingData));
+            return bookingData;
+        }
+    } catch (error) {
+        return error;
+    }
+}
 
 export const deleteBookingThunk = (booking) => async (dispatch) => {
     try {
