@@ -14,7 +14,7 @@
 }
 
 .createSpotLink {
-    color: blue;
+    color: rgba(0, 0, 255, 0.425);
     font-size: 14pt;
     font-weight: bold;
     cursor: pointer;
