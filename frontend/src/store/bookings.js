@@ -222,7 +222,7 @@ function bookingsReducer(state = initialState, action) {
             return newState;
         }
 
-        // token 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
+       
 
         default:
             return state;
