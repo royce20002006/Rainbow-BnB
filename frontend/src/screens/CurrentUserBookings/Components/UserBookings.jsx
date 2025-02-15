@@ -7,65 +7,65 @@ import { getCurrentUserBookingsThunk } from "../../../store/bookings";
 
 
 export default function CurrentUserBookings() {
-  const navigate= useNavigate();
-  const dispatch = useDispatch();
- 
-  const bookings = useSelector(state => state.bookingsState.currentUser)
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.session.user)
+    const bookings = useSelector(state => state.bookingsState.currentUser)
 
-  const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
-  
 
-  useEffect(() => {
 
-    const getData = async () => {
-      await dispatch(getCurrentUserBookingsThunk());
-      
+    useEffect(() => {
 
-      setIsLoaded(true);
-    }
+        const getData = async () => {
+            await dispatch(getCurrentUserBookingsThunk());
+
+
+            setIsLoaded(true);
+        }
+
+        if (!isLoaded) {
+            getData();
+        }
+
+    }, [dispatch, isLoaded, bookings])
+
+
 
     if (!isLoaded) {
-      getData();
+        setTimeout(() => {
+            return <h1>Loading</h1>
+        }, 1000
+        )
     }
 
-  }, [dispatch, isLoaded, bookings])
+    return (
+        <div className="grid-container">
+            {session ?
+                <div className='bookingsSection'>
+                    {bookings.map((booking, idx) => (
 
- 
+                        <div className="card"  >
 
-  if (!isLoaded) {
-    setTimeout(() => {
-      return <h1>Loading</h1>
-    }, 1000
-    )
-  }
+                            <div className="flex-container">
 
-  return (
-    <div className="grid-container">
+                                <div className="locationAndRating">
+                                    <span className="booking-spot-name">{booking.Spot.name}</span>
+                                    <span className="booking-start-date">{booking.startDate}</span>
+                                    <span className="booking-end-date">{booking.endDate}</span>
+                                    <button>Edit</button>
+                                    <button>Delete</button>
 
-    <div className='bookingsSection'>
-      {bookings.map((booking, idx) => (
-        
-        <div className="card"  >
-         
-            <div className="flex-container">
-            
-            <div className="locationAndRating">
-              <span className="booking-spot-name">{booking.Spot.name}</span>
-              <span className="booking-start-date">{booking.startDate}</span>
-              <span className="booking-end-date">{booking.endDate}</span>
-              <button>Edit</button>
-              <button>Delete</button>
+                                </div>
 
-            </div>
+                            </div>
 
-            <span className="spotPrice spotInfo">${spot.price.toFixed(2)}</span><span> night </span>
+                        </div>
+                    ))}
+                </div>
+                : navigate('/')}
 
-            </div>
-          
         </div>
-      ))}
-    </div>
-    </div>
-  )
+    )
 }
