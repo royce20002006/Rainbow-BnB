@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
-import { getSpotsThunk } from "../../../store/spots";
 import { FaStar } from "react-icons/fa6";
 import './Splash.css'
+import { getCurrentUserBookingsThunk } from "../../../store/bookings";
 
 
 export default function CurrentUserBookings() {
@@ -19,7 +19,7 @@ export default function CurrentUserBookings() {
   useEffect(() => {
 
     const getData = async () => {
-      await dispatch(getSpotsThunk());
+      await dispatch(getCurrentUserBookingsThunk());
       
 
       setIsLoaded(true);
@@ -29,14 +29,9 @@ export default function CurrentUserBookings() {
       getData();
     }
 
-  }, [dispatch, isLoaded])
+  }, [dispatch, isLoaded, bookings])
 
-  const goToSpot = (e,spot) => {
-    
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(`/spots/${spot.id}`)
-  }
+ 
 
   if (!isLoaded) {
     setTimeout(() => {
@@ -48,10 +43,10 @@ export default function CurrentUserBookings() {
   return (
     <div className="grid-container">
 
-    <div className='spotSection'>
-      {spots.map((spot, idx) => (
+    <div className='bookingsSection'>
+      {bookings.map((booking, idx) => (
         
-        <div className="card" onClick={e => goToSpot(e,spot)}key={`${idx}--${spot.id}`} >
+        <div className="card"  >
           <span className="tooltip-text">{spot.name}</span>
             <div className="flex-container">
             <img src={spot.previewImage} />
