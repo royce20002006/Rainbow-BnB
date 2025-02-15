@@ -47,11 +47,13 @@ export default function CurrentUserBookings() {
       {bookings.map((booking, idx) => (
         
         <div className="card"  >
-          <span className="tooltip-text">{spot.name}</span>
+         
             <div className="flex-container">
-            <img src={spot.previewImage} />
+            
             <div className="locationAndRating">
-              <span className="spotLocation spotInfo">{spot.city}, {spot.state} </span>
+              <span className="booking-spot-name">{booking.Spot.name}</span>
+              <span className="booking-start-date">{booking.startDate}</span>
+              <span className="booking-end-date">{booking.endDate}</span>
               <span className="rating"><FaStar className="star" /> {spot.avgStarRating ? spot.avgStarRating.toFixed(1) : 'New'
               }</span>
 
