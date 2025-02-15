@@ -14,13 +14,13 @@
 }
 
 .createSpotLink {
-    color: blue;
+    color: rgba(0, 0, 255, 0.425);
     font-size: 14pt;
     font-weight: bold;
     cursor: pointer;
     
 }
-
+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
 .rightHeader {
     display: flex;
     gap: 1rem;
