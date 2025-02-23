@@ -46,7 +46,7 @@ export default function CurrentUserBookings() {
                 <div className='bookingsSection'>
                     {bookings.map((booking, idx) => (
 
-                        <div className="card"  >
+                        <div className="card-bookings"  >
 
                             <div className="flex-container">
 
