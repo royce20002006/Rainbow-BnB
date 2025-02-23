@@ -48,7 +48,7 @@ export default function CurrentUserBookings() {
 
                         <div className="card-bookings"  >
 
-                            <div className="flex-container">
+                            <div className="flex-container-bookings">
 
                                 <div className="locationAndRating">
                                     <span className="booking-spot-name">{booking.Spot.name}</span>
