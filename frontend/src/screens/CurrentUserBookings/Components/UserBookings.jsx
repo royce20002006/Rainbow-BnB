@@ -54,7 +54,7 @@ export default function CurrentUserBookings() {
                                     <span className="booking-spot-name">{booking.Spot.name}</span>
                                     <span className="booking-start-date">{booking.startDate}</span>
                                     <span className="booking-end-dates">{booking.endDate}</span>
-                                    <button>Edit</button>
+                                    <button className="edit-booking">Edit</button>
                                     <button>Delete</button>
 
                                 </div>
