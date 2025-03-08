@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
-import { FaStar } from "react-icons/fa6";
+
 import './Splash.css'
 import { getCurrentUserBookingsThunk } from "../../../store/bookings";
 
