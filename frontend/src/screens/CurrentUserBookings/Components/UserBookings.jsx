@@ -19,7 +19,7 @@ export default function CurrentUserBookings() {
     useEffect(() => {
 
         const getData = async () => {
-            await dispatch(getCurrentUserBookingsThunk());
+            await dispatch(getCurrentUserBookingsThunk(user));
 
 
             setIsLoaded(true);
