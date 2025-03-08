@@ -4,7 +4,7 @@ import './BookingForm.css'
 
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addSpotThunk, getSpotsThunk, updateSpotThunk } from '../../../store/spots'
+import {  getSpotsThunk, updateSpotThunk } from '../../../store/spots'
 import { addBookingThunk } from '../../../store/bookings';
 import {  useNavigate, useParams } from 'react-router-dom';
 
