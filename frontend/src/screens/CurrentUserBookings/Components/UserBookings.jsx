@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
-import './Splash.css'
+import './UserBookings.css'
 import { getCurrentUserBookingsThunk } from "../../../store/bookings";
 
 
