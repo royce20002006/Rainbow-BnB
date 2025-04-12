@@ -143,7 +143,7 @@ export default function BookingForm() {
 
   return (
     <div className="form">
-      <div className="location">
+      <div>
         <h1 className="heading">Reserve this Spot</h1>
       
         <div className='sectionOne'>
