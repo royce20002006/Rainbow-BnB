@@ -6,9 +6,6 @@
     justify-content: center;
     background-color: white;
 }
-.d{}
-
-.e{}
 
 .onlyShows {
     margin-top: 0;
@@ -112,7 +109,6 @@
     box-shadow: 1px 1px 1px black;
     color: white;
 }
-.c{}
 
 .sectionOne {
     display: flex;
