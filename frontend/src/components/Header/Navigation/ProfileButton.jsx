@@ -70,7 +70,7 @@ function ProfileButton({ user }) {
             
             </div>
             <div classNale='manageSpots cursor'>
-            <li>Manage Bookings<\li></div>
+            <li><div onClick={() => navigate('/bookings/manage')} className='manageSpots cursor'>Manage Bookings</div><\li></div>
             <li className='logout'>
               <button className='button red' onClick={logout}>Log Out</button>
             </li>
