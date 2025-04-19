@@ -10,7 +10,7 @@ import Spot from "./screens/Spot/components/Spot/Spot";
 import SpotForm from "./screens/CreateSpot/components/main/SpotForm";
 import ManageSpots from "./screens/ManageSpots/Components/ManageSpots";
 import BookingForm from "./screens/CreateBookings/Components/BookingForm";
-import CurrentUserBookings from "./screens/CurrentUserBookings/components/CurrentUserBookings";
+import UserBookings from "./screens/CurrentUserBookings/components/UserBookings";
 
 function Layout() {
   const dispatch = useDispatch();
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/bookings/manage',
-        element: <CurrentUserBookings />
+        element: <UserBookings />
       {,
         path: '/spots/:id/bookings/new',
         element: <BookingForm />
