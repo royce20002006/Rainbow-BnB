@@ -53,6 +53,9 @@ const router = createBrowserRouter([
         element: <ManageSpots />
       },
       {
+        path: '/bookings/manage',
+        element: <ManageBookings />
+      {,
         path: '/spots/:id/bookings/new',
         element: <BookingForm />
       },
