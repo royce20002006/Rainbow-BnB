@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
@@ -8,14 +8,16 @@ import { getReviewsThunk } from "../../../../store/reviews";
 import './Spot.css'
 import Reviews from '../Reviews/Reviews';
 import { getSpotsThunk } from "../../../../store/spots";
+import { getBookingsThunk } from "../../../../store/bookings";
 
 
 export default function Spot() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const Navigate = useNavigate();
   const spot = useSelector(state => state.spotState.byId[id])
+  const bookings = useSelector(state => state.bookingsState.allBookings)
 
   
 
@@ -25,9 +27,10 @@ export default function Spot() {
 
   useEffect(() => {
     const getData = async () => {
-     
+      
       await dispatch(getSpotsThunk());
       await dispatch(getReviewsThunk(id));
+      await dispatch(getBookingsThunk(id))
       setIsLoaded(true);
     }
 
@@ -45,7 +48,7 @@ export default function Spot() {
   const reserveSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    alert('Feature coming soon')
+    Navigate(`/spots/${id}/bookings/new`)
   }
 
 
@@ -79,12 +82,12 @@ export default function Spot() {
       </div>
       <div className="ownerAndPriceDiv">
         <div className="description-div">
-          <div className="subheading">Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</div>
+          <div className="subheading">Hosted by: {spot.Owner.firstName} {spot.Owner.lastName}</div>
           <div className="normal">{spot.description}</div>
         </div>
         <div className="reservationDiv">
           <div className="priceAndReview">
-          <div>${spot.price.toFixed(2)} night</div>
+          <div>${spot.price.toFixed(2)} Night</div>
           <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating.toFixed(1) : 'New'}  {spot.numReviews === 0 ? null : spot.numReviews === 1 ?' · ' + spot.numReviews + ' Review' : ' · ' + spot.numReviews + ' Reviews' } </div>
           </div>
 

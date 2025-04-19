@@ -69,6 +69,8 @@ function ProfileButton({ user }) {
             <li> <div onClick={() => navigate('/spots/manage')}>Manage Spots</div></li>
             
             </div>
+            <div classNale='manageSpots cursor'>
+            <li><div onClick={() => navigate('/bookings/manage')} className='manageSpots cursor'>Manage Bookings</div><\li></div>
             <li className='logout'>
               <button className='button red' onClick={logout}>Log Out</button>
             </li>

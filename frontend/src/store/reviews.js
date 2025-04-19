@@ -33,7 +33,6 @@ export const getReviewsThunk = (id) => async (dispatch) => {
         const res = await csrfFetch(`/api/spots/${id}/reviews`);
         if (res.ok) {
             const data = await res.json();
-
             await dispatch(getReviews(data))
             
         } else {

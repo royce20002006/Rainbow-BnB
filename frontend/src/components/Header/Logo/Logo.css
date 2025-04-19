@@ -2,12 +2,12 @@
     
     
     font-weight: bold;
-    color: #FF385c;
+    color: #fb5473;
     
     
 }
 a {
-    font-weight: bold;
+    font-weight: bolder;
     color: #FF385c;
     text-decoration: none;
 }
@@ -16,7 +16,7 @@ a {
     top: .3rem;
     margin-right: .4rem;
     font-size: 19pt;
-    color: blue;
+    color: rgb(42, 42, 248);
     
     
 }

@@ -14,11 +14,12 @@
 
 .manage-button {
     height: 2rem;
-    
+    color: black
 }
 
 .spotInfo {
     font-size: 14pt;
+   color: black;
     
    
 }

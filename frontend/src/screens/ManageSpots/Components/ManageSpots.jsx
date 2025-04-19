@@ -69,7 +69,7 @@ export default function ManageSpots() {
   return (
     <div className='headingAndAddSpot'>
       <h1 className='heading h1Manage'>Manage your Spots</h1>
-      <button  className='red create-spot-button' onClick={() => navigate('/spots/new')}>Create a new Spot</button>
+      <button  className='red create-spot-button' onClick={() => navigate('/spots/new')}>Create a New Spot</button>
       <div className='center-grid'>
 
       <div className='allSpotsContainer'>
@@ -87,7 +87,7 @@ export default function ManageSpots() {
 
             <span className="spotPrice spotInfo">${spot.price}</span><span> night </span>
             <div className='imageButtons'>
-              <button onClick={(e) => updateSpot(e, spot)}  className='red manage-button'>update</button>
+              <button onClick={(e) => updateSpot(e, spot)}  className='red manage-button'>Update</button>
               <div>
 
 

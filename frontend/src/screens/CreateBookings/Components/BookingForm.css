@@ -4,6 +4,7 @@
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
+    background-color: white;
 }
 
 .onlyShows {
@@ -140,6 +141,10 @@
 .lng {
     width: 30rem;
 }
+
+.a {}
+
+.b{}
 
 
 

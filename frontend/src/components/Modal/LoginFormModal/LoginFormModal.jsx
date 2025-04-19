@@ -45,7 +45,7 @@ export default function LoginFormModal() {
             <h1 className="center heading login-heading">Log In</h1>
             <form className='formContainer' onSubmit={handleSubmit}>
                 <div className="inputs">
-            {errors.message && <span className="center error">The provided credentials were invalid.</span>}
+            {errors.message && <span className="center error">provided credentials were invalid.</span>}
                     <input
                         className="login-input colorInput"
                         type="text"

@@ -7,7 +7,7 @@ export default function SpotButton() {
   return (
     <>
     {sessionUser ? (<div className='createSpotLink'>
-        <NavLink to={'/spots/new'} >Create a New Spot</NavLink>
+        <NavLink to={'/spots/new'} >Create New Spot</NavLink>
     </div>) : null}
     </>
   )
