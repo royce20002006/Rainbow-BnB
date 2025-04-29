@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
-import './UserBookings.css'
+
 import { getCurrentUserBookingsThunk } from "../../../store/bookings";
 
 
@@ -29,7 +29,7 @@ export default function CurrentUserBookings() {
             getData();
         }
 
-    }, [dispatch, isLoaded, bookings])
+    }, [dispatch, isLoaded, bookings, user])
 
 
 
@@ -42,13 +42,13 @@ export default function CurrentUserBookings() {
 
     return (
         <div className="grid-container">
-            {session ?
+            {user ?
                 <div className='bookingsSection'>
                     {bookings.map((booking, idx) => (
 
-                        <div className="card-bookings"  >
+                        <div key={idx} className="card-bookings"  >
 
-                            <div className="flex-container-bookings">
+                            <div  className="flex-container-bookings">
 
                                 <div className="bookings">
                                     <span className="booking-spot-name">{booking.Spot.name}</span>

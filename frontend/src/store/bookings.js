@@ -66,10 +66,10 @@ export const getBookingsThunk = (spotId) => async (dispatch) => {
 
 export const getCurrentUserBookingsThunk = () => async (dispatch) => {
     try {
-        const res = await csrfFetch(`/api/bbookings/current`);
+        const res = await csrfFetch(`/api/bookings/current`);
         if (res.ok) {
             const data = await res.json();
-            dispatch(getUserBookinga(data))
+            dispatch(getUserBookings(data))
             return data;
 
         } else {
@@ -202,7 +202,7 @@ function bookingsReducer(state = initialState, action) {
             newState.currentUser = filteredUserBookings;
             return newState
         }
-        case UPDATE_SPOT: {
+        case UPDATE_BOOKING: {
             newState = { ...state }
             
             const bookingId = action.payload.id;
