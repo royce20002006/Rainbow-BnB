@@ -6,15 +6,15 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSpotsThunk } from '../../../../../../store/spots';
 import { addBookingThunk } from '../../../../../../store/bookings';
-import {  useNavigate, useParams } from 'react-router-dom';
 
 
-export default function BookingFormModal() {
+
+export default function BookingFormModal({spot}) {
   const dispatch = useDispatch();
+  const id = spot.id
   
-  const { id } = useParams();
   
-  const spot = useSelector(state => state.spotState.byId[id])
+ 
   const [value, setValue] = useState(true)
   const [errors, setErrors] = useState({});
   const [submitErrors, setSubmitErrors] = useState({})
