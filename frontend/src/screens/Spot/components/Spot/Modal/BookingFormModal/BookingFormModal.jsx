@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import './BookingForm.css'
+// import './BookingForm.css'
 
 
 
 import { useDispatch, useSelector } from 'react-redux';
-import {  getSpotsThunk } from '../../../store/spots'
-import { addBookingThunk } from '../../../store/bookings';
+import { getSpotsThunk } from '../../../../../../store/spots';
+import { addBookingThunk } from '../../../../../../store/bookings';
 import {  useNavigate, useParams } from 'react-router-dom';
 
 
-export default function BookingForm() {
+export default function BookingFormModal() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  
   const { id } = useParams();
   
   const spot = useSelector(state => state.spotState.byId[id])
@@ -206,46 +206,4 @@ export default function BookingForm() {
 
     </div>
   )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

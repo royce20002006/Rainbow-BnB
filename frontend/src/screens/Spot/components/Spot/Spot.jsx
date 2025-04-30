@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
+import OpenModalButton from "./Modal/OpenModalButton";
 
 import { FaStar } from "react-icons/fa";
 import { getReviewsThunk } from "../../../../store/reviews";
@@ -9,15 +10,17 @@ import './Spot.css'
 import Reviews from '../Reviews/Reviews';
 import { getSpotsThunk } from "../../../../store/spots";
 import { getBookingsThunk } from "../../../../store/bookings";
+import BookingFormModal from "./Modal/BookingFormModal/BookingFormModal";
 
 
 export default function Spot() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
-  const Navigate = useNavigate();
+  
   const spot = useSelector(state => state.spotState.byId[id])
-  const bookings = useSelector(state => state.bookingsState.allBookings)
+
+  const user = useSelector(state => state.session.user)
 
   
 
@@ -45,17 +48,13 @@ export default function Spot() {
 
   }
 
-  const reserveSubmit = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    Navigate(`/spots/${id}/bookings/new`)
-  }
+  
 
 
 
 
   return (
-    // <h1>yea idk</h1>
+    
     <div className="spotDetails">
       <h1 className="heading">{spot.name}</h1>
       <div className="subheading">{spot.city}, {spot.state}, {spot.country}</div>
@@ -90,8 +89,14 @@ export default function Spot() {
           <div>${spot.price.toFixed(2)} Night</div>
           <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating.toFixed(1) : 'New'}  {spot.numReviews === 0 ? null : spot.numReviews === 1 ?' · ' + spot.numReviews + ' Review' : ' · ' + spot.numReviews + ' Reviews' } </div>
           </div>
-
-          <button id="button" className="red reserve" onClick={(e) => reserveSubmit(e)}>Reserve</button>
+          {user && spot.ownerId !== user.id ? <OpenModalButton 
+            buttonText='Reserve'
+            modalComponent={<BookingFormModal spot={spot} />}
+            preventDefault
+            stopPropagation
+          /> : ''}
+          
+          
         </div>
         <div>
         </div>

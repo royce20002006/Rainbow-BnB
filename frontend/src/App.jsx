@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import * as sessionActions from './store/session';
-// import Navigation from "./components/Navigation/Navigation";
+
 
 import Header from "./components/Header/Header";
 import Splash from "./screens/Splash/components/Splash";
 import Spot from "./screens/Spot/components/Spot/Spot";
 import SpotForm from "./screens/CreateSpot/components/main/SpotForm";
 import ManageSpots from "./screens/ManageSpots/Components/ManageSpots";
-import BookingForm from "./screens/CreateBookings/Components/BookingForm";
+
 import CurrentUserBookings from "./screens/CurrentUserBookings/Components/UserBookings";
 
 function Layout() {
@@ -52,10 +52,6 @@ const router = createBrowserRouter([
       {
         path: '/spots/manage',
         element: <ManageSpots />
-      },
-      {
-        path: '/bookings/new',
-        element: <BookingForm />
       },
       {
         path: '/bookings/manage',
