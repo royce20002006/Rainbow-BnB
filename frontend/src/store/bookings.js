@@ -96,7 +96,7 @@ export const addBookingThunk = (booking, id) => async (dispatch) => {
 
 
         if (newBooking.ok) {
-            const bookingData = await spot.json();
+            const bookingData = await newBooking.json();
             await dispatch(addBooking(bookingData));
             return bookingData;
         }
