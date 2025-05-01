@@ -17,10 +17,11 @@ function Layout() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => {
-      setIsLoaded(true)
-    });
+    fetch("/api/csrf/restore", { credentials: "include" })
+      .then(() => dispatch(sessionActions.restoreUser()))
+      .then(() => setIsLoaded(true));
   }, [dispatch]);
+  
   return (
     <>
       <Header isLoaded={isLoaded} />
