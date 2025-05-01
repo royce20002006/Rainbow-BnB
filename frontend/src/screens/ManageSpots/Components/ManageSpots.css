@@ -1,11 +1,10 @@
 .allSpotsContainer{
-   display: grid;
-   grid-template-columns: repeat(auto-fit, minmax(30rem, 1rem));
-    margin: 0 1.5rem;
-    column-gap: 2rem;
-    row-gap: 8rem;
-   
-   
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, auto));
+    justify-content: start;
+    gap: 5rem 2rem;
+    width: 100%;
+    max-width: 1600px;
     padding: 20px 5px;
     
 }
@@ -45,15 +44,16 @@
 }
 
 .card {
-    width: 30rem;
-    height: 30rem;
+    cursor: pointer;
+  width: 100%; /* take full width of grid cell */
+  max-width: 30rem; /* limit the max size */
 }
 
 .allSpotsContainer img {
-    width: 30rem;
-    height: 30rem;
-    border-radius: 3%;
-    object-fit: cover;
+    width: 100%;
+  height: 30rem;
+  border-radius: 3%;
+  object-fit: cover
 }
 
 .locationAndRating {

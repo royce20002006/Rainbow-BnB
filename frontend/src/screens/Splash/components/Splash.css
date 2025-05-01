@@ -1,17 +1,12 @@
 .spotSection {
-  padding: 20px 5px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(max(30rem, 100%/5), 5rem));
-  margin: 0 1.5rem;
-  width: 95%;
-  column-gap: 2rem;
-  row-gap: 5rem;
-  margin-left: auto;
-  margin-right: auto;
-
-
-
-
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  justify-content: center;
+  gap: 5rem 2rem;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px 5px;
 }
 
 .grid-container{
@@ -27,8 +22,9 @@
 
 .card {
   cursor: pointer;
-  width: 30rem;
-
+  width: 100%; /* take full width of grid cell */
+  max-width: 30rem; /* limit the max size */
+  margin: 0 auto; /* center the card within the cell */
 }
 
 .spotInfo {
@@ -37,7 +33,7 @@
 }
 
 .spotSection img {
-  width: 30rem;
+  width: 100%;
   height: 30rem;
   border-radius: 3%;
   object-fit: cover;
