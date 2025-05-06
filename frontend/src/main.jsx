@@ -27,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
      <APIProvider
-      apiKey="AIzaSyD9hXckDV5TBSd-CEeXq1jYOcmuXGX2wcw"
+      apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
       libraries={['places']} // optional but recommended for full feature support
     >
     <ModalProvider>
