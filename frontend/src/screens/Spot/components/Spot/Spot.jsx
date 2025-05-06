@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Map, Marker } from "@vis.gl/react-google-maps";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom"
 import OpenModalButton from "./Modal/OpenModalButton";
@@ -11,6 +12,7 @@ import Reviews from '../Reviews/Reviews';
 import { getSpotsThunk } from "../../../../store/spots";
 import { getBookingsThunk } from "../../../../store/bookings";
 import BookingFormModal from "./Modal/BookingFormModal/BookingFormModal";
+
 
 
 export default function Spot() {
@@ -74,11 +76,11 @@ export default function Spot() {
         <img className="top"  src={isLoaded && spot.SpotImages[3] ? spot.SpotImages[3].url : null} />
         <img  className="bottom" src={isLoaded && spot.SpotImages[4] ? spot.SpotImages[4].url : null} />
         </div>
-       
 
         
 
       </div>
+       
       <div className="ownerAndPriceDiv">
         <div className="description-div">
           <div className="subheading">Hosted by: {spot.Owner.firstName} {spot.Owner.lastName}</div>
@@ -89,18 +91,29 @@ export default function Spot() {
           <div>${spot.price.toFixed(2)} Night</div>
           <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating.toFixed(1) : 'New'}  {spot.numReviews === 0 ? null : spot.numReviews === 1 ?' · ' + spot.numReviews + ' Review' : ' · ' + spot.numReviews + ' Reviews' } </div>
           </div>
-          {user && spot.ownerId !== user.id ? <OpenModalButton 
-            buttonText='Reserve'
-            modalComponent={<BookingFormModal spot={spot} />}
-            preventDefault
-            stopPropagation
-          /> : ''}
+            {user && spot.ownerId !== user.id ? <OpenModalButton 
+              buttonText='Reserve'
+              modalComponent={<BookingFormModal spot={spot} />}
+              preventDefault
+              stopPropagation
+            /> : ''}
+          <div className="map-container">
+        
+        <Map
+          center={{ lat: spot.lat, lng: spot.lng }}
+          
+          zoom={15}
+        >
+          <Marker position={{lat: spot.lat, lng: spot.lng}}/>
+        </Map>
+       </div>
           
           
         </div>
         <div>
         </div>
       </div>
+      
       <Reviews spot={spot}/>
 
 

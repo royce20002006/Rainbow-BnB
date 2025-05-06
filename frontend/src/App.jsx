@@ -4,6 +4,12 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import * as sessionActions from './store/session';
 
 
+
+
+// Remove <APIProvider> wrapper entirely in App.jsx
+
+
+
 import Header from "./components/Header/Header";
 import Splash from "./screens/Splash/components/Splash";
 import Spot from "./screens/Spot/components/Spot/Spot";
@@ -70,10 +76,14 @@ const router = createBrowserRouter([
 
 ]);
 
+
 function App() {
   return (
   
-  <RouterProvider router={router} />
+   
+      <RouterProvider router={router} />
+    
+
 
   )
 }
