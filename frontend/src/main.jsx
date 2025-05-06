@@ -7,6 +7,7 @@ import configureStore from './store';
 import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from './store/session';
 import { ModalProvider, Modal } from './context/Modal';
+import { APIProvider } from '@vis.gl/react-google-maps';
 
 
 const store = configureStore();
@@ -25,11 +26,16 @@ if (process.env.NODE_ENV !== 'production') {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+     <APIProvider
+      apiKey="AIzaSyD9hXckDV5TBSd-CEeXq1jYOcmuXGX2wcw"
+      libraries={['places']} // optional but recommended for full feature support
+    >
     <ModalProvider>
     <Provider store={store}>
       <App />
       <Modal />
     </Provider>
     </ModalProvider>
+    </APIProvider>
   </React.StrictMode>
 );
