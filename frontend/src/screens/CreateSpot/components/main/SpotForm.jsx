@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
 import './SpotForm.css'
-
-
-
 import { useDispatch, useSelector } from 'react-redux';
 import { addSpotThunk, getSpotsThunk, updateSpotThunk } from '../../../../store/spots';
 import {  useNavigate, useParams } from 'react-router-dom';
@@ -51,23 +48,63 @@ export default function SpotForm() {
     })
   }
 
-
-
-
-
+  const handleImageUpload = async (event, imageType) => {
+    const file = event.target.files[0];
   
-
+    if (file) {
+      // Store old image's public_id if it exists
+      const oldImagePublicId = spotForm[imageType]?.public_id;
+  
+      // Prepare the form data for Cloudinary upload
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "your_upload_preset");
+  
+      try {
+        // Upload the new image to Cloudinary
+        const res = await fetch("https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", {
+          method: "POST",
+          body: formData,
+        });
+  
+        const data = await res.json();
+  
+        if (data.secure_url) {
+          // If there is an old image, delete it from Cloudinary
+          if (oldImagePublicId) {
+            // Call Cloudinary's API to delete the old image using the public_id
+            await fetch(`https://api.cloudinary.com/v1_1/your_cloud_name/image/destroy`, {
+              method: "POST",
+              body: JSON.stringify({
+                public_id: oldImagePublicId, // public_id of the old image
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          }
+  
+          // Update the form state with the new image URL and public_id
+          setSpotForm({
+            ...spotForm,
+            [imageType]: {
+              url: data.secure_url,
+              public_id: data.public_id, // store the public_id for deletion later
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
 
   useEffect(() => {
     const getData = async () => {
-
-      await dispatch(getSpotsThunk());
-      
-        
-        setIsLoaded(true);
+      await dispatch(getSpotsThunk()); 
+      setIsLoaded(true);
       }
       if (spot) {
-
         updateForm(spot.country, 'country')
         updateForm(spot.address, 'address')
         updateForm(spot.city, 'city')
@@ -82,11 +119,7 @@ export default function SpotForm() {
         updateForm(`${spot.SpotImages[2].url}`, 'imageTwo');
         updateForm(`${spot.SpotImages[3].url}`, 'imageThree');
         updateForm(`${spot.SpotImages[4].url}`, 'imageFour')
-        
-
-      }
-      
-      
+      }  
       
       if (!isLoaded && id) {
         getData();
@@ -95,17 +128,8 @@ export default function SpotForm() {
 
   }, [dispatch, isLoaded, id, spot ])
 
-
-
-
-
-
-
   useEffect(() => {
     const error = {};
-
-
-
 
     if (!spotForm.country.trim().length) {
       error.country = 'Country is required';
@@ -127,14 +151,9 @@ export default function SpotForm() {
       error.lat = 'Latitude is required';
     }
 
-
-
     if (!spotForm.lng.trim().length) {
       error.lng = 'Longitude is required';
     }
-
-
-
 
     if (spotForm.description.trim().length < 30) {
       error.description = 'Description needs a minimum of 30 characters';
@@ -216,9 +235,6 @@ export default function SpotForm() {
     { url: spotForm.imageFour || 'https://st4.depositphotos.com/14953852/24787/v/380/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg', preview: false },
     ]
     const spot = { country: spotForm.country, address: spotForm.address, state: spotForm.state, city: spotForm.city, lat: spotForm.lat, lng: spotForm.lng, description: spotForm.description, name: spotForm.name, price: spotForm.price, previewImage: spotForm.previewImage, imageOne: spotForm.imageOne, imageTwo: spotForm.imageTwo, imageThree: spotForm.imageThree, imageFour: spotForm.imageFour, buttonClicked }
-
-
-
 
     const newSpot = await dispatch(addSpotThunk(spot, images))
 
@@ -413,11 +429,10 @@ export default function SpotForm() {
             <div>
               <input
                 className='colorInput longInput'
-                type="url"
-
-                placeholder='Preview Image URL'
+                type="file"
+                accept="image/*"
                 value={spotForm.previewImage}
-                onChange={id ? null : e => updateForm(e.target.value, 'previewImage')}
+                onChange={id ? null : e => handleImageUpload(e, 'previewImage')}
               />
               <div className='error'>{buttonClicked && errors.preview && errors.preview || buttonClicked && errors.image && errors.image || buttonClicked && submitErrors.preview && submitErrors.preview || buttonClicked && submitErrors.image && submitErrors.image}</div>
 
@@ -425,11 +440,10 @@ export default function SpotForm() {
             <div>
               <input
                 className='colorInput longInput'
-                type="url"
-
-                placeholder='Image URL'
+                type="file"
+                accept='image/*'
                 value={spotForm.imageOne}
-                onChange={id ? null : e => updateForm(e.target.value, 'imageOne')}
+                onChange={id ? null :e => handleImageUpload(e, 'imageOne')}
               />
               <div className='error'>{buttonClicked && errors.imageOne && errors.imageOne || buttonClicked && submitErrors.imageOne && submitErrors.imageOne}</div>
 
@@ -437,11 +451,10 @@ export default function SpotForm() {
             <div>
               <input
                 className='colorInput longInput'
-                type="url"
-
-                placeholder='Image URL'
+                type="file"
+                accept='image/*'
                 value={spotForm.imageTwo}
-                onChange={id ? null : e => updateForm(e.target.value, 'imageTwo')}
+                onChange={id ? null : e => handleImageUpload(e, 'imageTwo')}
               />
               <div className='error'>{buttonClicked && errors.imageTwo && errors.imageTwo || buttonClicked && submitErrors.imageTwo && submitErrors.imageTwo}</div>
 
@@ -449,11 +462,10 @@ export default function SpotForm() {
             <div>
               <input
                 className='colorInput longInput'
-                type="url"
-
-                placeholder='Image URL'
+                type="file"
+                accept='image/*'
                 value={spotForm.imageThree}
-                onChange={id ? null : e => updateForm(e.target.value, 'imageThree')}
+                onChange={id ? null : e => handleImageUpload(e, 'imageThree')}
               />
               <div className='error'>{buttonClicked && errors.imageThree && errors.imageThree || buttonClicked && submitErrors.imageThree && submitErrors.imageThree}</div>
 
@@ -461,11 +473,10 @@ export default function SpotForm() {
             <div>
               <input
                 className='colorInput longInput'
-                type="url"
-
-                placeholder='Image URL'
+                type="file"
+                accept='image/*'
                 value={spotForm.imageFour}
-                onChange={id ? null : e => updateForm(e.target.value, 'imageFour')}
+                onChange={id ? null : e => handleImageUpload(e, 'imageFour')}
               />
               <div className='error'>{buttonClicked && errors.imageFour && errors.imageFour || buttonClicked && submitErrors.imageFour && submitErrors.imageFour}</div>
             </div>
