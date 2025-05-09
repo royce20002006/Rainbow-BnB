@@ -12,36 +12,36 @@ module.exports = {
     try {
       await SpotImage.bulkCreate([
         {
-          url: 'https://i.pinimg.com/originals/22/68/f3/2268f3afb704a4d19c287a6595b74eb8.jpg',
-          cloudinaryPublicId: '',
+          url: 'https://res.cloudinary.com/dak84cj58/image/upload/v1746771132/cottage-home-brick-gate-shrubbery-7e117ecd-f5e2829db0d5485a8f092c274e310fa0_owlusl.jpg',
+          cloudinaryPublicId: 'cottage-home-brick-gate-shrubbery-7e117ecd-f5e2829db0d5485a8f092c274e310fa0_owlusl',
           spotId: 2,
           preview: true
 
         },
         {
-          url: 'https://i.pinimg.com/originals/22/68/f3/2268f3afb704a4d19c287a6595b74eb8.jpg',
-          cloudinaryPublicId: '',
+          url: 'https://res.cloudinary.com/dak84cj58/image/upload/v1746771382/img-01-kitchen-scaled.jpg.optimal_vhwuzs.jpg',
+          cloudinaryPublicId: 'img-01-kitchen-scaled.jpg.optimal_vhwuzs',
           spotId: 2,
           preview: false
 
         },
         {
-          url: 'https://i.pinimg.com/originals/22/68/f3/2268f3afb704a4d19c287a6595b74eb8.jpg',
-          cloudinaryPublicId: '',
+          url: 'https://res.cloudinary.com/dak84cj58/image/upload/v1746771485/white-living-room-windows_zbkdhz.jpg',
+          cloudinaryPublicId: 'white-living-room-windows_zbkdhz',
           spotId: 2,
           preview: false
 
         },
         {
-          url: 'https://i.pinimg.com/originals/22/68/f3/2268f3afb704a4d19c287a6595b74eb8.jpg',
-          cloudinaryPublicId: '',
+          url: 'https://res.cloudinary.com/dak84cj58/image/upload/v1746771602/second-livinb-room_kze8wx.jpg',
+          cloudinaryPublicId: 'second-livinb-room_kze8wx',
           spotId: 2,
           preview: false
 
         },
         {
-          url: 'https://farm2.staticflickr.com/1568/26605717921_3feb7c642c_h.jpg',
-          cloudinaryPublicId: '',
+          url: 'https://res.cloudinary.com/dak84cj58/image/upload/v1746771707/Cropped_Cottage_bedrooms_1_new_nhihp3.jpg',
+          cloudinaryPublicId: 'Cropped_Cottage_bedrooms_1_new_nhihp3',
           spotId: 2,
           preview: false
 
