@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    cloudinaryPublicId: {
+      type: DataTypes.STRING,
+      allowNull: false
+  },
     preview: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

@@ -4,7 +4,7 @@ const { requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage, Booking
 } = require('../../db/models');
 const { upload } = require('../../config/cloudinary')
-
+const {cloudinary} = require('cloudinary').v2
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -381,10 +381,16 @@ router.post('/', requireAuth, upload.array('images', 4), validateNewSpot, async 
             });
             if (newSpot) {
 
-                const imageUrls = req.files.map(file => ({
-                    url: file.path, // Cloudinary gives the hosted URL as 'path'
-                    spotId: newSpot.id,
-                    preview: false // or true for the first one if needed
+                const imageUrls = await Promise.all(req.files.map(async (file) => {
+                    const {secure_url, public_id } = await cloudinary.uploader.upload(file.path);
+
+                    return{
+                        url: file.path, // Cloudinary gives the hosted URL as 'path'
+                        cloudinaryPublicId: public_id,
+                        spotId: newSpot.id,
+                        preview: false // or true for the first one if needed
+
+                    }
                 }));
         
                 // Example: make the first image the preview
