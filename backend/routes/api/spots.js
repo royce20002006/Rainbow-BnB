@@ -3,7 +3,8 @@ const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User, Review, SpotImage, Booking
 } = require('../../db/models');
-
+const { upload } = require('../../config/cloudinary')
+const {cloudinary} = require('cloudinary').v2
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -366,20 +367,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
 });
 
 // create a new spot
-router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
+router.post('/', requireAuth, upload.array('images', 4), validateNewSpot, async (req, res, next) => {
 
     try {
-        const { address, city, state, country, lat, lng, name, description, price, images } = req.body;
-        // const {images} = req.body;
+        const { address, city, state, country, lat, lng, name, description, price } = req.body;
         const { user } = req;
 
-
-
-
-
-
         if (user) {
-
 
             const newSpot = await Spot.create({
                 ownerId: user.id, address, city,
@@ -387,18 +381,23 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
             });
             if (newSpot) {
 
+                const imageUrls = await Promise.all(req.files.map(async (file) => {
+                    const {secure_url, public_id } = await cloudinary.uploader.upload(file.path);
 
-                for (let image of images) {
-                    image.spotId = newSpot.id
-                    
-                }
+                    return{
+                        url: file.path, // Cloudinary gives the hosted URL as 'path'
+                        cloudinaryPublicId: public_id,
+                        spotId: newSpot.id,
+                        preview: false // or true for the first one if needed
+
+                    }
+                }));
+        
+                // Example: make the first image the preview
+                if (imageUrls.length > 0) imageUrls[0].preview = true;
 
 
-
-
-
-
-                const newImages = await SpotImage.bulkCreate(images)
+                const newImages = await SpotImage.bulkCreate(imageUrls)
 
 
                 let spotFormatting = {
@@ -426,19 +425,8 @@ router.post('/', requireAuth, validateNewSpot, async (req, res, next) => {
                 };
 
 
-
-
-
-
-
-
                 return res.status(201).json({ spotFormatting });
             }
-
-
-
-
-
 
         };
 

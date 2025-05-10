@@ -24,6 +24,10 @@ module.exports = {
         references: { model: 'Spots' },
         onDelete: 'cascade'
       },
+      cloudinaryPublicId: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       preview: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
