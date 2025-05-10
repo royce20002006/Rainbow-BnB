@@ -25,7 +25,7 @@ module.exports = {
         onDelete: 'cascade'
       },
       cloudinaryPublicId: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false
       },
       preview: {
