@@ -58,11 +58,11 @@ export default function SpotForm() {
       // Prepare the form data for Cloudinary upload
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "your_upload_preset");
+      formData.append("upload_preset", "Rainbowbnb");
   
       try {
         // Upload the new image to Cloudinary
-        const res = await fetch("https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", {
+        const res = await fetch("https://api.cloudinary.com/v1_1/dak84cj58/image/upload", {
           method: "POST",
           body: formData,
         });
@@ -73,7 +73,7 @@ export default function SpotForm() {
           // If there is an old image, delete it from Cloudinary
           if (oldImagePublicId) {
             // Call Cloudinary's API to delete the old image using the public_id
-            await fetch(`https://api.cloudinary.com/v1_1/your_cloud_name/image/destroy`, {
+            await fetch(`https://api.cloudinary.com/v1_1/dak84cj58/image/destroy`, {
               method: "POST",
               body: JSON.stringify({
                 public_id: oldImagePublicId, // public_id of the old image
