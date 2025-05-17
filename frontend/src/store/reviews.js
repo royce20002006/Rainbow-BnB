@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf';
 
 
 const GET_ALL_REVIEWS = 'reviews/getReviews';
+const CURRENT_USER_REVIEWS = 'reviews/current';
 const CREATE_REVIEW = 'reviews/new';
 const DELETE_REVIEW = 'reviews/delete';
 
@@ -10,6 +11,11 @@ const DELETE_REVIEW = 'reviews/delete';
 // action creator
 const getReviews = (reviews) => ({
     type: GET_ALL_REVIEWS,
+    payload: reviews
+})
+
+const getCurrentUserReviews = (reviews) => ({
+    type: CURRENT_USER_REVIEWS,
     payload: reviews
 })
 
@@ -27,6 +33,7 @@ const deleteReview = (review) => ({
 
 
 
+
 // thunk
 export const getReviewsThunk = (id) => async (dispatch) => {
     try {
@@ -34,6 +41,21 @@ export const getReviewsThunk = (id) => async (dispatch) => {
         if (res.ok) {
             const data = await res.json();
             await dispatch(getReviews(data))
+            
+        } else {
+            throw res
+        }
+
+    } catch (error) {
+        return error;
+    }
+}
+export const getCurrentUserReviewsThunk = () => async (dispatch) => {
+    try {
+        const res = await csrfFetch(`/api/reviews/current`);
+        if (res.ok) {
+            const data = await res.json();
+            await dispatch(getCurrentUserReviews(data))
             
         } else {
             throw res
@@ -107,6 +129,11 @@ function ReviewsReducer(state = initialState, action) {
                 newState.byId[review.id] = review;
             }
 
+            return newState;
+        }
+        case CURRENT_USER_REVIEWS: {
+            newState = { ...state };
+            newState.currentUser = action.payload.Reviews;
             return newState;
         }
         case CREATE_REVIEW: {
