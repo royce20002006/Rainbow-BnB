@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
 
 
-import { getCurrentUserBookingsThunk } from "../../../store/bookings";
+import { getCurrentUserReviewsThunk } from "../../../store/reviews";
 
 
 export default function ManageReviews() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(state => state.session.user)
-    // const reviews = useSelector(state => state.reviewsState.currentUser)
+    const reviews = useSelector(state => state.reviewsState.currentUser)
 
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -19,7 +19,7 @@ export default function ManageReviews() {
     useEffect(() => {
 
         const getData = async () => {
-            // await dispatch(getCurrentUser(user));
+            await dispatch(getCurrentUserReviewsThunk());
 
 
             setIsLoaded(true);
