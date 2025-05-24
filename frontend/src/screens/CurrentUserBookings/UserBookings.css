@@ -19,6 +19,7 @@
 .bookingsSection {
  border: 1px solid black;
  justify-content: space-between;
+ gap: 1rem;
 }
 
 .card-bookings {
