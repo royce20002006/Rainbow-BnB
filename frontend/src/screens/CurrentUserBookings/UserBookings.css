@@ -20,6 +20,7 @@
  border: 1px solid black;
  justify-content: space-between;
  gap: 1rem;
+ margin: auto;
 }
 
 .card-bookings {
