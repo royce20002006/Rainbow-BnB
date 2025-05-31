@@ -13,6 +13,7 @@
 
 .booking-end-date {
     border: 1px solid black;
+    color: black;
 
 }
 
@@ -25,6 +26,7 @@
 
 .card-bookings {
  background-color: aliceblue;
+ border: 1px solid red;
 }
 
 
