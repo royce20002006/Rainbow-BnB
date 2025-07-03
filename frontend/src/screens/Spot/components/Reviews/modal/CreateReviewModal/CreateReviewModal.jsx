@@ -15,7 +15,7 @@ export default function CreateReviewModal({ id }) {
   const [description, setDescription] = useState(``)
   const [rating, setRating] = useState(null);
   const [hoverVal, setHoverVal] = useState(null);
-  const [image, setImage] = useState({})
+  // const [image, setImage] = useState({})
 
   const handleMouseOverStar = value => {
     setHoverVal(value)
@@ -29,53 +29,53 @@ export default function CreateReviewModal({ id }) {
     setRating(value)
   };
 
-  const handleImageUpload = async (event, imageType) => {
-    const file = event.target.files[0];
+  // const handleImageUpload = async (event, imageType) => {
+  //   const file = event.target.files[0];
 
-    if (file) {
-      // Store old image's public_id if it exists
-      const oldImagePublicId = image[imageType]?.public_id;
+  //   if (file) {
+  //     // Store old image's public_id if it exists
+  //     const oldImagePublicId = image[imageType]?.public_id;
 
-      // Prepare the form data for Cloudinary upload
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", "your_upload_preset");
+  //     // Prepare the form data for Cloudinary upload
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     formData.append("upload_preset", "your_upload_preset");
 
-      try {
-        // Upload the new image to Cloudinary
-        const res = await fetch("https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", {
-          method: "POST",
-          body: formData,
-        });
+  //     try {
+  //       // Upload the new image to Cloudinary
+  //       const res = await fetch("https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", {
+  //         method: "POST",
+  //         body: formData,
+  //       });
 
-        const data = await res.json();
+  //       const data = await res.json();
 
-        if (data.secure_url) {
-          // If there is an old image, delete it from Cloudinary
-          if (oldImagePublicId) {
-            // Call Cloudinary's API to delete the old image using the public_id
-            await fetch(`https://api.cloudinary.com/v1_1/your_cloud_name/image/destroy`, {
-              method: "POST",
-              body: JSON.stringify({
-                public_id: oldImagePublicId, // public_id of the old image
-              }),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-          }
+  //       if (data.secure_url) {
+  //         // If there is an old image, delete it from Cloudinary
+  //         if (oldImagePublicId) {
+  //           // Call Cloudinary's API to delete the old image using the public_id
+  //           await fetch(`https://api.cloudinary.com/v1_1/your_cloud_name/image/destroy`, {
+  //             method: "POST",
+  //             body: JSON.stringify({
+  //               public_id: oldImagePublicId, // public_id of the old image
+  //             }),
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //           });
+  //         }
 
-          // Update the form state with the new image URL and public_id
-          setImage({
-            url: data.secure_url,
-            public_id: data.public_id, // store the public_id for deletion later
-          });
-        }
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
-    }
-  };
+  //         // Update the form state with the new image URL and public_id
+  //         setImage({
+  //           url: data.secure_url,
+  //           public_id: data.public_id, // store the public_id for deletion later
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error uploading image:", error);
+  //     }
+  //   }
+  // };
 
 
 

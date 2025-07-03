@@ -29,7 +29,7 @@ export default function ManageReviews() {
             getData();
         }
 
-    }, [dispatch, isLoaded, bookings, user])
+    }, [dispatch, isLoaded, user])
 
 
 
