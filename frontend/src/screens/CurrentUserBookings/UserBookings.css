@@ -11,19 +11,36 @@
     color: black;
 
 }
-
+.bookingContainer {
+   
+}
 
 .bookingsSection {
- border: 1px solid black;
- justify-content: space-between;
- gap: 1rem;
- margin: auto;
+    
+    width: 14rem;
+    
+ 
+ 
+ 
+ margin-top: 1rem;
+ padding: 10px
 }
 
 .card-bookings {
- background-color: aliceblue;
- border: 1px solid red;
 }
+
+.bookings {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.bookingButton{
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
 
 
 

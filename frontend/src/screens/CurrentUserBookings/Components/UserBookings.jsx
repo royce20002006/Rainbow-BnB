@@ -1,3 +1,4 @@
+import '../UserBookings.css'
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
@@ -41,7 +42,7 @@ export default function CurrentUserBookings() {
     }
 
     return (
-        <div className="grid-container">
+        <div className="bookingContainer">
             {user ?
                 <div className='bookingsSection'>
                     {bookings.map((booking, idx) => (
@@ -52,10 +53,13 @@ export default function CurrentUserBookings() {
 
                                 <div className="bookings">
                                     <span className="booking-spot-name">{booking.Spot.name}</span>
-                                    <span className="booking-start-date">{booking.startDate}</span>
-                                    <span className="booking-end-dates">{booking.endDate}</span>
-                                    <button className="edit-booking">Edit</button>
-                                    <button className="red">Delete</button>
+                                    <span className="booking-start-date">{`Booking Start Date: ${booking.startDate}`}</span>
+                                    <span className="booking-end-dates">{`Booking End Date: ${booking.endDate}`}</span>
+                                    <div className='bookingButton'>
+                                    <button className="red manage-button '">Edit</button>
+                                    <button className="red manage-button">Delete</button>
+
+                                    </div>
 
                                 </div>
 
