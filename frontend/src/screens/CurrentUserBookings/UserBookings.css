@@ -27,12 +27,21 @@
 }
 
 .card-bookings {
+
 }
 
 .bookings {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    border: 1px solid red;
+    border-radius: 5%;
+    padding: 1rem;
+    
+}
+
+.bookings:hover {
+    box-shadow: 2px 2px 5px black;
 }
 
 .bookingButton{
