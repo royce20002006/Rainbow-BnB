@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-// import './BookingForm.css'
+import '../BookingFormModal/BookingFormModal.css'
 
 
 
@@ -193,9 +193,9 @@ export default function BookingFormModal({spot}) {
           onFocus={() => setButtonClicked(true)}
             onClick={(e) => submit(e)}
             disabled={value}
-            className='red'
+            className='red center-button'
             
-          >{id ? 'Update Booking' :'Create Booking'}</button>
+          >{'Create Booking'}</button>
 
          
         </div>
