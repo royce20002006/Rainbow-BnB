@@ -30,6 +30,15 @@
 
 }
 
+.bookingImg {
+    border: 1px solid red;
+    border-radius: 5%;
+}
+.bookingImg:hover {
+    box-shadow: 2px 2px 5px black;
+    cursor: pointer;
+}
+
 .bookings {
     display: flex;
     flex-direction: column;

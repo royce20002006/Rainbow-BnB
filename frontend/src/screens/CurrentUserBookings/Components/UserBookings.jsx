@@ -32,7 +32,11 @@ export default function CurrentUserBookings() {
 
     }, [dispatch, isLoaded, bookings, user])
 
-
+    const goToSpot = (e, booking) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigate(`/spots/${booking.Spot.id}`)
+    }
 
     if (!isLoaded) {
         setTimeout(() => {
@@ -53,6 +57,7 @@ export default function CurrentUserBookings() {
 
                                 <div className="bookings">
                                     <span className="booking-spot-name">{booking.Spot.name}</span>
+                                    <img onClick={e => goToSpot(e, booking)} className='bookingImg' src={booking.Spot.previewImage}/>
                                     <span className="booking-start-date">{`Booking Start Date: ${booking.startDate}`}</span>
                                     <span className="booking-end-dates">{`Booking End Date: ${booking.endDate}`}</span>
                                     <div className='bookingButton'>
