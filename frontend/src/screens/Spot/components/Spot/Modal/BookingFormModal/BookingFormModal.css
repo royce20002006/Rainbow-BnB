@@ -22,11 +22,8 @@
     margin-bottom: .5rem;
 }
 
-.buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    justify-content: center;
+.center-button {
+    margin-left: auto;
     
 }
 

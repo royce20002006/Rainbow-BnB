@@ -21,7 +21,7 @@ export default function Spot() {
   const [isLoaded, setIsLoaded] = useState(false);
   
   const spot = useSelector(state => state.spotState.byId[id])
-
+  const bookings = useSelector(state => state.bookingsState.allBookings)
   const user = useSelector(state => state.session.user)
 
   
@@ -48,6 +48,16 @@ export default function Spot() {
 
     return <div>loading</div>
 
+  }
+
+  const checkBookings = () => {
+    for (let booking in bookings) {
+      
+      if (bookings[booking]['User']) {
+        return true
+      }
+    }
+    return false
   }
 
   
@@ -91,7 +101,7 @@ export default function Spot() {
           <div>${spot.price.toFixed(2)} Night</div>
           <div><FaStar className="star" /> {spot.numReviews > 0 ? spot.avgStarRating.toFixed(1) : 'New'}  {spot.numReviews === 0 ? null : spot.numReviews === 1 ?' · ' + spot.numReviews + ' Review' : ' · ' + spot.numReviews + ' Reviews' } </div>
           </div>
-            {user && spot.ownerId !== user.id ? <OpenModalButton 
+            {user && spot.ownerId !== user.id && !checkBookings()? <OpenModalButton 
               buttonText='Reserve'
               modalComponent={<BookingFormModal spot={spot} />}
               preventDefault
