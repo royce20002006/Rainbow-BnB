@@ -2,34 +2,42 @@
 
 
 .booking-start-date {
-    color: black;
+    font-weight: bold;
 
 }
 
 .booking-end-date {
-    border: 1px solid black;
-    color: black;
+    font-weight: bold;
+    
 
 }
 
 
 .bookingsSection {
     
-    width: 14rem;
-    
- 
- 
- 
- margin-top: 1rem;
- padding: 10px
+    text-align: center;
+    margin-top: 1rem;
+    padding: 10px;
+    display: flex;
+    gap: 1rem;
+}
+
+.booking-spot-name {
+    font-size: large;
+    font-weight: bold;
 }
 
 
 
 .bookingImg {
     border: 1px solid red;
-    border-radius: 5%;
+    margin: 1rem;
+    /* margin-bottom: 1rem; */
+    border-radius: 3%;
+    height: 20rem;
+    object-fit: cover;
 }
+
 .bookingImg:hover {
     box-shadow: 2px 2px 5px black;
     cursor: pointer;
@@ -38,10 +46,20 @@
 .bookings {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    width: 20rem;
+    height: 22rem;
     border: 1px solid red;
-    border-radius: 5%;
+    border-radius: 3%;
     padding: 1rem;
+    background-color: aliceblue;
+    
+    
+    
+}
+
+.bookingContainer{
+    display: flex;
+    flex-direction: row;
     
 }
 
@@ -52,9 +70,9 @@
 }
 
 .bookingButton{
-    margin-top: 5px;
+    margin-top: 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 

@@ -58,8 +58,8 @@ export default function CurrentUserBookings() {
                                 <div className="bookings">
                                     <span className="booking-spot-name">{booking.Spot.name}</span>
                                     <img onClick={e => goToSpot(e, booking)} className='bookingImg' src={booking.Spot.previewImage}/>
-                                    <span className="booking-start-date">{`Booking Start Date: ${booking.startDate}`}</span>
-                                    <span className="booking-end-dates">{`Booking End Date: ${booking.endDate}`}</span>
+                                    <span className="booking-start-date">Booking Start Date:{` ${booking.startDate}`}</span>
+                                    <span className="booking-end-date">{`Booking End Date: ${booking.endDate}`}</span>
                                     <div className='bookingButton'>
                                     <button className="red manage-button '">Edit</button>
                                     <button className="red manage-button">Delete</button>
