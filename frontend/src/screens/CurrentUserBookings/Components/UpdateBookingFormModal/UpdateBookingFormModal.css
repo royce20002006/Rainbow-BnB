@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 13rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    
+   
+}
+.text {
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+.confirm {
+    margin: 0;
+    margin-bottom: 1rem;
+    
+}
+
+.question {
+    margin-bottom: .5rem;
+}
+
+.center-button {
+    margin-left: auto;
+    
+}
+
+.big {
+    height: 3rem;
+}
+

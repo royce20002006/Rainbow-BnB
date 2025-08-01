@@ -2,9 +2,13 @@ import '../UserBookings.css'
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
+import OpenModalButton from '../../../components/Modal/OpenModalButton/OpenModalButton';
 
 
 import { getCurrentUserBookingsThunk } from "../../../store/bookings";
+
+
+import UpdateBookingFormModal from './UpdateBookingFormModal/UpdateBookingFormModal';
 
 
 export default function CurrentUserBookings() {
@@ -53,16 +57,21 @@ export default function CurrentUserBookings() {
 
                         <div key={idx} className="card-bookings"  >
 
-                            <div  className="flex-container-bookings">
+                            <div className="flex-container-bookings">
 
                                 <div className="bookings">
                                     <span className="booking-spot-name">{booking.Spot.name}</span>
-                                    <img onClick={e => goToSpot(e, booking)} className='bookingImg' src={booking.Spot.previewImage}/>
+                                    <img onClick={e => goToSpot(e, booking)} className='bookingImg' src={booking.Spot.previewImage} />
                                     <span className="booking-start-date">Booking Start Date:{` ${booking.startDate}`}</span>
                                     <span className="booking-end-date">{`Booking End Date: ${booking.endDate}`}</span>
                                     <div className='bookingButton'>
-                                    <button className="red manage-button '">Edit</button>
-                                    <button className="red manage-button">Delete</button>
+                                        <OpenModalButton
+                                        buttonText={'Edit'}
+                                        modalComponent={<UpdateBookingFormModal spot={booking.Spot} />}
+                                        preventDefault
+                                        stopPropagation
+                                        />
+                                        <button className="red manage-button">Delete</button>
 
                                     </div>
 
