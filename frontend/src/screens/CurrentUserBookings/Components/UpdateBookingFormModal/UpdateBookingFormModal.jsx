@@ -121,7 +121,7 @@ export default function UpdateBookingFormModal({spot}) {
   return (
     <div className="form">
       <div>
-        <h1 className="heading">{`Edit reservation for ${name}`}</h1>
+        <h1 className="heading">{`Edit reservation`}</h1>
       
         <div className='sectionOne'>
           <div className='country labelTop'>
