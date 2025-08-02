@@ -13,6 +13,7 @@ import { updateBookingThunk } from '../../../../store/bookings';
 export default function UpdateBookingFormModal({spot}) {
   const dispatch = useDispatch();
   const id = spot.id
+  const name = spot.name;
   
   
  
@@ -120,7 +121,7 @@ export default function UpdateBookingFormModal({spot}) {
   return (
     <div className="form">
       <div>
-        <h1 className="heading">Reserve this Spot</h1>
+        <h1 className="heading">{`Edit reservation`}</h1>
       
         <div className='sectionOne'>
           <div className='country labelTop'>

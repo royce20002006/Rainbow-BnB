@@ -9,6 +9,7 @@ import { getCurrentUserBookingsThunk } from "../../../store/bookings";
 
 
 import UpdateBookingFormModal from './UpdateBookingFormModal/UpdateBookingFormModal';
+import DeleteBookingModal from './DeleteReviewModal/DeleteBookingModal';
 
 
 export default function CurrentUserBookings() {
@@ -71,7 +72,12 @@ export default function CurrentUserBookings() {
                                         preventDefault
                                         stopPropagation
                                         />
-                                        <button className="red manage-button">Delete</button>
+                                        <OpenModalButton
+                                        buttonText={'Delete'}
+                                        modalComponent={<DeleteBookingModal booking={booking} />}
+                                        preventDefault
+                                        stopPropagation
+                                        />
 
                                     </div>
 
