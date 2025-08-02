@@ -33,11 +33,7 @@ export default function DeleteBookingModal({
           const data = await res.json();
           setErrors(data.message)
 
-        } else {
-          setAlreadyReviewed(false)
-          await dispatch(getSpotsThunk())
-          closeModal()
-        }
+        } 
         
         
        
