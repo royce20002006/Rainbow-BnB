@@ -47,4 +47,4 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Review;
 };
-//1 2 3 4 
+//1 2 3 4 5
